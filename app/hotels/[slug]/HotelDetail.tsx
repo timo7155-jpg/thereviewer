@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { useLang } from '@/lib/i18n'
 import { HomeNav } from '@/app/HomeNav'
+import { supabase } from '@/lib/supabase'
 import ImageCarousel from './ImageCarousel'
 import BookingForm from './BookingForm'
 import ExternalRatings from './ExternalRatings'
@@ -33,6 +35,23 @@ function ScoreBar({ label, score }: { label: string, score: number | null }) {
 
 export default function HotelDetail({ hotel, reviews, avgRating, reviewCountDisplay, slug, images }: Props) {
   const { lang, t } = useLang()
+  const [isOwner, setIsOwner] = useState(false)
+
+  useEffect(() => {
+    const checkOwner = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data: owner } = await supabase
+        .from('business_owners')
+        .select('business_id')
+        .eq('user_id', user.id)
+        .eq('business_id', hotel.id)
+        .eq('status', 'approved')
+        .single()
+      if (owner) setIsOwner(true)
+    }
+    checkOwner()
+  }, [hotel.id])
 
   // Compute average sub-scores
   const avgScores = reviews.length > 0 ? {
@@ -48,11 +67,25 @@ export default function HotelDetail({ hotel, reviews, avgRating, reviewCountDisp
       <HomeNav />
 
       <div className="max-w-4xl mx-auto px-6 py-8">
+        {/* Owner banner */}
+        {isOwner && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 mb-4 flex items-center justify-between">
+            <p className="text-sm text-blue-700 font-medium">
+              {lang === 'fr' ? 'Ceci est la page publique de votre entreprise' : 'This is your business public page'}
+            </p>
+            <Link href="/dashboard" className="text-sm text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-1">
+              {lang === 'fr' ? '← Tableau de bord' : '← Back to dashboard'}
+            </Link>
+          </div>
+        )}
+
         {/* Back link */}
-        <Link href="/" className="text-sm text-blue-600 hover:text-blue-700 mb-6 inline-flex items-center gap-1 font-medium">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-          {t('hotel.backToAll')}
-        </Link>
+        {!isOwner && (
+          <Link href="/" className="text-sm text-blue-600 hover:text-blue-700 mb-6 inline-flex items-center gap-1 font-medium">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+            {t('hotel.backToAll')}
+          </Link>
+        )}
 
         {/* Image carousel */}
         <div className="mt-4">
