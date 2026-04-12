@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
@@ -13,6 +13,13 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
+  const [expired, setExpired] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.search.includes('expired=true')) {
+      setExpired(true)
+    }
+  }, [])
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 
@@ -80,6 +87,12 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="h-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600" />
           <div className="p-8">
+            {expired && (
+              <div className="bg-amber-50 text-amber-700 text-sm px-4 py-3 rounded-xl mb-4 border border-amber-200 flex items-center gap-2">
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                {lang === 'fr' ? 'Votre session a expiré. Veuillez vous reconnecter.' : 'Your session has expired. Please sign in again.'}
+              </div>
+            )}
             <h1 className="text-xl font-extrabold text-gray-900 mb-6">
               {isSignUp
                 ? (lang === 'fr' ? 'Créer votre compte' : 'Create your account')

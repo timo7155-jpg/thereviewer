@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { LangProvider } from "@/lib/i18n";
 import ChatWidget from "./ChatWidget";
+import SessionGuard from "./SessionGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,6 +53,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <LangProvider>
           {children}
+          <SessionGuard />
           <ChatWidget />
         </LangProvider>
       </body>
