@@ -21,9 +21,22 @@ export async function GET(req: NextRequest) {
     const now = Date.now()
     // Return cached if less than 24 hours old
     if (now - fetchedAt < 24 * 60 * 60 * 1000) {
+      // Get business google_place_id for the maps link
+      const { data: biz } = await supabaseAdmin
+        .from('businesses')
+        .select('google_place_id, name, region')
+        .eq('id', businessId)
+        .single()
+
+      const googleMapsUrl = biz?.google_place_id
+        ? `https://www.google.com/maps/place/?q=place_id:${biz.google_place_id}`
+        : `https://www.google.com/maps/search/${encodeURIComponent(`${biz?.name} ${biz?.region} Mauritius`)}`
+
       return NextResponse.json({
         rating: existing.rating,
         reviewCount: existing.review_count,
+        reviews: existing.reviews_json || [],
+        googleMapsUrl,
         cached: true
       })
     }
@@ -55,6 +68,36 @@ export async function GET(req: NextRequest) {
     const reviewCount = place.user_ratings_total || 0
     const placeId = place.place_id
 
+    // Fetch detailed place info including reviews
+    let reviews: any[] = []
+    if (placeId) {
+      const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,url&key=${GOOGLE_API_KEY}`
+      const detailsRes = await fetch(detailsUrl)
+      const detailsData = await detailsRes.json()
+
+      if (detailsData.result?.reviews) {
+        reviews = detailsData.result.reviews.map((r: any) => ({
+          author: r.author_name,
+          rating: r.rating,
+          text: r.text,
+          time: r.relative_time_description,
+          profilePhoto: r.profile_photo_url
+        }))
+      }
+
+      // Save google maps URL
+      if (detailsData.result?.url) {
+        await supabaseAdmin
+          .from('businesses')
+          .update({ google_place_id: placeId })
+          .eq('id', businessId)
+      }
+    }
+
+    const googleMapsUrl = placeId
+      ? `https://www.google.com/maps/place/?q=place_id:${placeId}`
+      : `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`
+
     // Save/update in external_scores
     if (existing) {
       await supabaseAdmin
@@ -62,6 +105,7 @@ export async function GET(req: NextRequest) {
         .update({
           rating,
           review_count: reviewCount,
+          reviews_json: reviews,
           fetched_at: new Date().toISOString()
         })
         .eq('id', existing.id)
@@ -73,20 +117,12 @@ export async function GET(req: NextRequest) {
           platform: 'google',
           rating,
           review_count: reviewCount,
+          reviews_json: reviews,
           fetched_at: new Date().toISOString()
         })
     }
 
-    // Also save the google_place_id on the business if not set
-    if (placeId) {
-      await supabaseAdmin
-        .from('businesses')
-        .update({ google_place_id: placeId })
-        .eq('id', businessId)
-        .is('google_place_id', null)
-    }
-
-    return NextResponse.json({ rating, reviewCount, found: true })
+    return NextResponse.json({ rating, reviewCount, reviews, googleMapsUrl, found: true })
   } catch (err) {
     console.error('Google Places error:', err)
     return NextResponse.json({ error: 'Failed to fetch Google rating' }, { status: 500 })
