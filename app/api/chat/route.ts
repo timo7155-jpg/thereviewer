@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }).join('\n')
 
     const response = await anthropic.messages.create({
-      model: 'claude-haiku-4-20250414',
+      model: 'claude-3-5-haiku-20241022',
       max_tokens: 400,
       messages: [{
         role: 'user',
@@ -52,8 +52,8 @@ ${bizList}`
 
     const text = response.content[0].type === 'text' ? response.content[0].text : ''
     return NextResponse.json({ reply: text })
-  } catch (err) {
-    console.error('Chat error:', err)
+  } catch (err: any) {
+    console.error('Chat error:', err?.message || err)
     return NextResponse.json({ reply: 'Sorry, I couldn\'t process your request. Please try again.' })
   }
 }
