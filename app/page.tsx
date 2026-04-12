@@ -32,11 +32,27 @@ export default async function HomePage() {
     if (!imageMap[img.business_id]) imageMap[img.business_id] = img.url
   })
 
-  const businessesWithCounts = (businesses || []).map(h => ({
-    ...h,
-    review_count: countMap[h.id] || 0,
-    image_url: imageMap[h.id] || null
-  }))
+  // Get AI analysis scores per business (from Google review analysis)
+  const { data: allAnalysis } = await supabaseAdmin
+    .from('business_analysis')
+    .select('business_id, overall_score, source_review_count')
+
+  const analysisMap: Record<string, { score: number, count: number }> = {}
+  allAnalysis?.forEach(a => {
+    analysisMap[a.business_id] = { score: a.overall_score, count: a.source_review_count }
+  })
+
+  const businessesWithCounts = (businesses || []).map(h => {
+    const nativeReviews = countMap[h.id] || 0
+    const analysis = analysisMap[h.id]
+    return {
+      ...h,
+      review_count: nativeReviews,
+      analysis_score: analysis?.score || null,
+      analysis_review_count: analysis?.count || 0,
+      image_url: imageMap[h.id] || null
+    }
+  })
 
   return (
     <main className="min-h-screen bg-gray-50">

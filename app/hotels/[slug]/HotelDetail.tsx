@@ -12,6 +12,7 @@ type Props = {
   hotel: any
   reviews: any[]
   avgRating: string | null
+  reviewCountDisplay: number
   slug: string
   images: { id: string; url: string; position: number }[]
 }
@@ -29,7 +30,7 @@ function ScoreBar({ label, score }: { label: string, score: number | null }) {
   )
 }
 
-export default function HotelDetail({ hotel, reviews, avgRating, slug, images }: Props) {
+export default function HotelDetail({ hotel, reviews, avgRating, reviewCountDisplay, slug, images }: Props) {
   const { lang, t } = useLang()
 
   // Compute average sub-scores
@@ -99,7 +100,7 @@ export default function HotelDetail({ hotel, reviews, avgRating, slug, images }:
                 <div className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white rounded-2xl p-6 text-center min-w-[160px] flex flex-col justify-center shadow-xl shadow-indigo-200/50">
                   <div className="text-4xl font-extrabold mb-1">{avgRating}</div>
                   <div className="text-yellow-300 text-lg mb-1">{'★'.repeat(Math.round(Number(avgRating)))}</div>
-                  <div className="text-blue-200 text-sm">{reviews.length} {t('home.reviews')}</div>
+                  <div className="text-blue-200 text-sm">{reviewCountDisplay.toLocaleString()} {t('home.reviews')}</div>
                 </div>
               ) : (
                 <div className="bg-gray-50 rounded-2xl p-6 text-center min-w-[160px] flex flex-col justify-center border border-gray-100">

@@ -50,9 +50,22 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
     .eq('business_id', hotel.id)
     .order('position')
 
-  const avgRating = reviews && reviews.length > 0
+  // Get analysis score as fallback
+  const { data: analysis } = await supabaseAdmin
+    .from('business_analysis')
+    .select('overall_score, source_review_count')
+    .eq('business_id', hotel.id)
+    .single()
+
+  const nativeAvg = reviews && reviews.length > 0
     ? (reviews.reduce((sum, r) => sum + r.overall_rating, 0) / reviews.length).toFixed(1)
     : null
 
-  return <HotelDetail hotel={hotel} reviews={reviews || []} avgRating={avgRating} slug={slug} images={images || []} />
+  // Use native rating if available, otherwise analysis score
+  const avgRating = nativeAvg || (analysis?.overall_score ? analysis.overall_score.toFixed(1) : null)
+  const reviewCountDisplay = reviews && reviews.length > 0
+    ? reviews.length
+    : (analysis?.source_review_count || 0)
+
+  return <HotelDetail hotel={hotel} reviews={reviews || []} avgRating={avgRating} reviewCountDisplay={reviewCountDisplay} slug={slug} images={images || []} />
 }

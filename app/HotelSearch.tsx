@@ -14,6 +14,8 @@ type Business = {
   description: string
   category: string
   review_count: number
+  analysis_score: number | null
+  analysis_review_count: number
   image_url: string | null
 }
 
@@ -113,8 +115,8 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
               <div className="text-blue-200">{lang === 'fr' ? 'Entreprises' : 'Businesses'}</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold">{initialHotels.reduce((s, h) => s + h.review_count, 0)}</div>
-              <div className="text-blue-200">{lang === 'fr' ? 'Avis' : 'Reviews'}</div>
+              <div className="text-2xl font-bold">{initialHotels.reduce((s, h) => s + (h.analysis_review_count || h.review_count), 0).toLocaleString()}</div>
+              <div className="text-blue-200">{lang === 'fr' ? 'Avis analysés' : 'Reviews analyzed'}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold">100%</div>
@@ -203,10 +205,10 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
                       </span>
                     )}
                   </div>
-                  {biz.review_count > 0 && (
+                  {(biz.analysis_score || biz.review_count > 0) && (
                     <div className="absolute top-3 right-3">
                       <span className="text-xs font-bold text-white bg-amber-500/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1">
-                        ★ {biz.review_count}
+                        ★ {biz.analysis_score ? biz.analysis_score.toFixed(1) : biz.review_count}
                       </span>
                     </div>
                   )}
@@ -221,9 +223,15 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
                   <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed flex-1">{biz.description}</p>
 
                   <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between">
-                    {biz.review_count === 0 && (
+                    {biz.analysis_score ? (
+                      <span className="text-xs text-gray-400">
+                        {lang === 'fr'
+                          ? `${biz.analysis_review_count.toLocaleString()} avis analysés`
+                          : `${biz.analysis_review_count.toLocaleString()} reviews analyzed`}
+                      </span>
+                    ) : biz.review_count === 0 ? (
                       <span className="text-xs text-gray-400">{lang === 'fr' ? 'Pas encore d\'avis' : 'No reviews yet'}</span>
-                    )}
+                    ) : null}
                     <span className="text-xs font-medium text-blue-600 group-hover:translate-x-1 transition-transform ml-auto">
                       {lang === 'fr' ? 'Voir les détails →' : 'View details →'}
                     </span>
