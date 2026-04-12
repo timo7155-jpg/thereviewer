@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cmd.exe /c \"npx next build\")",
+      "Bash(cmd.exe /c \"npx next build 2>&1\")",
+      "Bash(cmd.exe //c \"npx next build\")",
+      "Bash(\"/c/Program Files/nodejs/npx.cmd\" next build)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(npx next:*)",
+      "Read(//c/Users/User/AppData/Local/Temp/claude/C--Users-User-Desktop-thereviewer/488dea41-2e1b-4c05-8f61-6184c366c161/tasks/**)",
+      "Bash(pip install:*)",
+      "Bash(python3 -c \"from pypdf import PdfReader; r = PdfReader\\('C:/Users/User/Downloads/CV 2026.pdf'\\); [print\\(p.extract_text\\(\\)\\) for p in r.pages]\")",
+      "Bash(python -c \"from pypdf import PdfReader; r = PdfReader\\('C:/Users/User/Downloads/CV 2026.pdf'\\); [print\\(p.extract_text\\(\\)\\) for p in r.pages]\")",
+      "Bash(node -e ':*)",
+      "Bash(npm install:*)",
+      "Bash(node --input-type=commonjs -e ':*)",
+      "Read(//c/Program Files/GitHub CLI/**)",
+      "Read(//c/Users/User/AppData/Local/GitHub CLI/**)"
+    ]
+  }
+}
