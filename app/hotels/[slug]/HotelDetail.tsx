@@ -5,6 +5,7 @@ import { useLang, LangToggle } from '@/lib/i18n'
 import ImageCarousel from './ImageCarousel'
 import BookingForm from './BookingForm'
 import ExternalRatings from './ExternalRatings'
+import ReviewAnalysis from './ReviewAnalysis'
 import SiteFooter from '@/app/SiteFooter'
 
 type Props = {
@@ -119,6 +120,9 @@ export default function HotelDetail({ hotel, reviews, avgRating, slug, images }:
             )}
           </div>
         </div>
+
+        {/* AI Review Analysis */}
+        <ReviewAnalysis businessId={hotel.id} />
 
         {/* External ratings */}
         <div className="mb-6">
