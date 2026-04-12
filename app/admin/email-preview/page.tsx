@@ -5,6 +5,94 @@ import AdminShell from '../AdminShell'
 import { emailTemplate, emailButton, emailInfoRow, emailTable, emailNote } from '@/lib/email'
 
 const sampleEmails = {
+  business_outreach: {
+    label: '🎯 Business Outreach',
+    html: emailTemplate('Your business is already being reviewed — are you in control?', `
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
+        Dear <strong>General Manager</strong>,
+      </p>
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
+        I'm reaching out because <strong>Royal Palm Beachcomber</strong> is already listed on <strong>TheReviewer.mu</strong> — Mauritius' new platform for discovering, rating, and booking businesses.
+      </p>
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
+        Your business currently has a public profile that customers are viewing. Here's a snapshot of what we've found:
+      </p>
+
+      <!-- Stats highlight -->
+      <div style="background:linear-gradient(135deg,#2563eb,#7c3aed);border-radius:12px;padding:20px;margin:20px 0;text-align:center;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr>
+            <td style="text-align:center;padding:8px;">
+              <div style="font-size:28px;font-weight:800;color:white;">4.6</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">Overall Score</div>
+            </td>
+            <td style="text-align:center;padding:8px;">
+              <div style="font-size:28px;font-weight:800;color:white;">5,270</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">Reviews Analyzed</div>
+            </td>
+            <td style="text-align:center;padding:8px;">
+              <div style="font-size:28px;font-weight:800;color:white;">4.8</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">Service Score</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
+        Customers are already searching for your business and seeing this data. The question is: <strong>who is managing your online reputation?</strong>
+      </p>
+
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 6px;font-weight:600;">
+        With a free account, you can:
+      </p>
+      <table style="border-collapse:collapse;margin:0 0 16px;">
+        <tr><td style="padding:4px 8px 4px 0;color:#10b981;font-size:16px;">✓</td><td style="padding:4px 0;color:#475569;font-size:13px;">Claim and verify your business listing</td></tr>
+        <tr><td style="padding:4px 8px 4px 0;color:#10b981;font-size:16px;">✓</td><td style="padding:4px 0;color:#475569;font-size:13px;">View all reviews and ratings about your business</td></tr>
+        <tr><td style="padding:4px 8px 4px 0;color:#10b981;font-size:16px;">✓</td><td style="padding:4px 0;color:#475569;font-size:13px;">Get one free AI-powered improvement tip</td></tr>
+        <tr><td style="padding:4px 8px 4px 0;color:#10b981;font-size:16px;">✓</td><td style="padding:4px 0;color:#475569;font-size:13px;">Access your basic owner dashboard</td></tr>
+      </table>
+
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 6px;font-weight:600;">
+        Upgrade to Premium and unlock the full power:
+      </p>
+      <table style="border-collapse:collapse;margin:0 0 16px;">
+        <tr><td style="padding:4px 8px 4px 0;color:#2563eb;font-size:16px;">★</td><td style="padding:4px 0;color:#475569;font-size:13px;">Reply directly to all customer reviews</td></tr>
+        <tr><td style="padding:4px 8px 4px 0;color:#2563eb;font-size:16px;">★</td><td style="padding:4px 0;color:#475569;font-size:13px;">Full AI analysis with strengths, weaknesses & action items</td></tr>
+        <tr><td style="padding:4px 8px 4px 0;color:#2563eb;font-size:16px;">★</td><td style="padding:4px 0;color:#475569;font-size:13px;">Upload and manage your business photos</td></tr>
+        <tr><td style="padding:4px 8px 4px 0;color:#2563eb;font-size:16px;">★</td><td style="padding:4px 0;color:#475569;font-size:13px;">Access reviewer contact details (site reviews)</td></tr>
+        <tr><td style="padding:4px 8px 4px 0;color:#2563eb;font-size:16px;">★</td><td style="padding:4px 0;color:#475569;font-size:13px;">Competitive benchmarking & service quality tracking</td></tr>
+        <tr><td style="padding:4px 8px 4px 0;color:#2563eb;font-size:16px;">★</td><td style="padding:4px 0;color:#475569;font-size:13px;">Receive booking requests directly through your listing</td></tr>
+      </table>
+
+      <!-- Promo pricing -->
+      <div style="background:#f8fafc;border:2px solid #2563eb;border-radius:12px;padding:20px;margin:20px 0;text-align:center;">
+        <p style="margin:0 0 4px;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Launch offer — limited to first 50 owners</p>
+        <p style="margin:0 0 4px;">
+          <span style="font-size:16px;color:#94a3b8;text-decoration:line-through;">MUR 3,000</span>
+          <span style="font-size:32px;font-weight:800;color:#2563eb;margin-left:8px;">MUR 2,490</span>
+          <span style="font-size:14px;color:#64748b;">/month</span>
+        </p>
+        <p style="margin:4px 0 0;font-size:12px;color:#ef4444;font-weight:700;">⚡ Almost fully booked — secure your spot now</p>
+      </div>
+
+      <div style="text-align:center;margin:24px 0 16px;">
+        ${emailButton('Claim your business — Free', 'https://thereviewer.vercel.app/dashboard/login')}
+      </div>
+
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
+        Your business page is live at:<br>
+        <a href="https://thereviewer.vercel.app/hotels/royal-palm-beachcomber" style="color:#2563eb;font-weight:600;text-decoration:none;">thereviewer.mu/hotels/royal-palm-beachcomber</a>
+      </p>
+
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
+        I'd be happy to give you a personal walkthrough of the platform. Feel free to reply to this email or call me directly.
+      </p>
+
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0;">
+        Looking forward to helping <strong>Royal Palm Beachcomber</strong> take control of its online reputation.
+      </p>
+    `)
+  },
   review_verification: {
     label: 'Review Verification',
     html: emailTemplate('Thank you for your review!', `
