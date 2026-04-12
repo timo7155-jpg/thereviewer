@@ -18,7 +18,10 @@
       "Read(//c/Users/User/AppData/Local/GitHub CLI/**)",
       "WebSearch",
       "Bash(grep -E \"error|Error|^\\\\s+[○ƒ] /$\")",
-      "Bash(ls -la C:/Users/User/Downloads/*.jpg C:/Users/User/Downloads/*.png C:/Users/User/Downloads/*.jpeg)"
+      "Bash(ls -la C:/Users/User/Downloads/*.jpg C:/Users/User/Downloads/*.png C:/Users/User/Downloads/*.jpeg)",
+      "Bash(ls C:/Users/User/Desktop/thereviewer/public/founder*)",
+      "Bash(mv founder.JPG founder-temp.jpg)",
+      "Bash(mv founder-temp.jpg founder.jpg)"
     ]
   }
 }
