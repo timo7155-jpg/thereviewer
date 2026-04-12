@@ -96,9 +96,12 @@ export default function SiteFooter() {
 
       {/* Bottom bar */}
       <div className="border-t border-gray-800 py-6 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <p>&copy; 2025 TheReviewer.mu — {lang === 'fr' ? 'Tous droits réservés' : 'All rights reserved'}</p>
-          <p>{lang === 'fr' ? 'Propulsé par' : 'Powered by'} Mauritius</p>
+          <div className="flex gap-4">
+            <Link href="/terms" className="hover:text-white transition-colors">{lang === 'fr' ? 'Conditions' : 'Terms'}</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">{lang === 'fr' ? 'Confidentialité' : 'Privacy'}</Link>
+          </div>
         </div>
       </div>
     </footer>

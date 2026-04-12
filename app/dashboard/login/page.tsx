@@ -42,8 +42,8 @@ export default function LoginPage() {
         return
       }
       setError(lang === 'fr'
-        ? 'Vérifiez votre email pour confirmer votre compte, puis connectez-vous.'
-        : 'Check your email to confirm your account, then log in.')
+        ? 'Compte créé ! Vérifiez votre email pour confirmer, puis connectez-vous. Ensuite, réclamez votre entreprise depuis le tableau de bord.'
+        : 'Account created! Check your email to confirm, then log in. Next step: claim your business from the dashboard.')
       setLoading(false)
       return
     }
@@ -162,6 +162,12 @@ export default function LoginPage() {
           <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
             {lang === 'fr' ? 'Retour aux avis' : 'Back to reviews'}
           </Link>
+        </p>
+        <p className="text-center text-xs text-gray-400 mt-2">
+          {lang === 'fr' ? 'En vous inscrivant, vous acceptez nos ' : 'By signing up, you agree to our '}
+          <Link href="/terms" className="text-blue-600 hover:text-blue-700">{lang === 'fr' ? 'Conditions' : 'Terms'}</Link>
+          {' & '}
+          <Link href="/privacy" className="text-blue-600 hover:text-blue-700">{lang === 'fr' ? 'Confidentialité' : 'Privacy Policy'}</Link>
         </p>
       </div>
     </main>

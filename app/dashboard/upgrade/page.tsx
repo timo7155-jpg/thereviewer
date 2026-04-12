@@ -13,6 +13,7 @@ export default function UpgradePage() {
   const [user, setUser] = useState<any>(null)
   const [owner, setOwner] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [noClaim, setNoClaim] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
@@ -30,7 +31,7 @@ export default function UpgradePage() {
         .eq('status', 'approved')
         .single()
 
-      if (!ownerData) { router.push('/dashboard'); return }
+      if (!ownerData) { setNoClaim(true); setLoading(false); return }
       if (ownerData.plan === 'premium') { router.push('/dashboard'); return }
 
       setOwner(ownerData)
@@ -68,6 +69,37 @@ export default function UpgradePage() {
       <div className="flex items-center gap-3">
         <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
         <p className="text-gray-500">{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
+      </div>
+    </main>
+  )
+
+  if (noClaim) return (
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
+      <div className="bg-white rounded-2xl border border-gray-100 p-10 max-w-md w-full text-center shadow-sm animate-fade-up">
+        <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+        </div>
+        <h2 className="text-xl font-extrabold text-gray-900 mb-2">
+          {lang === 'fr' ? 'Réclamez d\'abord votre entreprise' : 'Claim your business first'}
+        </h2>
+        <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+          {lang === 'fr'
+            ? 'Pour souscrire au Premium, vous devez d\'abord réclamer votre entreprise et être approuvé par notre équipe.'
+            : 'To subscribe to Premium, you need to first claim your business and get approved by our team.'}
+        </p>
+        <p className="text-gray-400 text-xs mb-6">
+          {lang === 'fr'
+            ? 'Étape 1 : Réclamer → Étape 2 : Approbation → Étape 3 : Premium'
+            : 'Step 1: Claim → Step 2: Approval → Step 3: Premium'}
+        </p>
+        <div className="flex flex-col gap-3">
+          <Link href="/dashboard/claim" className="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors">
+            {lang === 'fr' ? 'Réclamer mon entreprise' : 'Claim my business'}
+          </Link>
+          <Link href="/dashboard" className="text-gray-500 text-sm font-medium hover:text-blue-600 transition-colors">
+            {lang === 'fr' ? '← Retour au tableau de bord' : '← Back to dashboard'}
+          </Link>
+        </div>
       </div>
     </main>
   )
