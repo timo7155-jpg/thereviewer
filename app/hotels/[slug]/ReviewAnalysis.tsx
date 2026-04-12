@@ -16,6 +16,8 @@ type Analysis = {
   summary: string
   strengths: string[]
   improvements: string[]
+  best_review: string | null
+  worst_review: string | null
   analyzed_at: string
 }
 
@@ -176,6 +178,38 @@ export default function ReviewAnalysis({ businessId }: { businessId: string }) {
             </div>
           )}
         </div>
+
+        {/* Best & Worst review summaries */}
+        {(analysis.best_review || analysis.worst_review) && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            {analysis.best_review && (
+              <div className="bg-white rounded-xl border border-gray-100 p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" /></svg>
+                  </div>
+                  <h4 className="font-bold text-gray-900 text-sm">
+                    {lang === 'fr' ? 'Ce que les clients adorent' : 'What customers love'}
+                  </h4>
+                </div>
+                <p className="text-sm text-gray-600 leading-relaxed italic">"{analysis.best_review}"</p>
+              </div>
+            )}
+            {analysis.worst_review && (
+              <div className="bg-white rounded-xl border border-gray-100 p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018c.163 0 .326.02.485.06L17 4m-7 10v2a2 2 0 002 2h.095c.5 0 .905-.405.905-.905 0-.714.211-1.412.608-2.006L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" /></svg>
+                  </div>
+                  <h4 className="font-bold text-gray-900 text-sm">
+                    {lang === 'fr' ? 'Ce qui pourrait être amélioré' : 'What could be better'}
+                  </h4>
+                </div>
+                <p className="text-sm text-gray-600 leading-relaxed italic">"{analysis.worst_review}"</p>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Disclaimer */}
         <p className="text-xs text-gray-400 mt-6 text-center leading-relaxed">

@@ -14,7 +14,8 @@ export default function DashboardPage() {
   const [reviews, setReviews] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [plan, setPlan] = useState<string>('free')
-  const [claimStatus, setClaimStatus] = useState<any>(null) // { status, businessName, created_at }
+  const [claimStatus, setClaimStatus] = useState<any>(null)
+  const [teaserInsight, setTeaserInsight] = useState<string | null>(null)
   const isPremium = plan === 'premium'
 
   useEffect(() => {
@@ -44,6 +45,14 @@ export default function DashboardPage() {
             .order('created_at', { ascending: false })
 
           setReviews(reviews || [])
+
+          // Fetch teaser insight for free users
+          if (owner.plan !== 'premium') {
+            fetch(`/api/admin/analyze?businessId=${owner.businesses.id}`)
+              .then(r => r.json())
+              .then(d => { if (d.analysis?.teaser_insight) setTeaserInsight(d.analysis.teaser_insight) })
+              .catch(() => {})
+          }
         } else {
           // Pending or rejected claim
           setClaimStatus({
@@ -242,6 +251,28 @@ export default function DashboardPage() {
               </div>
             </div>
 
+            {/* Teaser insight for free users */}
+            {!isPremium && teaserInsight && (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center shrink-0">
+                    <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-sm mb-1">
+                      {lang === 'fr' ? 'Conseil gratuit de notre analyse IA' : 'Free tip from our AI analysis'}
+                    </h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">{teaserInsight}</p>
+                    <p className="text-xs text-blue-600 font-semibold mt-2">
+                      <Link href="/dashboard/upgrade">
+                        {lang === 'fr' ? 'Passez au Premium pour l\'analyse complète →' : 'Upgrade to Premium for the full analysis →'}
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Plan banner for free users */}
             {!isPremium && (
               <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-6 mb-8 flex items-center justify-between">
@@ -254,6 +285,34 @@ export default function DashboardPage() {
                 </Link>
               </div>
             )}
+
+            {/* Photo management */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center">
+                    <svg className="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-sm">{lang === 'fr' ? 'Photos de votre entreprise' : 'Business Photos'}</h3>
+                    <p className="text-xs text-gray-500">{lang === 'fr' ? 'Ajoutez ou gérez les photos de votre fiche' : 'Add or manage photos on your listing'}</p>
+                  </div>
+                </div>
+                {isPremium ? (
+                  <Link href={`/admin/businesses/${business.id}/edit`} className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors">
+                    {lang === 'fr' ? 'Gérer les photos' : 'Manage photos'}
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => alert(lang === 'fr' ? 'Passez au Premium pour gérer vos photos.' : 'Upgrade to Premium to manage your photos.')}
+                    className="bg-gray-100 text-gray-400 px-4 py-2 rounded-xl text-sm font-semibold cursor-not-allowed flex items-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    {lang === 'fr' ? 'Premium requis' : 'Premium required'}
+                  </button>
+                )}
+              </div>
+            </div>
 
             {/* AI Insights */}
             <div className={!isPremium ? 'relative' : ''}>

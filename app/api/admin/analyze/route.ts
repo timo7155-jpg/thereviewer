@@ -82,7 +82,10 @@ Based on this data, provide an ORIGINAL analysis (do not quote or copy any revie
   "value_score": number (1-5, one decimal),
   "summary": "2-3 sentence original summary of what reviewers generally think about this business. Do NOT quote any review.",
   "strengths": ["strength 1", "strength 2", "strength 3"],
-  "improvements": ["area to improve 1", "area to improve 2"]
+  "improvements": ["area to improve 1", "area to improve 2"],
+  "best_review": "Write a 2-3 sentence ORIGINAL positive review summary as if a happy customer wrote it. Based on positive themes from reviews, but do NOT copy any text. Write naturally.",
+  "worst_review": "Write a 2-3 sentence ORIGINAL critical review summary as if a disappointed customer wrote it. Based on negative themes from reviews, but do NOT copy any text. Write constructively.",
+  "teaser_insight": "One specific, actionable improvement suggestion for the business owner (e.g. 'Your service score trails your food score by 0.8 points — training front-of-house staff could close this gap'). Be concrete with numbers."
 }`
       }]
     })
@@ -107,6 +110,9 @@ Based on this data, provide an ORIGINAL analysis (do not quote or copy any revie
         summary: analysis.summary,
         strengths: analysis.strengths,
         improvements: analysis.improvements,
+        best_review: analysis.best_review,
+        worst_review: analysis.worst_review,
+        teaser_insight: analysis.teaser_insight,
         analyzed_at: new Date().toISOString()
       }, { onConflict: 'business_id,source' })
 
