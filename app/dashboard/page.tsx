@@ -278,7 +278,12 @@ export default function DashboardPage() {
               <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-6 mb-8 flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-lg mb-1">{lang === 'fr' ? 'Passez au Premium' : 'Upgrade to Premium'}</h3>
-                  <p className="text-blue-100 text-sm">{lang === 'fr' ? 'Débloquez les réponses aux avis, l\'analyse IA et plus encore.' : 'Unlock review replies, AI insights, analytics and more.'}</p>
+                  <p className="text-blue-100 text-sm mb-1">{lang === 'fr' ? 'Débloquez les réponses aux avis, l\'analyse IA et plus encore.' : 'Unlock review replies, AI insights, analytics and more.'}</p>
+                  <p className="text-blue-200 text-xs flex items-center gap-1">
+                    <span className="line-through">{lang === 'fr' ? '3 000 MUR' : 'MUR 3,000'}</span>
+                    <span className="font-bold text-white">{lang === 'fr' ? '2 490 MUR/mois' : 'MUR 2,490/mo'}</span>
+                    <span className="text-yellow-300 font-bold ml-1">— {lang === 'fr' ? 'Presque complet !' : 'Almost fully booked!'}</span>
+                  </p>
                 </div>
                 <Link href="/dashboard/upgrade" className="bg-white text-blue-700 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-50 transition-colors shrink-0 ml-4">
                   {lang === 'fr' ? 'Souscrire' : 'Subscribe'}

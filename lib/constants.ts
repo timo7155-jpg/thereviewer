@@ -55,8 +55,17 @@ export const PLANS = {
   },
   premium: {
     name: { en: 'Premium', fr: 'Premium' },
-    price: { en: 'MUR 2,990', fr: '2 990 MUR' },
+    originalPrice: { en: 'MUR 3,000', fr: '3 000 MUR' },
+    price: { en: 'MUR 2,490', fr: '2 490 MUR' },
     period: { en: '/month', fr: '/mois' },
+    promoNote: {
+      en: 'First year price — limited to the first 50 subscribers',
+      fr: 'Prix première année — limité aux 50 premiers abonnés',
+    },
+    urgency: {
+      en: 'Almost fully booked!',
+      fr: 'Presque complet !',
+    },
     description: {
       en: 'Full control over your reputation and reviews',
       fr: 'Contrôle total de votre réputation et vos avis',

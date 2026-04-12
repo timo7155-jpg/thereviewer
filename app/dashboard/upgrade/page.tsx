@@ -205,10 +205,16 @@ export default function UpgradePage() {
               </span>
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-1">{PLANS.premium.name[lang]}</h3>
-            <div className="mb-5">
+            <div className="mb-2">
+              <span className="text-base text-gray-400 line-through mr-2">{PLANS.premium.originalPrice[lang]}</span>
               <span className="text-3xl font-extrabold text-gradient">{PLANS.premium.price[lang]}</span>
               <span className="text-gray-500 text-sm ml-1">{PLANS.premium.period[lang]}</span>
             </div>
+            <p className="text-xs text-gray-500 mb-1">{PLANS.premium.promoNote[lang]}</p>
+            <p className="text-xs font-bold text-red-500 mb-5 flex items-center gap-1">
+              <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+              {PLANS.premium.urgency[lang]}
+            </p>
             <div className="space-y-2.5">
               {PLANS.premium.features[lang].map((f, i) => (
                 <div key={i} className="flex items-start gap-2 text-sm">
