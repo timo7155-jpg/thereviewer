@@ -7,15 +7,15 @@ import { emailTemplate, emailButton, emailInfoRow, emailTable, emailNote } from 
 const sampleEmails = {
   business_outreach: {
     label: '🎯 Business Outreach',
-    html: emailTemplate('Your business is already being reviewed — are you in control?', `
+    html: emailTemplate('Helping Mauritius businesses grow through customer insights', `
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
         Dear <strong>General Manager</strong>,
       </p>
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
-        I'm reaching out because <strong>Royal Palm Beachcomber</strong> is already listed on <strong>TheReviewer.mu</strong> — Mauritius' new platform for discovering, rating, and booking businesses.
+        My name is Timothée Lisette, founder of <strong>TheReviewer.mu</strong>. With over 10 years in relationship management and client advisory across the banking and business sectors in Mauritius, I built this platform to solve a problem I saw firsthand — businesses often don't know what their customers truly think, and customers struggle to find honest, local reviews.
       </p>
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
-        Your business currently has a public profile that customers are viewing. Here's a snapshot of what we've found:
+        <strong>Royal Palm Beachcomber</strong> is already featured on our platform, and I wanted to share some insights we've gathered from publicly available reviews:
       </p>
 
       <!-- Stats highlight -->
@@ -39,11 +39,11 @@ const sampleEmails = {
       </div>
 
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
-        Customers are already searching for your business and seeing this data. The question is: <strong>who is managing your online reputation?</strong>
+        These scores are visible to anyone visiting your page. By claiming your business (free), you take control of how you're represented and can start engaging with your customers directly.
       </p>
 
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 6px;font-weight:600;">
-        With a free account, you can:
+        What you get for free:
       </p>
       <table style="border-collapse:collapse;margin:0 0 16px;">
         <tr><td style="padding:4px 8px 4px 0;color:#10b981;font-size:16px;">✓</td><td style="padding:4px 0;color:#475569;font-size:13px;">Claim and verify your business listing</td></tr>
@@ -53,7 +53,7 @@ const sampleEmails = {
       </table>
 
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 6px;font-weight:600;">
-        Upgrade to Premium and unlock the full power:
+        For businesses serious about reputation management, our Premium plan includes:
       </p>
       <table style="border-collapse:collapse;margin:0 0 16px;">
         <tr><td style="padding:4px 8px 4px 0;color:#2563eb;font-size:16px;">★</td><td style="padding:4px 0;color:#475569;font-size:13px;">Reply directly to all customer reviews</td></tr>
@@ -85,11 +85,15 @@ const sampleEmails = {
       </p>
 
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
-        I'd be happy to give you a personal walkthrough of the platform. Feel free to reply to this email or call me directly.
+        I genuinely believe this can help you better understand your guests and improve your service. I'd welcome the chance to walk you through the platform — no obligation, just a quick conversation.
+      </p>
+
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
+        Feel free to reply to this email, call me on <strong>+230 5813 7384</strong>, or simply click the button above to get started on your own.
       </p>
 
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0;">
-        Looking forward to helping <strong>Royal Palm Beachcomber</strong> take control of its online reputation.
+        Warm regards,
       </p>
     `)
   },
