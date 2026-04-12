@@ -20,8 +20,8 @@ export default function SiteFooter() {
             </div>
             <p className="text-sm text-gray-400 leading-relaxed mb-4">
               {lang === 'fr'
-                ? 'TheReviewer.mu est la plateforme de confiance pour les avis d\'entreprises à Maurice. Notre équipe possède une expertise approfondie en gestion de la relation client, analyse financière, développement digital et stratégie commerciale. Nous aidons les entreprises à comprendre leurs clients et à améliorer leur réputation.'
-                : 'TheReviewer.mu is the trusted platform for business reviews in Mauritius. Our team brings deep expertise in customer relationship management, financial analysis, digital development, and business strategy. We help businesses understand their customers and elevate their reputation.'}
+                ? 'TheReviewer.mu est la plateforme mauricienne pour découvrir, évaluer et réserver des entreprises. Propulsée par l\'IA et des avis vérifiés, nous aidons les clients à trouver le bon endroit et les propriétaires à gérer leur réputation et à se développer.'
+                : 'TheReviewer.mu is Mauritius\' platform for discovering, rating, and booking businesses. Powered by AI insights and verified reviews, we help customers find the right place and help business owners manage their reputation and grow.'}
             </p>
             <p className="text-xs text-gray-500">
               {lang === 'fr'

@@ -13,8 +13,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!hotel) return { title: 'Not Found' }
 
-  const title = `${hotel.name} — Reviews`
-  const description = `Read reviews for ${hotel.name} in ${hotel.region}, Mauritius. ${hotel.description || ''}`
+  const title = `${hotel.name} — Reviews & Booking`
+  const description = `Read reviews, see ratings, and book ${hotel.name} in ${hotel.region}, Mauritius. ${hotel.description || ''}`
 
   return {
     title,

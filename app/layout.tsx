@@ -17,14 +17,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "TheReviewer.mu — Trusted Business Reviews in Mauritius",
+    default: "TheReviewer.mu — Discover, Rate & Book Businesses in Mauritius",
     template: "%s | TheReviewer.mu",
   },
-  description: "Find trusted reviews for businesses in Mauritius. Hotels, restaurants, shops and more — real reviews from real customers.",
+  description: "Discover, rate, and book the best businesses in Mauritius. Hotels, restaurants, spas, tours, car rentals and more — verified reviews, AI-powered insights, and instant booking.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://thereviewer.vercel.app'),
   openGraph: {
-    title: "TheReviewer.mu — Trusted Business Reviews in Mauritius",
-    description: "Find trusted reviews for businesses in Mauritius. Hotels, restaurants, shops and more.",
+    title: "TheReviewer.mu — Discover, Rate & Book Businesses in Mauritius",
+    description: "Find the right place, share your experience, book in one click. 200+ businesses across Mauritius with verified reviews and AI analysis.",
     siteName: "TheReviewer.mu",
     locale: "en_US",
     type: "website",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "TheReviewer.mu",
-    description: "Trusted business reviews for Mauritius",
+    description: "Discover, rate & book the best businesses in Mauritius",
   },
   robots: {
     index: true,

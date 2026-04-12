@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Privacy Policy for TheReviewer.mu — how we collect, use, and protect your data.',
+  description: 'Privacy Policy for TheReviewer.mu — how we collect, use, and protect your data on our business review and booking platform.',
 }
 
 export default function PrivacyPage() {

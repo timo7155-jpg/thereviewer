@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Terms of Use',
-  description: 'Terms of Use for TheReviewer.mu — Trusted business reviews platform in Mauritius.',
+  description: 'Terms of Use for TheReviewer.mu — business discovery, review, and booking platform in Mauritius.',
 }
 
 export default function TermsPage() {

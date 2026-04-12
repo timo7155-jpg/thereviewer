@@ -4,7 +4,7 @@ import SiteFooter from '@/app/SiteFooter'
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Meet the team behind TheReviewer.mu — Mauritius trusted business review platform.',
+  description: 'Meet the founder behind TheReviewer.mu — Mauritius\' platform for discovering, rating, and booking businesses with AI-powered insights.',
 }
 
 export default function AboutPage() {
