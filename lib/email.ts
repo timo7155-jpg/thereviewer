@@ -23,7 +23,7 @@ export function emailTemplate(title: string, body: string): string {
 
     <!-- Footer -->
     <div style="text-align:center;padding:24px 0;color:#94a3b8;font-size:12px;">
-      <p style="margin:0;">&copy; 2025 TheReviewer.mu — Trusted business reviews for Mauritius</p>
+      <p style="margin:0;">&copy; 2026 TheReviewer.mu — Trusted business reviews for Mauritius</p>
       <p style="margin:4px 0 0;">Terre Rouge, Rodrigues, Mauritius</p>
     </div>
   </div>

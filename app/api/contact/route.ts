@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { emailTemplate, emailInfoRow, emailTable, emailNote } from '@/lib/email'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const ADMIN_EMAIL = 'timo7155@gmail.com'
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'timo7155@gmail.com'
 
 export async function POST(req: NextRequest) {
   try {

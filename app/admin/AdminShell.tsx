@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import MiniFooter from '@/app/MiniFooter'
 
-const ADMIN_EMAIL = 'timo7155@gmail.com'
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'timo7155@gmail.com'
 
 export default function AdminShell({ children, title, subtitle, backHref, backLabel }: {
   children: ReactNode

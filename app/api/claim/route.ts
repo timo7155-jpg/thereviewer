@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     // Notify you (admin) by email
     await resend.emails.send({
       from: 'TheReviewer.mu <onboarding@resend.dev>',
-      to: 'timo7155@gmail.com',
+      to: process.env.ADMIN_EMAIL || 'timo7155@gmail.com',
       subject: `New claim request — ${hotel.name}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">

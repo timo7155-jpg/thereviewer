@@ -412,7 +412,7 @@ export default function DashboardPage() {
       {/* Footer */}
       <footer className="border-t border-gray-100 mt-12 py-8 px-6">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-400">
-          <p>&copy; 2025 TheReviewer.mu</p>
+          <p>&copy; 2026 TheReviewer.mu</p>
           <div className="flex gap-4">
             <Link href="/" className="hover:text-blue-600 transition-colors">{lang === 'fr' ? 'Accueil' : 'Home'}</Link>
             <Link href="/contact" className="hover:text-blue-600 transition-colors">Contact</Link>

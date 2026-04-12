@@ -42,9 +42,12 @@ export default function ChatWidget() {
     setLoading(false)
   }
 
-  // Convert markdown links [text](url) to HTML
+  // Convert markdown links [text](url) to safe HTML
   const renderText = (text: string) => {
-    return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 font-semibold hover:underline">$1</a>')
+    // Escape HTML first to prevent XSS
+    const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+    // Then convert markdown links (only allow internal /hotels/ paths)
+    return escaped.replace(/\[([^\]]+)\]\((\/hotels\/[a-z0-9-]+)\)/g, '<a href="$2" class="text-blue-600 font-semibold hover:underline">$1</a>')
   }
 
   return (

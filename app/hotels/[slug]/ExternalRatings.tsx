@@ -111,7 +111,7 @@ export default function ExternalRatings({ businessId }: { businessId: string }) 
                       <div key={i} className="px-5 py-4">
                         <div className="flex items-center gap-3 mb-2">
                           {review.profilePhoto ? (
-                            <img src={review.profilePhoto} alt="" className="w-8 h-8 rounded-full" />
+                            <img src={review.profilePhoto} alt={review.author} className="w-8 h-8 rounded-full" />
                           ) : (
                             <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                               <span className="text-gray-500 text-xs font-bold">{review.author.charAt(0)}</span>

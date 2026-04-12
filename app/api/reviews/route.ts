@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
 
     await resend.emails.send({
       from: 'TheReviewer.mu <onboarding@resend.dev>',
-      to: 'timo7155@gmail.com',
+      to: process.env.ADMIN_EMAIL || 'timo7155@gmail.com',
       subject: `Please confirm your review of ${hotel.name}`,
       html: emailTemplate('Thank you for your review!', `
         <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 12px;">
