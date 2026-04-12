@@ -14,6 +14,10 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [expired, setExpired] = useState(false)
+  const [forgotMode, setForgotMode] = useState(false)
+  const [resetEmail, setResetEmail] = useState('')
+  const [resetSent, setResetSent] = useState(false)
+  const [resetLoading, setResetLoading] = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.search.includes('expired=true')) {
@@ -155,15 +159,70 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <div className="mt-5 text-center">
+            <div className="mt-5 text-center space-y-2">
               <button
-                onClick={() => { setIsSignUp(!isSignUp); setError('') }}
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                onClick={() => { setIsSignUp(!isSignUp); setError(''); setForgotMode(false) }}
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium block mx-auto"
               >
                 {isSignUp
                   ? (lang === 'fr' ? 'Déjà un compte ? Se connecter' : 'Already have an account? Sign in')
                   : (lang === 'fr' ? 'Pas encore de compte ? S\'inscrire' : "Don't have an account? Sign up")}
               </button>
+              {!isSignUp && !forgotMode && (
+                <button
+                  onClick={() => setForgotMode(true)}
+                  className="text-xs text-gray-400 hover:text-blue-600 block mx-auto"
+                >
+                  {lang === 'fr' ? 'Mot de passe oublié ?' : 'Forgot password?'}
+                </button>
+              )}
+              {forgotMode && (
+                <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  {resetSent ? (
+                    <div className="text-center">
+                      <svg className="w-8 h-8 text-green-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      <p className="text-sm text-gray-700 font-medium">
+                        {lang === 'fr' ? 'Email envoyé ! Vérifiez votre boîte de réception.' : 'Email sent! Check your inbox.'}
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-xs text-gray-500 mb-3">
+                        {lang === 'fr' ? 'Entrez votre email pour recevoir un lien de réinitialisation.' : 'Enter your email to receive a reset link.'}
+                      </p>
+                      <div className="flex gap-2">
+                        <input
+                          type="email"
+                          value={resetEmail}
+                          onChange={e => setResetEmail(e.target.value)}
+                          placeholder="email@example.com"
+                          className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none"
+                        />
+                        <button
+                          onClick={async () => {
+                            if (!resetEmail.trim()) return
+                            setResetLoading(true)
+                            await fetch('/api/auth/reset-password', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ email: resetEmail })
+                            })
+                            setResetSent(true)
+                            setResetLoading(false)
+                          }}
+                          disabled={resetLoading}
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 shrink-0"
+                        >
+                          {resetLoading ? '...' : (lang === 'fr' ? 'Envoyer' : 'Send')}
+                        </button>
+                      </div>
+                      <button onClick={() => setForgotMode(false)} className="text-xs text-gray-400 mt-2 block mx-auto">
+                        {lang === 'fr' ? 'Annuler' : 'Cancel'}
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

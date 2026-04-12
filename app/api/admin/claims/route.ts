@@ -65,6 +65,21 @@ export async function POST(req: NextRequest) {
         .eq('id', claimId)
     }
 
+    if (action === 'delete') {
+      // Unclaim the business first
+      if (businessId) {
+        await supabaseAdmin
+          .from('businesses')
+          .update({ is_claimed: false, claimed_at: null })
+          .eq('id', businessId)
+      }
+      // Delete the claim record
+      await supabaseAdmin
+        .from('business_owners')
+        .delete()
+        .eq('id', claimId)
+    }
+
     return NextResponse.json({ success: true })
   } catch (err) {
     console.error(err)

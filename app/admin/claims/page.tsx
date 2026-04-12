@@ -17,6 +17,16 @@ export default function AdminClaimsPage() {
     setClaims(data.claims || [])
   }
 
+  const handleDelete = async (claimId: string, businessId: string, businessName: string) => {
+    if (!confirm(`Delete this claim for "${businessName || 'Unknown'}"? The business will be unclaimed and available for others to claim.`)) return
+    await fetch('/api/admin/claims', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ claimId, businessId, action: 'delete' })
+    })
+    await loadClaims()
+  }
+
   const handlePlanToggle = async (ownerId: string, currentPlan: string) => {
     const newPlan = currentPlan === 'premium' ? 'free' : 'premium'
     const msg = newPlan === 'premium'
@@ -145,6 +155,13 @@ export default function AdminClaimsPage() {
                       {claim.plan === 'premium' ? 'Downgrade to Free' : 'Upgrade to Premium'}
                     </button>
                   )}
+
+                  <button
+                    onClick={() => handleDelete(claim.id, claim.business_id, claim.businesses?.name)}
+                    className="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-red-100 transition-colors ml-auto"
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             ))}
