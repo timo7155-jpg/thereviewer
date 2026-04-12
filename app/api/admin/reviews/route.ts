@@ -4,7 +4,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 export async function GET() {
   const { data: reviews } = await supabaseAdmin
     .from('reviews')
-    .select('*, reviewers(name, email), businesses(name, slug, region)')
+    .select('*, reviewers(name, email), businesses(name, slug, region), owner_replies(*)')
     .order('created_at', { ascending: false })
 
   return NextResponse.json({ reviews: reviews || [] })

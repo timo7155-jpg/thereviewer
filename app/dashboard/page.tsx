@@ -190,7 +190,7 @@ export default function DashboardPage() {
                           ? 'Votre demande a été refusée. Veuillez nous contacter pour plus d\'informations.'
                           : 'Your request was not approved. Please contact us for more information.'}
                       </p>
-                      <Link href="/dashboard/upgrade" className="bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors inline-block">
+                      <Link href="/contact" className="bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors inline-block">
                         {lang === 'fr' ? 'Nous contacter' : 'Contact us'}
                       </Link>
                     </div>
@@ -304,7 +304,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 {isPremium ? (
-                  <Link href={`/admin/businesses/${business.id}/edit`} className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors">
+                  <Link href={`/dashboard/photos`} className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors">
                     {lang === 'fr' ? 'Gérer les photos' : 'Manage photos'}
                   </Link>
                 ) : (

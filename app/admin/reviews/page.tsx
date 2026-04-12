@@ -128,6 +128,16 @@ export default function AdminReviewsPage() {
                   </div>
                 )}
 
+                {/* Owner reply section */}
+                {review.owner_replies?.length > 0 ? (
+                  <div className="bg-blue-50 rounded-xl p-3 mb-4 border border-blue-100">
+                    <p className="text-xs font-bold text-blue-700 mb-1">Owner reply:</p>
+                    <p className="text-sm text-blue-800">{review.owner_replies[0].body}</p>
+                  </div>
+                ) : (
+                  <AdminReplyForm reviewId={review.id} onSent={loadReviews} />
+                )}
+
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleAction(review.id, 'toggle_verified')}
@@ -158,5 +168,65 @@ export default function AdminReviewsPage() {
         )}
       </div>
     </AdminShell>
+  )
+}
+
+function AdminReplyForm({ reviewId, onSent }: { reviewId: string, onSent: () => void }) {
+  const [reply, setReply] = useState('')
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async () => {
+    if (!reply.trim()) return
+    setLoading(true)
+    await fetch('/api/admin/reply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reviewId, body: reply })
+    })
+    setReply('')
+    setOpen(false)
+    setLoading(false)
+    onSent()
+  }
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="text-xs text-blue-600 font-semibold hover:text-blue-700 mb-4 flex items-center gap-1"
+      >
+        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+        Reply on behalf of owner
+      </button>
+    )
+  }
+
+  return (
+    <div className="mb-4 bg-blue-50 rounded-xl p-3 border border-blue-100">
+      <p className="text-xs font-bold text-blue-700 mb-2">Reply as business owner:</p>
+      <textarea
+        rows={2}
+        value={reply}
+        onChange={e => setReply(e.target.value)}
+        className="w-full border border-blue-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-400 resize-none bg-white"
+        placeholder="Write a reply on behalf of the business owner..."
+      />
+      <div className="flex gap-2 mt-2">
+        <button
+          onClick={handleSubmit}
+          disabled={loading || !reply.trim()}
+          className="bg-blue-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
+        >
+          {loading ? 'Posting...' : 'Post reply'}
+        </button>
+        <button
+          onClick={() => { setOpen(false); setReply('') }}
+          className="text-gray-500 text-xs font-semibold hover:text-gray-700"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
   )
 }
