@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { Resend } from 'resend'
+import { emailTemplate, emailInfoRow, emailTable, emailNote } from '@/lib/email'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = 'timo7155@gmail.com'
@@ -82,27 +83,17 @@ export async function POST(req: NextRequest) {
       from: 'TheReviewer.mu <onboarding@resend.dev>',
       to: ADMIN_EMAIL,
       subject: `[Booking] ${typeLabel} — ${businessName} — ${name}`,
-      html: `
-        <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
-          <h2 style="color:#059669;">New ${typeLabel}</h2>
-          <p style="color:#6b7280;margin-bottom:16px;">For <strong>${businessName}</strong></p>
-          <table style="width:100%;border-collapse:collapse;">
-            <tr><td style="padding:8px 0;color:#6b7280;width:100px">Name</td><td style="padding:8px 0;font-weight:600">${name}</td></tr>
-            <tr><td style="padding:8px 0;color:#6b7280">Email</td><td style="padding:8px 0"><a href="mailto:${email}">${email}</a></td></tr>
-            <tr><td style="padding:8px 0;color:#6b7280">Phone</td><td style="padding:8px 0">${phone || '—'}</td></tr>
-            ${detailsHtml}
-          </table>
-          ${notes ? `
-            <div style="margin-top:16px;padding:16px;background:#f0fdf4;border-radius:8px;">
-              <p style="margin:0;color:#6b7280;font-size:12px;margin-bottom:8px;">Notes</p>
-              <p style="margin:0;color:#1e293b;">${notes.replace(/\n/g, '<br>')}</p>
-            </div>
-          ` : ''}
-          <p style="margin-top:24px;padding:12px;background:#f8fafc;border-radius:8px;color:#6b7280;font-size:12px;">
-            Please forward this to the business owner or contact them directly.
-          </p>
-        </div>
-      `
+      html: emailTemplate(`New ${typeLabel}`, `
+        <p style="color:#475569;font-size:14px;margin:0 0 16px;">For <strong>${businessName}</strong></p>
+        ${emailTable(
+          emailInfoRow('Name', name) +
+          emailInfoRow('Email', `<a href="mailto:${email}" style="color:#2563eb;">${email}</a>`) +
+          emailInfoRow('Phone', phone || '—') +
+          detailsHtml
+        )}
+        ${notes ? emailNote(`<strong>Notes:</strong> ${notes.replace(/\n/g, '<br>')}`) : ''}
+        ${emailNote('Please forward this to the business owner or contact them directly.')}
+      `)
     })
 
     return NextResponse.json({ success: true })

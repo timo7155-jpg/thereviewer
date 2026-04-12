@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { Resend } from 'resend'
+import { emailTemplate, emailButton, emailNote } from '@/lib/email'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -82,17 +83,18 @@ export async function POST(req: NextRequest) {
       from: 'TheReviewer.mu <onboarding@resend.dev>',
       to: 'timo7155@gmail.com',
       subject: `Please confirm your review of ${hotel.name}`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto;">
-          <h2>Thank you for your review, ${name}!</h2>
-          <p>You reviewed <strong>${hotel.name}</strong> and gave it <strong>${overall_rating}/5 stars</strong>.</p>
-          <p>Please click the button below to confirm and publish your review:</p>
-          <a href="${verifyUrl}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 16px 0;">
-            Confirm my review
-          </a>
-          <p style="color: #888; font-size: 12px;">If you did not submit this review, you can ignore this email.</p>
+      html: emailTemplate('Thank you for your review!', `
+        <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 12px;">
+          Hi <strong>${name}</strong>, you reviewed <strong>${hotel.name}</strong> and gave it <strong>${overall_rating}/5 stars</strong>.
+        </p>
+        <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px;">
+          Please click the button below to confirm and publish your review:
+        </p>
+        <div style="text-align:center;">
+          ${emailButton('Confirm my review', verifyUrl)}
         </div>
-      `
+        ${emailNote('If you did not submit this review, you can safely ignore this email.')}
+      `)
     })
 
     return NextResponse.json({ success: true })

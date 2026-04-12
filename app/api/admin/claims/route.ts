@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { Resend } from 'resend'
+import { emailTemplate, emailButton } from '@/lib/email'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = 'timo7155@gmail.com'
@@ -43,18 +44,17 @@ export async function POST(req: NextRequest) {
         from: 'TheReviewer.mu <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
         subject: `Your claim for ${claim?.businesses?.name} has been approved!`,
-        html: `
-          <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto;">
-            <h2>Your claim has been approved!</h2>
-            <p>Hi ${claim?.full_name},</p>
-            <p>Your ownership claim for <strong>${claim?.businesses?.name}</strong> has been verified and approved.</p>
-            <p>You can now log in to your dashboard to manage your reviews.</p>
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/dashboard" 
-               style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 16px 0;">
-              Go to my dashboard
-            </a>
+        html: emailTemplate('Your claim has been approved!', `
+          <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 12px;">
+            Hi <strong>${claim?.full_name}</strong>,
+          </p>
+          <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px;">
+            Your ownership claim for <strong>${claim?.businesses?.name}</strong> has been verified and approved. You can now log in to manage your reviews and reputation.
+          </p>
+          <div style="text-align:center;">
+            ${emailButton('Go to my dashboard', `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`)}
           </div>
-        `
+        `)
       })
     }
 

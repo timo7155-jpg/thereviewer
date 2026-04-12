@@ -14,8 +14,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TheReviewer.mu — Mauritius Hotel Reviews",
-  description: "Find trusted reviews for hotels in Mauritius. Real reviews from real guests.",
+  title: {
+    default: "TheReviewer.mu — Trusted Business Reviews in Mauritius",
+    template: "%s | TheReviewer.mu",
+  },
+  description: "Find trusted reviews for businesses in Mauritius. Hotels, restaurants, shops and more — real reviews from real customers.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://thereviewer.vercel.app'),
+  openGraph: {
+    title: "TheReviewer.mu — Trusted Business Reviews in Mauritius",
+    description: "Find trusted reviews for businesses in Mauritius. Hotels, restaurants, shops and more.",
+    siteName: "TheReviewer.mu",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TheReviewer.mu",
+    description: "Trusted business reviews for Mauritius",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

@@ -52,7 +52,7 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 text-white py-24 px-6 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 text-white py-14 md:py-24 px-4 md:px-6 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-300 rounded-full blur-3xl" />
@@ -69,7 +69,7 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
               ? 'De vrais avis de vrais clients — hôtels, restaurants, commerces et plus'
               : 'Real reviews from real customers — hotels, restaurants, shops and more'}
           </p>
-          <div className="max-w-xl mx-auto flex gap-2 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30">
+          <div className="max-w-xl mx-auto flex flex-col sm:flex-row gap-2 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30">
             <div className="flex-1 relative">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -116,13 +116,13 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
       </section>
 
       {/* Category tabs */}
-      <section className="max-w-6xl mx-auto px-6 pt-10 pb-2">
-        <div className="flex flex-wrap gap-2">
+      <section className="max-w-6xl mx-auto px-4 md:px-6 pt-8 pb-2">
+        <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap scrollbar-hide">
           {BUSINESS_CATEGORIES.map(cat => (
             <button
               key={cat.value}
               onClick={() => handleCategory(cat.value)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap shrink-0 ${
                 category === cat.value
                   ? 'bg-blue-600 text-white shadow-sm'
                   : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-300 hover:text-blue-600'
@@ -135,7 +135,7 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
       </section>
 
       {/* Business listings */}
-      <section className="max-w-6xl mx-auto px-6 py-8">
+      <section className="max-w-6xl mx-auto px-4 md:px-6 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">

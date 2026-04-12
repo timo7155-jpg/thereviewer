@@ -1,6 +1,30 @@
+import { Metadata } from 'next'
 import { supabaseAdmin } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import HotelDetail from './HotelDetail'
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const { data: hotel } = await supabaseAdmin
+    .from('businesses')
+    .select('name, region, description')
+    .eq('slug', slug)
+    .single()
+
+  if (!hotel) return { title: 'Not Found' }
+
+  const title = `${hotel.name} — Reviews`
+  const description = `Read reviews for ${hotel.name} in ${hotel.region}, Mauritius. ${hotel.description || ''}`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${hotel.name} — Reviews | TheReviewer.mu`,
+      description,
+    },
+  }
+}
 
 export default async function HotelPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
