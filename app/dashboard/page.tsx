@@ -319,6 +319,9 @@ export default function DashboardPage() {
               </div>
             </div>
 
+            {/* Business Analysis from public reviews */}
+            <OwnerAnalysis businessId={business.id} isPremium={isPremium} lang={lang} />
+
             {/* AI Insights */}
             <div className={!isPremium ? 'relative' : ''}>
               {!isPremium && (
@@ -426,6 +429,138 @@ export default function DashboardPage() {
         </div>
       </footer>
     </main>
+  )
+}
+
+function OwnerAnalysis({ businessId, isPremium, lang }: { businessId: string, isPremium: boolean, lang: string }) {
+  const [analysis, setAnalysis] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch(`/api/admin/analyze?businessId=${businessId}`)
+      .then(r => r.json())
+      .then(d => { setAnalysis(d.analysis); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [businessId])
+
+  if (loading || !analysis) return null
+
+  const scores = [
+    { label: lang === 'fr' ? 'Service' : 'Service', score: analysis.service_score, color: 'from-blue-500 to-blue-600' },
+    { label: lang === 'fr' ? 'Propreté' : 'Cleanliness', score: analysis.cleanliness_score, color: 'from-emerald-500 to-emerald-600' },
+    { label: lang === 'fr' ? 'Emplacement' : 'Location', score: analysis.location_score, color: 'from-violet-500 to-violet-600' },
+    { label: lang === 'fr' ? 'Nourriture' : 'Food', score: analysis.food_score, color: 'from-amber-500 to-amber-600' },
+    { label: lang === 'fr' ? 'Rapport Q/P' : 'Value', score: analysis.value_score, color: 'from-cyan-500 to-cyan-600' },
+  ].filter(s => s.score)
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-rich overflow-hidden mb-6">
+      <div className={`px-6 py-5 ${isPremium ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600' : 'bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600'}`}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+            </div>
+            <div>
+              <h3 className="text-white font-bold text-lg">
+                {lang === 'fr' ? 'Analyse de votre réputation' : 'Your Reputation Analysis'}
+              </h3>
+              <p className="text-white/60 text-xs">
+                {lang === 'fr'
+                  ? `Basée sur ${analysis.source_review_count?.toLocaleString() || 0} avis publics`
+                  : `Based on ${analysis.source_review_count?.toLocaleString() || 0} public reviews`}
+              </p>
+            </div>
+          </div>
+          <div className="text-center bg-white/10 backdrop-blur-sm rounded-2xl px-5 py-3">
+            <div className="text-3xl font-extrabold text-white">{analysis.overall_score?.toFixed(1)}</div>
+            <div className="flex justify-center mt-0.5">
+              {[1, 2, 3, 4, 5].map((s: number) => (
+                <span key={s} className={`text-sm ${s <= Math.round(analysis.overall_score) ? 'text-yellow-300' : 'text-white/20'}`}>★</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-6">
+        <p className="text-sm text-gray-700 leading-relaxed mb-5">{analysis.summary}</p>
+
+        {/* Score breakdown */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+          {scores.map((s, i) => (
+            <div key={i} className="text-center">
+              <div className="text-2xl font-extrabold text-gray-900">{s.score?.toFixed(1)}</div>
+              <div className={`h-1.5 rounded-full bg-gradient-to-r ${s.color} mt-1 mb-1`} style={{ width: `${(s.score / 5) * 100}%`, margin: '4px auto' }} />
+              <div className="text-xs text-gray-500">{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Strengths & Improvements — visible to all */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          {analysis.strengths?.length > 0 && (
+            <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
+              <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">{lang === 'fr' ? 'Points forts' : 'Strengths'}</h4>
+              <ul className="space-y-1.5">
+                {analysis.strengths.map((s: string, i: number) => (
+                  <li key={i} className="text-sm text-emerald-700">{s}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {analysis.improvements?.length > 0 && (
+            <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
+              <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider mb-2">{lang === 'fr' ? 'Axes d\'amélioration' : 'Areas to improve'}</h4>
+              <ul className="space-y-1.5">
+                {analysis.improvements.map((s: string, i: number) => (
+                  <li key={i} className="text-sm text-amber-700">{s}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* Best/Worst — premium only */}
+        {isPremium && (analysis.best_review || analysis.worst_review) && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {analysis.best_review && (
+              <div className="bg-white rounded-xl border border-gray-100 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg className="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" /></svg>
+                  </div>
+                  <span className="text-xs font-bold text-gray-700">{lang === 'fr' ? 'Ce que vos clients adorent' : 'What your customers love'}</span>
+                </div>
+                <p className="text-sm text-gray-600 italic">"{analysis.best_review}"</p>
+              </div>
+            )}
+            {analysis.worst_review && (
+              <div className="bg-white rounded-xl border border-gray-100 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center">
+                    <svg className="w-3.5 h-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018c.163 0 .326.02.485.06L17 4m-7 10v2a2 2 0 002 2h.095c.5 0 .905-.405.905-.905 0-.714.211-1.412.608-2.006L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" /></svg>
+                  </div>
+                  <span className="text-xs font-bold text-gray-700">{lang === 'fr' ? 'Ce qui pourrait être amélioré' : 'What could be better'}</span>
+                </div>
+                <p className="text-sm text-gray-600 italic">"{analysis.worst_review}"</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!isPremium && (
+          <div className="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+            <p className="text-xs text-gray-500 mb-2">
+              {lang === 'fr' ? 'Passez au Premium pour voir ce que vos clients adorent et ce qu\'ils veulent améliorer.' : 'Upgrade to Premium to see what your customers love and what they want improved.'}
+            </p>
+            <Link href="/dashboard/upgrade" className="text-blue-600 text-xs font-semibold hover:text-blue-700">
+              {lang === 'fr' ? 'Débloquer l\'analyse complète →' : 'Unlock full analysis →'}
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
