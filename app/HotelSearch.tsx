@@ -114,13 +114,18 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
         <div className="relative max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight leading-tight">
             {lang === 'fr'
-              ? 'Trouvez des avis fiables sur les entreprises de Maurice'
-              : 'Find trusted reviews for businesses in Mauritius'}
+              ? 'Découvrez, évaluez et réservez les meilleures entreprises de Maurice'
+              : 'Discover, rate, and book the best businesses in Mauritius'}
           </h1>
-          <p className="text-blue-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
+          <p className="text-blue-100 text-lg md:text-xl mb-4 max-w-2xl mx-auto">
             {lang === 'fr'
-              ? 'De vrais avis de vrais clients — hôtels, restaurants, commerces et plus'
-              : 'Real reviews from real customers — hotels, restaurants, shops and more'}
+              ? 'Trouvez le bon endroit, partagez votre expérience, réservez en un clic.'
+              : 'Find the right place, share your experience, book in one click.'}
+          </p>
+          <p className="text-blue-200 text-sm mb-10 max-w-xl mx-auto">
+            {lang === 'fr'
+              ? 'Propriétaire d\'entreprise ? Réclamez votre fiche et gérez votre réputation.'
+              : 'Business owner? Claim your listing and manage your reputation.'}
           </p>
           <div className="max-w-xl mx-auto flex flex-col sm:flex-row gap-2 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30">
             <div className="flex-1 relative">
@@ -161,8 +166,8 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
               <div className="text-blue-200">{lang === 'fr' ? 'Avis analysés' : 'Reviews analyzed'}</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold">100%</div>
-              <div className="text-blue-200">{lang === 'fr' ? 'Vérifiés' : 'Verified'}</div>
+              <div className="text-2xl font-bold">7</div>
+              <div className="text-blue-200">{lang === 'fr' ? 'Catégories' : 'Categories'}</div>
             </div>
           </div>
         </div>

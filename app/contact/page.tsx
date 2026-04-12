@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useLang, LangToggle } from '@/lib/i18n'
+import { useLang } from '@/lib/i18n'
+import { HomeNav } from '@/app/HomeNav'
 import SiteFooter from '@/app/SiteFooter'
 import { CONTACT_REASONS } from '@/lib/constants'
 
@@ -70,17 +71,7 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">R</span>
-            </div>
-            <span className="text-lg font-bold text-gray-900">TheReviewer<span className="text-blue-600">.mu</span></span>
-          </Link>
-          <LangToggle />
-        </div>
-      </nav>
+      <HomeNav />
 
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

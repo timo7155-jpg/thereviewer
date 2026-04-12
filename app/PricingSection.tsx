@@ -16,13 +16,18 @@ export default function PricingSection() {
           </span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-4 mb-3">
             {lang === 'fr'
-              ? 'Choisissez le plan adapté à votre entreprise'
-              : 'Choose the right plan for your business'}
+              ? 'Plans pour propriétaires d\'entreprise'
+              : 'Plans for Business Owners'}
           </h2>
-          <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto mb-2">
             {lang === 'fr'
-              ? 'Commencez gratuitement, passez au Premium quand vous êtes prêt à prendre le contrôle de votre réputation.'
-              : 'Start for free, upgrade to Premium when you are ready to take control of your reputation.'}
+              ? 'Prenez le contrôle de votre réputation en ligne et améliorez votre service client.'
+              : 'Take control of your online reputation and improve your customer service.'}
+          </p>
+          <p className="text-gray-400 text-sm max-w-xl mx-auto">
+            {lang === 'fr'
+              ? 'Rechercher des entreprises et lire des avis est toujours gratuit pour tous.'
+              : 'Searching businesses and reading reviews is always free for everyone.'}
           </p>
         </div>
 
@@ -98,11 +103,7 @@ export default function PricingSection() {
           </div>
         </div>
 
-        <p className="text-center text-gray-400 text-sm mt-8">
-          {lang === 'fr'
-            ? 'Paiement par virement bancaire ou carte. Contactez-nous pour plus de détails.'
-            : 'Payment by bank transfer or card. Contact us for details.'}
-        </p>
+        {/* Payment details shown only on upgrade page, not here */}
       </div>
     </section>
   )

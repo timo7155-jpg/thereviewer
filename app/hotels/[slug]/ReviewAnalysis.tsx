@@ -211,12 +211,7 @@ export default function ReviewAnalysis({ businessId }: { businessId: string }) {
           </div>
         )}
 
-        {/* Disclaimer */}
-        <p className="text-xs text-gray-400 mt-6 text-center leading-relaxed">
-          {lang === 'fr'
-            ? `Analyse générée le ${new Date(analysis.analyzed_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })} à partir de ${analysis.source_review_count.toLocaleString()} avis publics. Contenu original — aucun avis copié.`
-            : `Analysis generated on ${new Date(analysis.analyzed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} from ${analysis.source_review_count.toLocaleString()} public reviews. Original content — no reviews were copied.`}
-        </p>
+        {/* Source note */}
       </div>
     </div>
   )
