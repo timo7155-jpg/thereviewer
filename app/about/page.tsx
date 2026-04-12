@@ -90,16 +90,16 @@ export default function AboutPage() {
                 <p className="text-blue-600 font-semibold text-sm mb-4">Founder & CEO</p>
 
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  With over 8 years of experience in relationship management, financial services, and digital strategy,
+                  With over 10 years of experience in relationship management, financial services, and digital strategy,
                   Yanny brings a unique blend of business acumen and technology expertise to TheReviewer.mu. His career
                   spans banking, microfinance, corporate social responsibility, and web development — giving him deep
                   insight into what businesses need to grow and what customers expect.
                 </p>
 
                 <p className="text-gray-600 leading-relaxed mb-6">
-                  Currently serving as SME &amp; Prestige Relationship Manager at Absa Bank in Rodrigues, Yanny manages
-                  portfolios of hundreds of businesses and individual clients. This frontline experience in understanding
-                  customer needs and business challenges is what inspired TheReviewer.mu — a platform that bridges the
+                  Having managed portfolios of hundreds of businesses and individual clients across Mauritius and Rodrigues,
+                  Yanny understands firsthand what drives customer satisfaction and business growth. This experience in
+                  relationship management and client advisory is what inspired TheReviewer.mu — a platform that bridges the
                   gap between businesses and their customers through transparent, verified feedback.
                 </p>
 
