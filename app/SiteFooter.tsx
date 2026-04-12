@@ -39,6 +39,9 @@ export default function SiteFooter() {
               <Link href="/" className="text-gray-400 hover:text-white transition-colors">
                 {lang === 'fr' ? 'Accueil' : 'Home'}
               </Link>
+              <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
+                {lang === 'fr' ? 'À propos' : 'About us'}
+              </Link>
               <Link href="/#pricing" className="text-gray-400 hover:text-white transition-colors">
                 {lang === 'fr' ? 'Tarifs' : 'Pricing'}
               </Link>

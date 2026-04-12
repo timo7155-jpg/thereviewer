@@ -17,7 +17,8 @@
       "Read(//c/Program Files/GitHub CLI/**)",
       "Read(//c/Users/User/AppData/Local/GitHub CLI/**)",
       "WebSearch",
-      "Bash(grep -E \"error|Error|^\\\\s+[○ƒ] /$\")"
+      "Bash(grep -E \"error|Error|^\\\\s+[○ƒ] /$\")",
+      "Bash(ls -la C:/Users/User/Downloads/*.jpg C:/Users/User/Downloads/*.png C:/Users/User/Downloads/*.jpeg)"
     ]
   }
 }
