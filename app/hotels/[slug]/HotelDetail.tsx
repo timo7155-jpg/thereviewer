@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useLang, LangToggle } from '@/lib/i18n'
 import ImageCarousel from './ImageCarousel'
 import BookingForm from './BookingForm'
-import GoogleRating from './GoogleRating'
+import ExternalRatings from './ExternalRatings'
 import SiteFooter from '@/app/SiteFooter'
 
 type Props = {
@@ -122,7 +122,7 @@ export default function HotelDetail({ hotel, reviews, avgRating, slug, images }:
 
         {/* External ratings */}
         <div className="mb-6">
-          <GoogleRating businessId={hotel.id} />
+          <ExternalRatings businessId={hotel.id} />
         </div>
 
         {/* Action buttons */}
