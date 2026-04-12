@@ -8,7 +8,7 @@ export default function PricingSection() {
   const { lang } = useLang()
 
   return (
-    <section id="pricing" className="bg-white py-20 px-6 border-t border-gray-100">
+    <section id="pricing" className="bg-gradient-to-b from-white to-blue-50/30 py-20 px-6 border-t border-gray-100">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-14">
           <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
@@ -64,7 +64,7 @@ export default function PricingSection() {
           </div>
 
           {/* Premium Plan */}
-          <div className="bg-white rounded-2xl border-2 border-blue-600 p-8 relative shadow-lg shadow-blue-100">
+          <div className="bg-white rounded-2xl border-2 border-blue-600 p-8 relative shadow-xl shadow-blue-200/40">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
               <span className="bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide">
                 {lang === 'fr' ? 'Recommandé' : 'Recommended'}

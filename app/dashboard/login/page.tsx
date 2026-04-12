@@ -78,7 +78,7 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="h-1 bg-gradient-to-r from-blue-600 to-indigo-600" />
+          <div className="h-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600" />
           <div className="p-8">
             <h1 className="text-xl font-extrabold text-gray-900 mb-6">
               {isSignUp

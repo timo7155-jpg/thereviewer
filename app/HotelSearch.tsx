@@ -52,10 +52,11 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 text-white py-14 md:py-24 px-4 md:px-6 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-300 rounded-full blur-3xl" />
+      <section className="relative bg-gradient-to-br from-blue-800 via-blue-600 to-cyan-600 text-white py-14 md:py-24 px-4 md:px-6 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-72 h-72 bg-cyan-400 rounded-full blur-3xl opacity-15" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-400 rounded-full blur-3xl opacity-10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-400 rounded-full blur-3xl opacity-5" />
         </div>
 
         <div className="relative max-w-3xl mx-auto text-center">
@@ -166,7 +167,7 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
               <Link
                 key={biz.id}
                 href={`/hotels/${biz.slug}`}
-                className="group bg-white rounded-2xl border border-gray-100 overflow-hidden card-hover shadow-sm animate-fade-up flex flex-col"
+                className="group bg-white rounded-2xl border border-gray-100/80 overflow-hidden card-hover shadow-rich animate-fade-up flex flex-col"
                 style={{ animationDelay: `${i * 40}ms` }}
               >
                 {/* Image */}

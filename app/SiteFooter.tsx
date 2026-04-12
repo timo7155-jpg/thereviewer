@@ -7,7 +7,7 @@ export default function SiteFooter() {
   const { lang } = useLang()
 
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-gradient-to-b from-gray-900 to-gray-950 text-gray-300">
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* About Us */}

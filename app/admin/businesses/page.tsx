@@ -83,7 +83,7 @@ export default function AdminBusinessesPage() {
         {/* Add form */}
         {showAdd && (
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
-            <div className="h-1 bg-gradient-to-r from-blue-600 to-indigo-600" />
+            <div className="h-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600" />
             <div className="p-6">
               <h2 className="font-bold text-gray-900 mb-4">Add new business</h2>
 

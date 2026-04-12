@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
+  --background: #fafbff;
   --foreground: #0f172a;
-  --brand: #1d4ed8;
+  --brand: #2563eb;
   --brand-light: #3b82f6;
   --brand-dark: #1e40af;
+  --accent: #06b6d4;
+  --gold: #f59e0b;
 }
 
 @theme inline {
@@ -32,21 +34,21 @@ body {
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--brand-light) !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 /* Card hover lift */
 .card-hover {
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -6px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px -8px rgba(37, 99, 235, 0.12), 0 4px 12px -4px rgba(0, 0, 0, 0.06);
 }
 
 /* Gradient text */
 .text-gradient {
-  background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+  background: linear-gradient(135deg, #2563eb, #7c3aed, #06b6d4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -54,25 +56,25 @@ input:focus, textarea:focus, select:focus {
 
 /* Score bar */
 .score-bar {
-  height: 6px;
-  border-radius: 3px;
-  background: #e2e8f0;
+  height: 7px;
+  border-radius: 4px;
+  background: #e8edf5;
   overflow: hidden;
 }
 .score-bar-fill {
   height: 100%;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-  transition: width 0.6s ease;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #06b6d4, #2563eb);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Animate in */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-up {
-  animation: fadeUp 0.4s ease forwards;
+  animation: fadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* Spinner */
@@ -83,3 +85,13 @@ input:focus, textarea:focus, select:focus {
 /* Hide scrollbar */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Rich shadows for elevated elements */
+.shadow-rich {
+  box-shadow: 0 4px 20px -4px rgba(37, 99, 235, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Gold star color */
+.text-star {
+  color: #f59e0b;
+}

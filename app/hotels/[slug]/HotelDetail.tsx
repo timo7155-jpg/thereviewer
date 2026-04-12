@@ -75,7 +75,7 @@ export default function HotelDetail({ hotel, reviews, avgRating, slug, images }:
         {/* Hotel header card */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
           {/* Gradient header strip */}
-          <div className="h-2 bg-gradient-to-r from-blue-600 to-indigo-600" />
+          <div className="h-2 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600" />
 
           <div className="p-6 md:p-8">
             <div className="flex flex-col md:flex-row justify-between gap-6">
@@ -95,7 +95,7 @@ export default function HotelDetail({ hotel, reviews, avgRating, slug, images }:
 
               {/* Rating card */}
               {avgRating ? (
-                <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-2xl p-6 text-center min-w-[160px] flex flex-col justify-center shadow-lg">
+                <div className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white rounded-2xl p-6 text-center min-w-[160px] flex flex-col justify-center shadow-xl shadow-indigo-200/50">
                   <div className="text-4xl font-extrabold mb-1">{avgRating}</div>
                   <div className="text-yellow-300 text-lg mb-1">{'★'.repeat(Math.round(Number(avgRating)))}</div>
                   <div className="text-blue-200 text-sm">{reviews.length} {t('home.reviews')}</div>

@@ -105,7 +105,7 @@ export default function DashboardPage() {
       <div className={`text-white px-6 py-10 ${
         isPremium
           ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600'
-          : 'bg-gradient-to-r from-blue-600 to-indigo-600'
+          : 'bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-600'
       }`}>
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-2">
