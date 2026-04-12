@@ -1,4 +1,30 @@
 // Shared email template wrapper for consistent branding
+export function emailSignature(): string {
+  return `
+    <!-- Signature -->
+    <div style="margin-top:32px;padding-top:24px;border-top:1px solid #e2e8f0;">
+      <table style="border-collapse:collapse;">
+        <tr>
+          <td style="padding-right:16px;vertical-align:top;">
+            <div style="background:#2563eb;color:white;font-weight:bold;font-size:20px;width:48px;height:48px;line-height:48px;border-radius:12px;text-align:center;">R</div>
+          </td>
+          <td style="vertical-align:top;">
+            <p style="margin:0;font-size:14px;font-weight:700;color:#0f172a;">Timothée Lisette</p>
+            <p style="margin:2px 0 0;font-size:12px;color:#2563eb;font-weight:600;">Founder & CEO</p>
+            <p style="margin:8px 0 0;font-size:12px;color:#64748b;line-height:1.6;">
+              <span style="color:#475569;">Phone/WhatsApp:</span> <a href="tel:+23058137384" style="color:#2563eb;text-decoration:none;">+230 5813 7384</a><br>
+              <span style="color:#475569;">Email:</span> <a href="mailto:contact@thereviewer.mu" style="color:#2563eb;text-decoration:none;">contact@thereviewer.mu</a>
+            </p>
+            <p style="margin:10px 0 0;">
+              <span style="font-size:14px;font-weight:700;color:#0f172a;">TheReviewer</span><span style="font-size:14px;font-weight:700;color:#2563eb;">.mu</span>
+            </p>
+            <p style="margin:4px 0 0;font-size:11px;color:#94a3b8;font-style:italic;">Discover, rate, and book the best businesses in Mauritius</p>
+          </td>
+        </tr>
+      </table>
+    </div>`
+}
+
 export function emailTemplate(title: string, body: string): string {
   return `
 <!DOCTYPE html>
@@ -14,17 +40,23 @@ export function emailTemplate(title: string, body: string): string {
 
     <!-- Content card -->
     <div style="background:white;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;">
-      <div style="height:4px;background:linear-gradient(90deg,#2563eb,#7c3aed);"></div>
+      <div style="height:4px;background:linear-gradient(90deg,#06b6d4,#2563eb,#7c3aed);"></div>
       <div style="padding:32px 28px;">
         <h2 style="margin:0 0 16px;color:#0f172a;font-size:20px;">${title}</h2>
         ${body}
+        ${emailSignature()}
       </div>
     </div>
 
     <!-- Footer -->
-    <div style="text-align:center;padding:24px 0;color:#94a3b8;font-size:12px;">
-      <p style="margin:0;">&copy; 2026 TheReviewer.mu — Trusted business reviews for Mauritius</p>
+    <div style="text-align:center;padding:24px 0;color:#94a3b8;font-size:11px;">
+      <p style="margin:0;">&copy; 2026 TheReviewer.mu — Discover, rate, and book the best businesses in Mauritius</p>
       <p style="margin:4px 0 0;">Terre Rouge, Rodrigues, Mauritius</p>
+      <p style="margin:8px 0 0;">
+        <a href="https://thereviewer.vercel.app" style="color:#2563eb;text-decoration:none;font-weight:600;">Visit our website</a>
+        &nbsp;·&nbsp;
+        <a href="https://thereviewer.vercel.app/contact" style="color:#2563eb;text-decoration:none;">Contact us</a>
+      </p>
     </div>
   </div>
 </body>
