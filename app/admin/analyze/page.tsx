@@ -9,18 +9,21 @@ export default function AdminAnalyzePage() {
   const [analyzing, setAnalyzing] = useState<string | null>(null)
   const [results, setResults] = useState<Record<string, string>>({})
   const [bulkRunning, setBulkRunning] = useState(false)
+  const [analyzed, setAnalyzed] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     loadData().then(() => setLoaded(true))
   }, [])
 
   const loadData = async () => {
-    const [bizRes, analysisRes] = await Promise.all([
+    const [bizRes, analyzedRes] = await Promise.all([
       fetch('/api/admin/businesses'),
-      fetch('/api/admin/stats')
+      fetch('/api/admin/analyzed-ids')
     ])
     const bizData = await bizRes.json()
+    const analyzedData = await analyzedRes.json()
     setBusinesses(bizData.businesses || [])
+    setAnalyzed(new Set(analyzedData.ids || []))
   }
 
   const analyzeOne = async (businessId: string, name: string) => {
@@ -44,18 +47,19 @@ export default function AdminAnalyzePage() {
     setAnalyzing(null)
   }
 
-  const analyzeAll = async () => {
+  const analyzeAll = async (newOnly: boolean) => {
     setBulkRunning(true)
     for (const biz of businesses) {
-      if (results[biz.id]?.startsWith('✓')) continue // skip already done
+      if (results[biz.id]?.startsWith('✓')) continue
+      if (newOnly && analyzed.has(biz.id)) continue
       await analyzeOne(biz.id, biz.name)
-      // Small delay to avoid rate limits
       await new Promise(resolve => setTimeout(resolve, 1500))
     }
     setBulkRunning(false)
   }
 
   const doneCount = Object.values(results).filter(r => r.startsWith('✓')).length
+  const newCount = businesses.filter(b => !analyzed.has(b.id)).length
 
   return (
     <AdminShell backHref="/admin" backLabel="← Admin Panel">
@@ -68,18 +72,32 @@ export default function AdminAnalyzePage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            {doneCount > 0 && (
-              <span className="bg-green-50 text-green-600 text-sm font-medium px-3 py-1 rounded-full">
-                {doneCount} analyzed
+            <span className="bg-green-50 text-green-600 text-sm font-medium px-3 py-1 rounded-full">
+              {analyzed.size} analyzed
+            </span>
+            {newCount > 0 && (
+              <span className="bg-amber-50 text-amber-600 text-sm font-medium px-3 py-1 rounded-full">
+                {newCount} new
               </span>
             )}
-            <button
-              onClick={analyzeAll}
-              disabled={bulkRunning}
-              className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
-            >
-              {bulkRunning ? `Analyzing... (${doneCount}/${businesses.length})` : 'Analyze all businesses'}
-            </button>
+            <div className="flex gap-2">
+              {newCount > 0 && (
+                <button
+                  onClick={() => analyzeAll(true)}
+                  disabled={bulkRunning}
+                  className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {bulkRunning ? `Analyzing... (${doneCount})` : `Analyze new only (${newCount})`}
+                </button>
+              )}
+              <button
+                onClick={() => analyzeAll(false)}
+                disabled={bulkRunning}
+                className="bg-gray-100 text-gray-700 px-5 py-2 rounded-xl text-sm font-semibold hover:bg-gray-200 disabled:opacity-50 transition-colors"
+              >
+                {bulkRunning ? '...' : 'Re-analyze all'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -102,7 +120,12 @@ export default function AdminAnalyzePage() {
                       <span className="text-xs font-medium text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">{biz.category}</span>
                     )}
                   </div>
-                  <p className="text-gray-500 text-xs">{biz.region}</p>
+                  <p className="text-gray-500 text-xs">
+                    {biz.region}
+                    {analyzed.has(biz.id) && !results[biz.id] && (
+                      <span className="ml-2 text-green-500">● analyzed</span>
+                    )}
+                  </p>
                 </div>
                 <div className="flex items-center gap-3">
                   {results[biz.id] && (

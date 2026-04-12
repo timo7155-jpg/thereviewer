@@ -9,16 +9,24 @@ export default function AdminImagesPage() {
   const [fetching, setFetching] = useState<string | null>(null)
   const [results, setResults] = useState<Record<string, string>>({})
   const [bulkRunning, setBulkRunning] = useState(false)
+  const [imageCounts, setImageCounts] = useState<Record<string, number>>({})
 
   useEffect(() => {
     loadData().then(() => setLoaded(true))
   }, [])
 
   const loadData = async () => {
-    const res = await fetch('/api/admin/businesses')
-    const data = await res.json()
-    setBusinesses(data.businesses || [])
+    const [bizRes, imgRes] = await Promise.all([
+      fetch('/api/admin/businesses'),
+      fetch('/api/admin/images-count')
+    ])
+    const bizData = await bizRes.json()
+    const imgData = await imgRes.json()
+    setBusinesses(bizData.businesses || [])
+    setImageCounts(imgData.counts || {})
   }
+
+  const newCount = businesses.filter(b => !imageCounts[b.id]).length
 
   const fetchOne = async (businessId: string) => {
     setFetching(businessId)
@@ -43,12 +51,12 @@ export default function AdminImagesPage() {
     setFetching(null)
   }
 
-  const fetchAll = async () => {
+  const fetchAll = async (newOnly: boolean) => {
     setBulkRunning(true)
     for (const biz of businesses) {
       if (results[biz.id]?.startsWith('✓') || results[biz.id]?.startsWith('—')) continue
+      if (newOnly && imageCounts[biz.id]) continue
       await fetchOne(biz.id)
-      // Delay to avoid rate limits
       await new Promise(resolve => setTimeout(resolve, 2000))
     }
     setBulkRunning(false)
@@ -68,18 +76,32 @@ export default function AdminImagesPage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            {doneCount > 0 && (
-              <span className="bg-green-50 text-green-600 text-sm font-medium px-3 py-1 rounded-full">
-                {uploadedCount} with photos
+            <span className="bg-green-50 text-green-600 text-sm font-medium px-3 py-1 rounded-full">
+              {Object.keys(imageCounts).length} with photos
+            </span>
+            {newCount > 0 && (
+              <span className="bg-amber-50 text-amber-600 text-sm font-medium px-3 py-1 rounded-full">
+                {newCount} without
               </span>
             )}
-            <button
-              onClick={fetchAll}
-              disabled={bulkRunning}
-              className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
-            >
-              {bulkRunning ? `Fetching... (${doneCount}/${businesses.length})` : 'Fetch all images'}
-            </button>
+            <div className="flex gap-2">
+              {newCount > 0 && (
+                <button
+                  onClick={() => fetchAll(true)}
+                  disabled={bulkRunning}
+                  className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {bulkRunning ? `Fetching... (${doneCount})` : `Fetch new only (${newCount})`}
+                </button>
+              )}
+              <button
+                onClick={() => fetchAll(false)}
+                disabled={bulkRunning}
+                className="bg-gray-100 text-gray-700 px-5 py-2 rounded-xl text-sm font-semibold hover:bg-gray-200 disabled:opacity-50 transition-colors"
+              >
+                {bulkRunning ? '...' : 'Fetch all'}
+              </button>
+            </div>
           </div>
         </div>
 
