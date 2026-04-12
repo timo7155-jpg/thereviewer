@@ -21,6 +21,9 @@ export function HomeNav() {
         {/* Desktop */}
         <div className="hidden md:flex gap-3 items-center text-sm">
           <LangToggle />
+          <Link href="/#pricing" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            {lang === 'fr' ? 'Tarifs' : 'Pricing'}
+          </Link>
           <Link href="/contact" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
             Contact
           </Link>

@@ -17,16 +17,23 @@ type Business = {
   image_url: string | null
 }
 
+const PER_PAGE = 18
+
 export default function HotelSearch({ initialHotels }: { initialHotels: Business[] }) {
   const { lang, t } = useLang()
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('all')
   const [businesses, setBusinesses] = useState(initialHotels)
   const [searching, setSearching] = useState(false)
+  const [page, setPage] = useState(1)
+
+  const totalPages = Math.ceil(businesses.length / PER_PAGE)
+  const paginated = businesses.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
   const doSearch = async (q: string, cat: string) => {
     if (!q.trim() && cat === 'all') {
       setBusinesses(initialHotels)
+      setPage(1)
       return
     }
     setSearching(true)
@@ -36,13 +43,14 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
     const res = await fetch(`/api/search?${params}`)
     const data = await res.json()
     setBusinesses(data.hotels || [])
+    setPage(1)
     setSearching(false)
   }
 
   const handleSearch = () => doSearch(query, category)
   const handleKeyDown = (e: React.KeyboardEvent) => { if (e.key === 'Enter') handleSearch() }
   const handleCategory = (cat: string) => { setCategory(cat); doSearch(query, cat) }
-  const handleClear = () => { setQuery(''); setCategory('all'); setBusinesses(initialHotels) }
+  const handleClear = () => { setQuery(''); setCategory('all'); setBusinesses(initialHotels); setPage(1) }
 
   const getCategoryLabel = (value: string) => {
     const cat = BUSINESS_CATEGORIES.find(c => c.value === value)
@@ -162,8 +170,9 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
             </p>
           </div>
         ) : (
+          <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {businesses.map((biz, i) => (
+            {paginated.map((biz, i) => (
               <Link
                 key={biz.id}
                 href={`/hotels/${biz.slug}`}
@@ -223,6 +232,44 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
               </Link>
             ))}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-10">
+              <button
+                onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 400, behavior: 'smooth' }) }}
+                disabled={page === 1}
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors disabled:opacity-30 disabled:cursor-not-allowed bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+              >
+                {lang === 'fr' ? '← Précédent' : '← Previous'}
+              </button>
+
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                  <button
+                    key={p}
+                    onClick={() => { setPage(p); window.scrollTo({ top: 400, behavior: 'smooth' }) }}
+                    className={`w-10 h-10 rounded-xl text-sm font-semibold transition-colors ${
+                      p === page
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => { setPage(p => Math.min(totalPages, p + 1)); window.scrollTo({ top: 400, behavior: 'smooth' }) }}
+                disabled={page === totalPages}
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors disabled:opacity-30 disabled:cursor-not-allowed bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+              >
+                {lang === 'fr' ? 'Suivant →' : 'Next →'}
+              </button>
+            </div>
+          )}
+          </>
         )}
       </section>
     </>
