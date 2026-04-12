@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { supabaseAdmin } from '@/lib/supabase'
 import { HomeNav } from './HomeNav'
 import HotelSearch from './HotelSearch'
