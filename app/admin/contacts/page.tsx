@@ -12,6 +12,8 @@ export default function AdminContactsPage() {
   const [editingEmail, setEditingEmail] = useState<string | null>(null)
   const [emailInput, setEmailInput] = useState('')
   const [filter, setFilter] = useState<'all' | 'no-phone' | 'no-email' | 'complete'>('all')
+  const [scrapingEmails, setScrapingEmails] = useState(false)
+  const [scrapeResults, setScrapeResults] = useState<Record<string, string>>({})
 
   useEffect(() => {
     loadData().then(() => setLoaded(true))
@@ -55,6 +57,39 @@ export default function AdminContactsPage() {
     setBulkRunning(false)
   }
 
+  const scrapeOneEmail = async (businessId: string) => {
+    setScrapeResults(r => ({ ...r, [businessId]: 'scraping...' }))
+    try {
+      const res = await fetch('/api/admin/scrape-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessId })
+      })
+      const data = await res.json()
+      if (data.success) {
+        setScrapeResults(r => ({ ...r, [businessId]: `✓ ${data.email}` }))
+        await loadData()
+      } else if (data.skipped) {
+        setScrapeResults(r => ({ ...r, [businessId]: `— ${data.email}` }))
+      } else {
+        setScrapeResults(r => ({ ...r, [businessId]: `✗ ${data.message || data.error || 'Not found'}` }))
+      }
+    } catch {
+      setScrapeResults(r => ({ ...r, [businessId]: '✗ Error' }))
+    }
+  }
+
+  const scrapeAllEmails = async () => {
+    setScrapingEmails(true)
+    for (const biz of businesses) {
+      if (biz.email) continue // skip if already has email
+      if (!biz.website) continue // skip if no website
+      await scrapeOneEmail(biz.id)
+      await new Promise(resolve => setTimeout(resolve, 2000))
+    }
+    setScrapingEmails(false)
+  }
+
   const saveEmail = async (businessId: string) => {
     await fetch('/api/admin/businesses', {
       method: 'POST',
@@ -85,13 +120,22 @@ export default function AdminContactsPage() {
             <h1 className="text-2xl font-extrabold text-gray-900">Business Contacts</h1>
             <p className="text-gray-500 text-sm mt-1">Fetch phone numbers from Google, manually add emails</p>
           </div>
-          <button
-            onClick={fetchAll}
-            disabled={bulkRunning}
-            className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
-          >
-            {bulkRunning ? 'Fetching...' : 'Fetch all contacts'}
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={scrapeAllEmails}
+              disabled={scrapingEmails || bulkRunning}
+              className="bg-purple-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-purple-700 disabled:opacity-50 transition-colors"
+            >
+              {scrapingEmails ? 'Scraping emails...' : 'Scrape emails from websites'}
+            </button>
+            <button
+              onClick={fetchAll}
+              disabled={bulkRunning || scrapingEmails}
+              className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            >
+              {bulkRunning ? 'Fetching...' : 'Fetch phones'}
+            </button>
+          </div>
         </div>
 
         {/* Stats */}
@@ -178,9 +222,21 @@ export default function AdminContactsPage() {
                           {biz.email}
                         </span>
                       ) : (
-                        <button onClick={() => { setEditingEmail(biz.id); setEmailInput('') }} className="text-blue-600 text-xs font-semibold hover:text-blue-700">
-                          + Add email
-                        </button>
+                        <div className="flex items-center gap-2">
+                          {scrapeResults[biz.id] && (
+                            <span className={`text-xs ${scrapeResults[biz.id].startsWith('✓') ? 'text-green-600' : scrapeResults[biz.id].startsWith('✗') ? 'text-red-400' : 'text-amber-500'}`}>
+                              {scrapeResults[biz.id]}
+                            </span>
+                          )}
+                          <button onClick={() => { setEditingEmail(biz.id); setEmailInput('') }} className="text-blue-600 text-xs font-semibold hover:text-blue-700">
+                            + Add
+                          </button>
+                          {biz.website && (
+                            <button onClick={() => scrapeOneEmail(biz.id)} className="text-purple-600 text-xs font-semibold hover:text-purple-700">
+                              Scrape
+                            </button>
+                          )}
+                        </div>
                       )}
                     </td>
                     <td className="px-4 py-3">
