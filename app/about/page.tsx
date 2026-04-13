@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import SiteFooter from '@/app/SiteFooter'
 
 export const metadata: Metadata = {
@@ -79,8 +80,8 @@ export default function AboutPage() {
             <div className="p-8 md:flex gap-8 items-start">
               {/* Photo */}
               <div className="shrink-0 mb-6 md:mb-0">
-                <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-blue-100 mx-auto md:mx-0">
-                  <img src="/founder.jpg" alt="Yanny Timothée Lisette — Founder of TheReviewer.mu" className="w-full h-full object-cover" />
+                <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-blue-100 mx-auto md:mx-0 relative">
+                  <Image src="/founder.jpg" alt="Yanny Timothée Lisette — Founder of TheReviewer.mu" fill className="object-cover" sizes="160px" priority />
                 </div>
               </div>
 
