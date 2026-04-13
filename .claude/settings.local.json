@@ -24,7 +24,9 @@
       "Bash(mv founder-temp.jpg founder.jpg)",
       "Bash(node C:/Users/User/Desktop/thereviewer/scripts/generate-proposal.mjs)",
       "Bash(node C:/Users/User/Desktop/thereviewer/scripts/generate-proposal-v2.mjs)",
-      "Bash(ls -la C:/Users/User/Desktop/thereviewer/public/founder*)"
+      "Bash(ls -la C:/Users/User/Desktop/thereviewer/public/founder*)",
+      "Bash(nslookup -type=NS thereviewer.mu 8.8.8.8)",
+      "Bash(dig NS thereviewer.mu @8.8.8.8)"
     ]
   }
 }
