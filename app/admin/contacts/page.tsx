@@ -11,7 +11,7 @@ export default function AdminContactsPage() {
   const [bulkRunning, setBulkRunning] = useState(false)
   const [editingEmail, setEditingEmail] = useState<string | null>(null)
   const [emailInput, setEmailInput] = useState('')
-  const [filter, setFilter] = useState<'all' | 'no-phone' | 'no-email' | 'complete'>('all')
+  const [filter, setFilter] = useState<'all' | 'has-email' | 'no-email' | 'no-phone' | 'complete'>('all')
   const [scrapingEmails, setScrapingEmails] = useState(false)
   const [scrapeResults, setScrapeResults] = useState<Record<string, string>>({})
 
@@ -105,12 +105,24 @@ export default function AdminContactsPage() {
   const withEmail = businesses.filter(b => b.email).length
   const withWebsite = businesses.filter(b => b.website).length
 
-  const filtered = businesses.filter(b => {
-    if (filter === 'no-phone') return !b.phone
-    if (filter === 'no-email') return !b.email
-    if (filter === 'complete') return b.phone && b.email
-    return true
-  })
+  // Score for sorting: phone=1, email=2, website=1 — higher = more complete
+  const contactScore = (b: any) => {
+    let score = 0
+    if (b.phone) score += 1
+    if (b.email) score += 2 // email is most valuable
+    if (b.website) score += 1
+    return score
+  }
+
+  const filtered = businesses
+    .filter(b => {
+      if (filter === 'has-email') return b.email
+      if (filter === 'no-phone') return !b.phone
+      if (filter === 'no-email') return !b.email
+      if (filter === 'complete') return b.phone && b.email && b.website
+      return true
+    })
+    .sort((a, b) => contactScore(b) - contactScore(a))
 
   return (
     <AdminShell backHref="/admin" backLabel="← Admin Panel">
@@ -160,17 +172,23 @@ export default function AdminContactsPage() {
 
         {/* Filters */}
         <div className="flex gap-2 mb-6">
-          {(['all', 'no-phone', 'no-email', 'complete'] as const).map(tab => (
+          {([
+            { key: 'all' as const, label: 'All' },
+            { key: 'has-email' as const, label: `Has email (${withEmail})` },
+            { key: 'no-email' as const, label: `Missing email (${businesses.length - withEmail})` },
+            { key: 'no-phone' as const, label: `Missing phone (${businesses.length - withPhone})` },
+            { key: 'complete' as const, label: `Complete (${businesses.filter(b => b.phone && b.email && b.website).length})` },
+          ]).map(tab => (
             <button
-              key={tab}
-              onClick={() => setFilter(tab)}
+              key={tab.key}
+              onClick={() => setFilter(tab.key)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                filter === tab
+                filter === tab.key
                   ? 'bg-blue-600 text-white'
                   : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
               }`}
             >
-              {tab === 'all' ? 'All' : tab === 'no-phone' ? 'Missing phone' : tab === 'no-email' ? 'Missing email' : 'Complete'}
+              {tab.label}
             </button>
           ))}
         </div>
