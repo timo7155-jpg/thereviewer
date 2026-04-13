@@ -114,18 +114,18 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
         <div className="relative max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight leading-tight">
             {lang === 'fr'
-              ? 'Découvrez, évaluez et réservez les meilleures entreprises de Maurice'
-              : 'Discover, rate, and book the best businesses in Mauritius'}
+              ? 'La plateforme qui connecte entreprises et clients à Maurice'
+              : 'The platform connecting businesses and customers in Mauritius'}
           </h1>
           <p className="text-blue-100 text-lg md:text-xl mb-4 max-w-2xl mx-auto">
             {lang === 'fr'
-              ? 'Trouvez le bon endroit, partagez votre expérience, réservez en un clic.'
-              : 'Find the right place, share your experience, book in one click.'}
+              ? 'Avis vérifiés, analyse IA, réservation instantanée — tout en un seul endroit.'
+              : 'Verified reviews, AI-powered insights, instant booking — all in one place.'}
           </p>
           <p className="text-blue-200 text-sm mb-10 max-w-xl mx-auto">
             {lang === 'fr'
-              ? 'Propriétaire d\'entreprise ? Réclamez votre fiche et gérez votre réputation.'
-              : 'Business owner? Claim your listing and manage your reputation.'}
+              ? 'Propriétaire d\'entreprise ? Réclamez votre fiche gratuitement et gérez votre réputation.'
+              : 'Business owner? Claim your listing for free and take control of your reputation.'}
           </p>
           <div className="max-w-xl mx-auto flex flex-col sm:flex-row gap-2 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30">
             <div className="flex-1 relative">

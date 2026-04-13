@@ -17,13 +17,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "TheReviewer.mu — Discover, Rate & Book Businesses in Mauritius",
+    default: "TheReviewer.mu — Connecting Businesses and Customers in Mauritius",
     template: "%s | TheReviewer.mu",
   },
   description: "Discover, rate, and book the best businesses in Mauritius. Hotels, restaurants, spas, tours, car rentals and more — verified reviews, AI-powered insights, and instant booking.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://thereviewer.vercel.app'),
   openGraph: {
-    title: "TheReviewer.mu — Discover, Rate & Book Businesses in Mauritius",
+    title: "TheReviewer.mu — Connecting Businesses and Customers in Mauritius",
     description: "Find the right place, share your experience, book in one click. 200+ businesses across Mauritius with verified reviews and AI analysis.",
     siteName: "TheReviewer.mu",
     locale: "en_US",
