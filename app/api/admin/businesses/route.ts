@@ -27,10 +27,21 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === 'update') {
-      const { id, name, slug, region, address, description, website, category } = body
+      const { id, name, slug, region, address, description, website, category, email, phone } = body
+      const updates: any = {}
+      if (name !== undefined) updates.name = name
+      if (slug !== undefined) updates.slug = slug
+      if (region !== undefined) updates.region = region
+      if (address !== undefined) updates.address = address
+      if (description !== undefined) updates.description = description
+      if (website !== undefined) updates.website = website
+      if (category !== undefined) updates.category = category
+      if (email !== undefined) updates.email = email
+      if (phone !== undefined) updates.phone = phone
+
       const { error } = await supabaseAdmin
         .from('businesses')
-        .update({ name, slug, region, address, description, website, category })
+        .update(updates)
         .eq('id', id)
 
       if (error) {
