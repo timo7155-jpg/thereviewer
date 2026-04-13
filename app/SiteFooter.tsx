@@ -104,6 +104,7 @@ export default function SiteFooter() {
           <div className="flex gap-4">
             <Link href="/terms" className="hover:text-white transition-colors">{lang === 'fr' ? 'Conditions' : 'Terms'}</Link>
             <Link href="/privacy" className="hover:text-white transition-colors">{lang === 'fr' ? 'Confidentialité' : 'Privacy'}</Link>
+            <Link href="/refund" className="hover:text-white transition-colors">{lang === 'fr' ? 'Remboursement' : 'Refund'}</Link>
           </div>
         </div>
       </div>
