@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     await resend.emails.send({
-      from: 'TheReviewer.mu <onboarding@resend.dev>',
+      from: 'TheReviewer.mu <contact@thereviewer.mu>',
       to: ADMIN_EMAIL,
       subject: `[Contact] ${reasonLabels[reason] || reason} — ${name}`,
       html: emailTemplate('New contact form submission', `

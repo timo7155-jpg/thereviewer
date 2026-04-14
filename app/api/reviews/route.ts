@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/verify?token=${token}`
 
     await resend.emails.send({
-      from: 'TheReviewer.mu <onboarding@resend.dev>',
+      from: 'TheReviewer.mu <contact@thereviewer.mu>',
       to: process.env.ADMIN_EMAIL || 'timo7155@gmail.com',
       subject: `Please confirm your review of ${hotel.name}`,
       html: emailTemplate('Thank you for your review!', `

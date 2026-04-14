@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
       // Email the owner
       await resend.emails.send({
-        from: 'TheReviewer.mu <onboarding@resend.dev>',
+        from: 'TheReviewer.mu <contact@thereviewer.mu>',
         to: ADMIN_EMAIL,
         subject: `Your claim for ${claim?.businesses?.name} has been approved!`,
         html: emailTemplate('Your claim has been approved!', `

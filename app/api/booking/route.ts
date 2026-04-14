@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
 
     // Send email to admin
     await resend.emails.send({
-      from: 'TheReviewer.mu <onboarding@resend.dev>',
+      from: 'TheReviewer.mu <contact@thereviewer.mu>',
       to: ADMIN_EMAIL,
       subject: `[Booking] ${typeLabel} — ${businessName} — ${name}`,
       html: emailTemplate(`New ${typeLabel}`, `

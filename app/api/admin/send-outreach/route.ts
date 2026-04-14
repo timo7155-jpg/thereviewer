@@ -90,13 +90,15 @@ export async function POST(req: NextRequest) {
       </p>
     `)
 
-    // Send to admin for now (Resend free plan only allows sending to verified emails)
-    const to = ADMIN_EMAIL
+    // Send to actual recipient, BCC admin for tracking
+    const to = recipientEmail || ADMIN_EMAIL
 
     await resend.emails.send({
-      from: 'TheReviewer.mu <onboarding@resend.dev>',
+      from: 'TheReviewer.mu <contact@thereviewer.mu>',
       to,
-      subject: `[Outreach] ${businessName} — ${subject}`,
+      bcc: recipientEmail ? [ADMIN_EMAIL] : undefined,
+      replyTo: ADMIN_EMAIL,
+      subject: `${businessName} — ${subject}`,
       html,
     })
 
