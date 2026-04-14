@@ -28,7 +28,7 @@ export default function TermsPage() {
         <div className="prose prose-gray max-w-none space-y-8 text-sm text-gray-700 leading-relaxed">
           <section>
             <h2 className="text-lg font-bold text-gray-900 mb-3">1. Acceptance of Terms</h2>
-            <p>By accessing and using TheReviewer.mu ("the Platform"), you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the Platform. The Platform is operated by TheReviewer.mu, based in Terre Rouge, Rodrigues, Mauritius.</p>
+            <p>By accessing and using TheReviewer.mu ("the Platform"), you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the Platform. The Platform is operated by TheReviewer.mu, based in Mauritius.</p>
           </section>
 
           <section>
@@ -90,7 +90,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-bold text-gray-900 mb-3">11. Contact</h2>
             <p>For questions about these Terms, contact us at:</p>
-            <p className="mt-2"><strong>Email:</strong> contact@thereviewer.mu<br /><strong>Phone:</strong> +230 5813 7384<br /><strong>Address:</strong> Terre Rouge, Rodrigues, Mauritius</p>
+            <p className="mt-2"><strong>Email:</strong> contact@thereviewer.mu<br /><strong>Phone:</strong> +230 5813 7384<br /><strong>Address:</strong> Based in Mauritius</p>
           </section>
         </div>
       </div>

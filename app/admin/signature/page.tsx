@@ -30,7 +30,7 @@ const signatureHtml = `<table cellpadding="0" cellspacing="0" border="0" style="
       <div style="background: linear-gradient(90deg, #2563eb, #7c3aed); display: inline-block; padding: 1px; border-radius: 4px;">
         <div style="background: white; padding: 4px 10px; border-radius: 3px; font-size: 11px; color: #475569; font-style: italic;">Discover, rate, and book the best businesses in Mauritius</div>
       </div>
-      <div style="margin-top: 10px; font-size: 11px; color: #94a3b8;">Terre Rouge, Rodrigues, Mauritius</div>
+      <div style="margin-top: 10px; font-size: 11px; color: #94a3b8;">Based in Mauritius</div>
     </td>
   </tr>
 </table>`

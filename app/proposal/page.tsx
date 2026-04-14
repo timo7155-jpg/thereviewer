@@ -245,7 +245,7 @@ export default function ProposalPage() {
 
         {/* Bottom strip */}
         <div className="bg-gray-900 text-gray-400 px-12 py-4 text-center text-xs">
-          &copy; 2026 TheReviewer.mu — Discover, rate, and book the best businesses in Mauritius · Terre Rouge, Rodrigues
+          &copy; 2026 TheReviewer.mu — Discover, rate, and book the best businesses in Mauritius
         </div>
       </div>
     </main>

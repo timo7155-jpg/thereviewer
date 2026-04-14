@@ -107,7 +107,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-lg font-bold text-gray-900 mb-3">11. Contact</h2>
             <p>For questions about this Privacy Policy or to exercise your data rights, contact us at:</p>
-            <p className="mt-2"><strong>Email:</strong> contact@thereviewer.mu<br /><strong>Phone:</strong> +230 5813 7384<br /><strong>Address:</strong> Terre Rouge, Rodrigues, Mauritius</p>
+            <p className="mt-2"><strong>Email:</strong> contact@thereviewer.mu<br /><strong>Phone:</strong> +230 5813 7384<br /><strong>Address:</strong> Based in Mauritius</p>
           </section>
         </div>
       </div>

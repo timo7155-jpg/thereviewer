@@ -88,7 +88,7 @@ export default function RefundPage() {
           <section>
             <h2 className="text-lg font-bold text-gray-900 mb-3">8. Contact</h2>
             <p>For refund requests or questions about this policy:</p>
-            <p className="mt-2"><strong>Email:</strong> contact@thereviewer.mu<br /><strong>Phone:</strong> +230 5813 7384<br /><strong>Address:</strong> Terre Rouge, Rodrigues, Mauritius</p>
+            <p className="mt-2"><strong>Email:</strong> contact@thereviewer.mu<br /><strong>Phone:</strong> +230 5813 7384<br /><strong>Address:</strong> Based in Mauritius</p>
           </section>
         </div>
       </div>

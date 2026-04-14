@@ -51,7 +51,7 @@ export function emailTemplate(title: string, body: string): string {
     <!-- Footer -->
     <div style="text-align:center;padding:24px 0;color:#94a3b8;font-size:11px;">
       <p style="margin:0;">&copy; 2026 TheReviewer.mu — Discover, rate, and book the best businesses in Mauritius</p>
-      <p style="margin:4px 0 0;">Terre Rouge, Rodrigues, Mauritius</p>
+      <p style="margin:4px 0 0;">Based in Mauritius</p>
       <p style="margin:8px 0 0;">
         <a href="https://thereviewer.vercel.app" style="color:#2563eb;text-decoration:none;font-weight:600;">Visit our website</a>
         &nbsp;·&nbsp;

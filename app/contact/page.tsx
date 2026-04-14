@@ -120,7 +120,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 mb-0.5">{lang === 'fr' ? 'Adresse' : 'Address'}</p>
-                  <p className="text-gray-900 font-medium">Terre Rouge, Rodrigues, Mauritius</p>
+                  <p className="text-gray-900 font-medium">Based in Mauritius</p>
                 </div>
               </div>
             </div>

@@ -98,7 +98,7 @@ export default function AboutPage() {
                 </p>
 
                 <p className="text-gray-600 leading-relaxed mb-6">
-                  Having managed portfolios of hundreds of businesses and individual clients across Mauritius and Rodrigues,
+                  Having managed portfolios of hundreds of businesses and individual clients across Mauritius,
                   Yanny understands firsthand what drives customer satisfaction and business growth. This experience in
                   relationship management and client advisory is what inspired TheReviewer.mu — a platform that bridges the
                   gap between businesses and their customers through transparent, verified feedback.
@@ -148,7 +148,7 @@ export default function AboutPage() {
             <p className="text-gray-700 leading-relaxed">
               TheReviewer.mu changes that. We&apos;re built in Mauritius, for Mauritius — bilingual (English &amp; French),
               covering all business categories, and powered by AI to give both customers and business owners the insights
-              they need. Based in Terre Rouge, Rodrigues, we&apos;re proud to serve the entire Republic of Mauritius.
+              they need. Based in Mauritius, we&apos;re proud to serve the entire Republic of Mauritius.
             </p>
           </div>
         </section>
