@@ -66,7 +66,7 @@ const translations = {
 
   // AI Insights
   'insights.title': { en: 'AI Insights', fr: 'Analyse IA' },
-  'insights.desc': { en: 'Powered by Claude \u2014 analyze your reviews for trends and actionable feedback', fr: 'Propuls\u00e9 par Claude \u2014 analysez vos avis pour d\u00e9couvrir des tendances' },
+  'insights.desc': { en: 'Premium AI \u2014 deep trends and personalized action plans for your business', fr: 'IA Premium \u2014 tendances approfondies et plans d\u2019action personnalis\u00e9s' },
   'insights.generate': { en: 'Generate insights', fr: 'G\u00e9n\u00e9rer l\u2019analyse' },
   'insights.refresh': { en: 'Refresh', fr: 'Actualiser' },
   'insights.analyzing': { en: 'Analyzing', fr: 'Analyse de' },
