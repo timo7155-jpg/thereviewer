@@ -38,14 +38,14 @@ export default function DashboardPage() {
           setBusiness(owner.businesses)
           setPlan(owner.plan || 'free')
 
-          const { data: reviews } = await supabase
-            .from('reviews')
-            .select('*, reviewers(name), owner_replies(*)')
-            .eq('business_id', owner.businesses.id)
-            .eq('is_verified', true)
-            .order('created_at', { ascending: false })
-
-          setReviews(reviews || [])
+          // Fetch via server-side API (bypasses RLS, validates ownership)
+          try {
+            const res = await fetch(`/api/owner/reviews?userId=${user.id}&businessId=${owner.businesses.id}`)
+            const data = await res.json()
+            setReviews(data.reviews || [])
+          } catch {
+            setReviews([])
+          }
 
           // Fetch teaser insight for free users
           if (owner.plan !== 'premium') {
@@ -613,22 +613,40 @@ function OwnerAnalysis({ businessId, isPremium, lang }: { businessId: string, is
           )}
         </div>
 
-        {/* Teaser insight — owner-exclusive actionable tip */}
-        {analysis.teaser_insight && (
-          <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-5 border border-violet-100 mb-4">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center shrink-0">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+        {/* Teaser insights — owner-exclusive actionable tips (3+) */}
+        {analysis.teaser_insight && (() => {
+          const tips = analysis.teaser_insight
+            .split(/\s*\|\|\|\s*|\n+/)
+            .map((t: string) => t.replace(/^\s*(?:\d+[.)]\s*|[-•]\s*)/, '').trim())
+            .filter((t: string) => t.length > 0)
+          return (
+            <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-5 border border-violet-100 mb-4">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-violet-900 uppercase tracking-wider mb-0.5">
+                    {lang === 'fr' ? 'Conseils IA pour ce mois' : 'AI Tips for This Month'}
+                  </h4>
+                  <p className="text-[11px] text-violet-700/70">
+                    {lang === 'fr' ? `${tips.length} actions prioritaires pour vous` : `${tips.length} priority actions for you`}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h4 className="text-xs font-bold text-violet-900 uppercase tracking-wider mb-1">
-                  {lang === 'fr' ? 'Conseil IA pour ce mois' : 'AI Tip for This Month'}
-                </h4>
-                <p className="text-sm text-violet-900 leading-relaxed">{analysis.teaser_insight}</p>
-              </div>
+              <ol className="space-y-2.5">
+                {tips.map((tip: string, i: number) => (
+                  <li key={i} className="flex items-start gap-3 bg-white/60 rounded-lg p-3 border border-violet-100">
+                    <span className="shrink-0 w-6 h-6 bg-violet-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm text-violet-900 leading-relaxed">{tip}</span>
+                  </li>
+                ))}
+              </ol>
             </div>
-          </div>
-        )}
+          )
+        })()}
 
         {/* Best/Worst — premium only */}
         {isPremium && (analysis.best_review || analysis.worst_review) && (
@@ -674,12 +692,12 @@ function OwnerAnalysis({ businessId, isPremium, lang }: { businessId: string, is
           <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
             <span>
               {lang === 'fr' ? 'Dernière analyse :' : 'Last analyzed:'}{' '}
-              {lastUpdated.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+              {lastUpdated.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { month: 'long', year: 'numeric' })}
             </span>
             {nextRefresh && (
               <span>
                 {lang === 'fr' ? 'Prochaine mise à jour :' : 'Next refresh:'}{' '}
-                {nextRefresh.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long' })}
+                {nextRefresh.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { month: 'long', year: 'numeric' })}
               </span>
             )}
           </div>

@@ -85,7 +85,7 @@ Based on this data, provide an ORIGINAL analysis (do not quote or copy any revie
   "improvements": ["area to improve 1", "area to improve 2"],
   "best_review": "Write a 2-3 sentence ORIGINAL positive review summary as if a happy customer wrote it. Based on positive themes from reviews, but do NOT copy any text. Write naturally.",
   "worst_review": "Write a 2-3 sentence ORIGINAL critical review summary as if a disappointed customer wrote it. Based on negative themes from reviews, but do NOT copy any text. Write constructively.",
-  "teaser_insight": "One specific, actionable improvement suggestion for the business owner (e.g. 'Your service score trails your food score by 0.8 points — training front-of-house staff could close this gap'). Be concrete with numbers."
+  "teaser_insight": "EXACTLY 3 specific, actionable improvement tips for the business owner, separated by the delimiter ' ||| '. Each tip MUST be concrete and numeric where possible (e.g. 'Your service score trails your food score by 0.8 points — invest in front-of-house training to close the gap'). Format: 'Tip 1 text ||| Tip 2 text ||| Tip 3 text'. No numbering or bullets — just the three tips joined by ' ||| '."
 }`
       }]
     })
