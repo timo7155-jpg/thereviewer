@@ -3,6 +3,9 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import HotelDetail from './HotelDetail'
 
+// Revalidate every 60 seconds so new reviews / owner replies appear
+export const revalidate = 60
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const { data: hotel } = await supabaseAdmin

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
 import { Resend } from 'resend'
 import { emailTemplate, emailNote } from '@/lib/email'
@@ -32,6 +33,16 @@ export async function POST(req: NextRequest) {
     await supabaseAdmin
       .from('owner_replies')
       .insert({ review_id: reviewId, owner_id: owner.id, body })
+
+    // Invalidate the public hotel page so the reply appears immediately
+    try {
+      const { data: biz } = await supabaseAdmin
+        .from('businesses')
+        .select('slug')
+        .eq('id', review.business_id)
+        .single()
+      if (biz?.slug) revalidatePath(`/hotels/${biz.slug}`)
+    } catch {}
 
     // Notify the reviewer by email (best-effort, don't fail the request)
     try {
