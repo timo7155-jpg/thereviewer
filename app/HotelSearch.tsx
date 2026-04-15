@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useLang } from '@/lib/i18n'
 import { BUSINESS_CATEGORIES } from '@/lib/constants'
 
@@ -70,6 +71,36 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
   const [businesses, setBusinesses] = useState(initialHotels)
   const [searching, setSearching] = useState(false)
   const [page, setPage] = useState(1)
+  const [suggestOpen, setSuggestOpen] = useState(false)
+  const [highlightIdx, setHighlightIdx] = useState(-1)
+  const searchRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+
+  // Live suggestions from the client-side full list (instant, no network)
+  const suggestions = query.trim().length >= 1
+    ? initialHotels
+        .filter(b => {
+          const q = query.toLowerCase()
+          return (
+            b.name.toLowerCase().includes(q) ||
+            b.region?.toLowerCase().includes(q) ||
+            b.address?.toLowerCase().includes(q)
+          )
+        })
+        .slice(0, 8)
+    : []
+
+  useEffect(() => { setHighlightIdx(-1) }, [query])
+
+  useEffect(() => {
+    const onClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSuggestOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [])
 
   const totalPages = Math.ceil(businesses.length / PER_PAGE)
   const paginated = businesses.slice((page - 1) * PER_PAGE, page * PER_PAGE)
@@ -91,8 +122,26 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
     setSearching(false)
   }
 
-  const handleSearch = () => doSearch(query, category)
-  const handleKeyDown = (e: React.KeyboardEvent) => { if (e.key === 'Enter') handleSearch() }
+  const handleSearch = () => { setSuggestOpen(false); doSearch(query, category) }
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowDown' && suggestions.length > 0) {
+      e.preventDefault()
+      setSuggestOpen(true)
+      setHighlightIdx(i => Math.min(i + 1, suggestions.length - 1))
+    } else if (e.key === 'ArrowUp' && suggestions.length > 0) {
+      e.preventDefault()
+      setHighlightIdx(i => Math.max(i - 1, 0))
+    } else if (e.key === 'Enter') {
+      if (suggestOpen && highlightIdx >= 0 && suggestions[highlightIdx]) {
+        setSuggestOpen(false)
+        router.push(`/hotels/${suggestions[highlightIdx].slug}`)
+      } else {
+        handleSearch()
+      }
+    } else if (e.key === 'Escape') {
+      setSuggestOpen(false)
+    }
+  }
   const handleCategory = (cat: string) => { setCategory(cat); doSearch(query, cat) }
   const handleClear = () => { setQuery(''); setCategory('all'); setBusinesses(initialHotels); setPage(1) }
 
@@ -127,7 +176,8 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
               ? 'Propriétaire d\'entreprise ? Réclamez votre fiche gratuitement et gérez votre réputation.'
               : 'Business owner? Claim your listing for free and take control of your reputation.'}
           </p>
-          <div className="max-w-xl mx-auto flex flex-col sm:flex-row gap-2 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30">
+          <div ref={searchRef} className="max-w-xl mx-auto relative">
+          <div className="flex flex-col sm:flex-row gap-2 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30">
             <div className="flex-1 relative">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -135,10 +185,12 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
               <input
                 type="text"
                 value={query}
-                onChange={e => setQuery(e.target.value)}
+                onChange={e => { setQuery(e.target.value); setSuggestOpen(true) }}
+                onFocus={() => { if (query.trim()) setSuggestOpen(true) }}
                 onKeyDown={handleKeyDown}
                 placeholder={lang === 'fr' ? 'Rechercher par nom, région...' : 'Search by name, region...'}
                 className="w-full pl-10 pr-4 py-3.5 rounded-lg text-gray-900 outline-none text-sm"
+                autoComplete="off"
               />
             </div>
             {(query || category !== 'all') && (
@@ -153,6 +205,48 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
             >
               {searching ? '...' : lang === 'fr' ? 'Rechercher' : 'Search'}
             </button>
+          </div>
+
+          {/* Autocomplete dropdown */}
+          {suggestOpen && suggestions.length > 0 && (
+            <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50 max-h-96 overflow-y-auto text-left">
+              {suggestions.map((b, i) => (
+                <Link
+                  key={b.id}
+                  href={`/hotels/${b.slug}`}
+                  onClick={() => setSuggestOpen(false)}
+                  onMouseEnter={() => setHighlightIdx(i)}
+                  className={`flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-0 transition-colors ${
+                    highlightIdx === i ? 'bg-blue-50' : 'hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-gray-100 flex items-center justify-center">
+                    {b.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={b.image_url} alt={b.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={getCategoryPlaceholder(b.category).path} /></svg>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-gray-900 truncate">{b.name}</div>
+                    <div className="text-xs text-gray-500 truncate">
+                      {b.region}{b.category ? ` · ${getCategoryLabel(b.category)}` : ''}
+                    </div>
+                  </div>
+                  {b.analysis_score && (
+                    <div className="flex items-center gap-1 text-xs bg-amber-50 text-amber-700 font-bold px-2 py-1 rounded-full shrink-0">
+                      <span className="text-amber-400">★</span>
+                      {b.analysis_score.toFixed(1)}
+                    </div>
+                  )}
+                </Link>
+              ))}
+              <div className="px-4 py-2 bg-gray-50 text-[11px] text-gray-400 text-center">
+                {lang === 'fr' ? '↵ Entrée pour sélectionner · Échap pour fermer' : '↵ Enter to select · Esc to close'}
+              </div>
+            </div>
+          )}
           </div>
 
           {/* Stats */}
