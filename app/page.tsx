@@ -54,6 +54,12 @@ export default async function HomePage() {
       analysis_review_count: analysis?.count || 0,
       image_url: imageMap[h.id] || null
     }
+  }).sort((a, b) => {
+    // Highest rated first; businesses without a score sink to the bottom, then alphabetical
+    const aScore = a.analysis_score ?? -1
+    const bScore = b.analysis_score ?? -1
+    if (bScore !== aScore) return bScore - aScore
+    return a.name.localeCompare(b.name)
   })
 
   return (
