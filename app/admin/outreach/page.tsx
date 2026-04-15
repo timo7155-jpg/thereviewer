@@ -18,8 +18,21 @@ export default function AdminOutreachPage() {
   const [sending, setSending] = useState<string | null>(null)
   const [results, setResults] = useState<Record<string, string>>({})
   const [bulkRunning, setBulkRunning] = useState(false)
-  const [view, setView] = useState<'grouped' | 'all' | 'no-email'>('grouped')
-  const [customSubject, setCustomSubject] = useState('Helping Mauritius businesses grow through customer insights')
+  const [view, setView] = useState<'grouped' | 'all' | 'no-email' | 'results'>('grouped')
+  const [customSubject, setCustomSubject] = useState('')
+  const [logs, setLogs] = useState<any[]>([])
+  const [logsLoaded, setLogsLoaded] = useState(false)
+  const [tableExists, setTableExists] = useState(true)
+
+  const loadLogs = async () => {
+    const res = await fetch('/api/admin/outreach-logs')
+    const data = await res.json()
+    setLogs(data.logs || [])
+    setTableExists(data.tableExists !== false)
+    setLogsLoaded(true)
+  }
+
+  useEffect(() => { if (view === 'results') loadLogs() }, [view])
 
   useEffect(() => {
     loadData().then(() => setLoaded(true))
@@ -115,12 +128,11 @@ export default function AdminOutreachPage() {
         body: JSON.stringify({
           businessName: group.isGroup ? allNames : biz.name,
           businessSlug: biz.slug,
+          businessId: biz.id,
+          businessIds: group.isGroup ? group.businesses.map(b => b.id) : [biz.id],
           businessRegion: biz.region,
           recipientEmail: group.email,
-          score: 'N/A',
-          reviewCount: '0',
-          serviceScore: 'N/A',
-          subject: customSubject,
+          subject: customSubject || undefined,
         })
       })
       const data = await res.json()
@@ -197,6 +209,9 @@ export default function AdminOutreachPage() {
           <button onClick={() => setView('all')} className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${view === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border border-gray-200'}`}>
             All ({businesses.length})
           </button>
+          <button onClick={() => setView('results')} className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${view === 'results' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border border-gray-200'}`}>
+            📊 Results
+          </button>
         </div>
 
         {!loaded ? (
@@ -270,6 +285,141 @@ export default function AdminOutreachPage() {
               ))}
             </div>
           </div>
+        ) : view === 'results' ? (
+          /* Outreach results */
+          !tableExists ? (
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+              <h3 className="font-bold text-amber-900 mb-2">One-time setup needed</h3>
+              <p className="text-sm text-amber-800 mb-3">
+                Run this SQL once in the Supabase SQL editor to enable outreach tracking:
+              </p>
+              <pre className="text-xs bg-white p-3 rounded-lg border border-amber-200 overflow-x-auto">{`CREATE TABLE IF NOT EXISTS outreach_logs (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  token text UNIQUE NOT NULL,
+  business_id uuid REFERENCES businesses(id) ON DELETE SET NULL,
+  business_ids text[],
+  recipient_email text NOT NULL,
+  subject text,
+  segment text,
+  personalized_intro text,
+  sent_at timestamptz DEFAULT now(),
+  opened_at timestamptz,
+  open_count integer DEFAULT 0,
+  clicked_at timestamptz,
+  click_count integer DEFAULT 0,
+  resend_id text,
+  error text
+);
+CREATE INDEX IF NOT EXISTS idx_outreach_logs_token ON outreach_logs(token);
+CREATE INDEX IF NOT EXISTS idx_outreach_logs_sent_at ON outreach_logs(sent_at DESC);`}</pre>
+              <button onClick={loadLogs} className="mt-3 bg-amber-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-amber-700">
+                I ran it — refresh
+              </button>
+            </div>
+          ) : !logsLoaded ? (
+            <div className="text-center py-12 text-gray-400">Loading...</div>
+          ) : (
+            <>
+              {/* Stats */}
+              {(() => {
+                const total = logs.length
+                const opened = logs.filter(l => l.opened_at).length
+                const clicked = logs.filter(l => l.clicked_at).length
+                const failed = logs.filter(l => l.error).length
+                const pct = (n: number) => total > 0 ? Math.round((n / total) * 100) : 0
+                return (
+                  <div className="grid grid-cols-4 gap-3 mb-6">
+                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
+                      <div className="text-2xl font-extrabold text-gray-900">{total}</div>
+                      <div className="text-xs text-gray-500">Total sent</div>
+                    </div>
+                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
+                      <div className="text-2xl font-extrabold text-blue-600">{opened}</div>
+                      <div className="text-xs text-gray-500">Opened ({pct(opened)}%)</div>
+                    </div>
+                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
+                      <div className="text-2xl font-extrabold text-green-600">{clicked}</div>
+                      <div className="text-xs text-gray-500">Clicked ({pct(clicked)}%)</div>
+                    </div>
+                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center">
+                      <div className="text-2xl font-extrabold text-red-500">{failed}</div>
+                      <div className="text-xs text-gray-500">Failed</div>
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* Log list */}
+              {logs.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center text-gray-400">
+                  No outreach sent yet. Use the Email contacts tab to send your first campaign.
+                </div>
+              ) : (
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
+                        <tr>
+                          <th className="text-left px-4 py-3 font-semibold">Business</th>
+                          <th className="text-left px-4 py-3 font-semibold">Recipient</th>
+                          <th className="text-left px-4 py-3 font-semibold">Segment</th>
+                          <th className="text-left px-4 py-3 font-semibold">Sent</th>
+                          <th className="text-center px-4 py-3 font-semibold">Opened</th>
+                          <th className="text-center px-4 py-3 font-semibold">Clicked</th>
+                          <th className="text-left px-4 py-3 font-semibold">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {logs.map(l => (
+                          <tr key={l.id} className="border-t border-gray-100 hover:bg-gray-50">
+                            <td className="px-4 py-3 text-gray-900 font-medium">{l.business_name || (l.business_ids?.length > 1 ? `${l.business_ids.length} properties` : '—')}</td>
+                            <td className="px-4 py-3 text-gray-600">{l.recipient_email}</td>
+                            <td className="px-4 py-3">
+                              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                                l.segment === 'high' ? 'bg-green-50 text-green-700' :
+                                l.segment === 'mid' ? 'bg-amber-50 text-amber-700' :
+                                l.segment === 'low' ? 'bg-red-50 text-red-700' :
+                                'bg-gray-50 text-gray-500'
+                              }`}>
+                                {l.segment || '—'}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-gray-500 text-xs">
+                              {l.sent_at ? new Date(l.sent_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'}
+                            </td>
+                            <td className="px-4 py-3 text-center">
+                              {l.opened_at ? (
+                                <span className="text-blue-600 font-semibold">{l.open_count || 1}×</span>
+                              ) : <span className="text-gray-300">—</span>}
+                            </td>
+                            <td className="px-4 py-3 text-center">
+                              {l.clicked_at ? (
+                                <span className="text-green-600 font-semibold">{l.click_count || 1}×</span>
+                              ) : <span className="text-gray-300">—</span>}
+                            </td>
+                            <td className="px-4 py-3">
+                              {l.error ? (
+                                <span className="text-xs text-red-600" title={l.error}>Failed</span>
+                              ) : l.clicked_at ? (
+                                <span className="text-xs text-green-700 font-semibold">🎯 Clicked</span>
+                              ) : l.opened_at ? (
+                                <span className="text-xs text-blue-700 font-semibold">👁 Opened</span>
+                              ) : (
+                                <span className="text-xs text-gray-500">Sent</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+              <button onClick={loadLogs} className="mt-4 text-sm text-blue-600 hover:text-blue-700 font-medium">
+                Refresh
+              </button>
+            </>
+          )
         ) : (
           /* All businesses */
           <div className="flex flex-col gap-2">
