@@ -53,10 +53,10 @@ function segmentFromScore(score: number | null): Segment {
 
 function segmentSubject(seg: Segment, businessName: string): string {
   switch (seg) {
-    case 'high': return `${businessName} — a quick look at what ${businessName}'s customers are saying`
+    case 'high': return `${businessName} — what your customers are saying`
     case 'mid':  return `${businessName} — insights from your recent public reviews`
-    case 'low':  return `${businessName} — customer feedback analysis you may find useful`
-    default:     return `${businessName} — a summary of your online presence`
+    case 'low':  return `${businessName} — customer feedback analysis`
+    default:     return `${businessName} — your online reputation summary`
   }
 }
 
@@ -338,12 +338,30 @@ export async function POST(req: NextRequest) {
         If there's anything inaccurate in the summary above, or you'd like me to walk you through the dashboard in 10 minutes, just reply to this email.
       </p>
 
-      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 4px;">Warm regards,</p>
-      <p style="color:#0f172a;font-size:14px;line-height:1.6;margin:0;font-weight:600;">Timothée Lisette</p>
-      <p style="color:#64748b;font-size:12.5px;line-height:1.6;margin:0;">Founder, TheReviewer.mu</p>
-      <p style="color:#64748b;font-size:12px;line-height:1.6;margin:0 0 14px;">
-        <a href="mailto:contact@thereviewer.mu" style="color:#2563eb;text-decoration:none;">contact@thereviewer.mu</a> · Based in Mauritius
-      </p>
+      <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 10px;">Warm regards,</p>
+
+      <!-- Signature with photo -->
+      <table style="border-collapse:collapse;margin:0 0 18px;">
+        <tr>
+          <td style="vertical-align:top;padding:0 14px 0 0;">
+            <img src="${SITE}/founder.jpg" alt="Timothée Lisette"
+              width="60" height="60"
+              style="display:block;width:60px;height:60px;border-radius:50%;border:2px solid #e0e7ff;object-fit:cover;" />
+          </td>
+          <td style="vertical-align:middle;">
+            <p style="color:#0f172a;font-size:15px;line-height:1.4;margin:0;font-weight:700;">Timothée Lisette</p>
+            <p style="color:#2563eb;font-size:12px;line-height:1.5;margin:2px 0 6px;font-weight:600;">Founder, TheReviewer.mu</p>
+            <p style="color:#64748b;font-size:12px;line-height:1.6;margin:0;">
+              📞 <a href="tel:+23058137384" style="color:#475569;text-decoration:none;">+230 5813 7384</a>
+              &nbsp;·&nbsp;
+              ✉️ <a href="mailto:contact@thereviewer.mu" style="color:#2563eb;text-decoration:none;">contact@thereviewer.mu</a>
+            </p>
+            <p style="color:#94a3b8;font-size:11.5px;line-height:1.5;margin:2px 0 0;">
+              <a href="${SITE}" style="color:#2563eb;text-decoration:none;font-weight:600;">thereviewer.mu</a> · Based in Mauritius
+            </p>
+          </td>
+        </tr>
+      </table>
 
       <p style="color:#94a3b8;font-size:11px;line-height:1.5;margin:20px 0 0;border-top:1px solid #e2e8f0;padding-top:14px;">
         This is a one-off introduction. If you'd prefer not to hear from us again, simply reply with "unsubscribe" and we won't contact ${businessName} again.
