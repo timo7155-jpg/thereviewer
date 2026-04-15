@@ -41,10 +41,23 @@ export default function AdminLoginPage() {
       return
     }
 
-    // Check admin privilege
-    if (data.user?.email !== ADMIN_EMAIL) {
+    // Check admin privilege server-side (avoids NEXT_PUBLIC env var build-time mismatch)
+    try {
+      const verifyRes = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.user?.email || '' })
+      })
+      const verify = await verifyRes.json()
+      if (!verify.isAdmin) {
+        await supabase.auth.signOut()
+        setError('Access denied. This portal is restricted to administrators only.')
+        setLoading(false)
+        return
+      }
+    } catch {
       await supabase.auth.signOut()
-      setError('Access denied. This portal is restricted to administrators only.')
+      setError('Could not verify admin access. Please try again.')
       setLoading(false)
       return
     }
