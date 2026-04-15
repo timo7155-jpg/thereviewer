@@ -378,7 +378,6 @@ export async function POST(req: NextRequest) {
       const result = await resend.emails.send({
         from: 'TheReviewer.mu <contact@thereviewer.mu>',
         to: recipientEmail,
-        bcc: [ADMIN_EMAIL],
         replyTo: ADMIN_EMAIL,
         subject: subjectLine,
         html,
