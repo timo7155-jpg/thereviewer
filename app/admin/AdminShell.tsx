@@ -6,8 +6,6 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import MiniFooter from '@/app/MiniFooter'
 
-const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'timo7155@gmail.com'
-
 export default function AdminShell({ children, title, subtitle, backHref, backLabel }: {
   children: ReactNode
   title?: string
@@ -26,7 +24,18 @@ export default function AdminShell({ children, title, subtitle, backHref, backLa
         router.push('/admin/login')
         return
       }
-      if (user.email !== ADMIN_EMAIL) {
+      try {
+        const verifyRes = await fetch('/api/admin/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: user.email || '' })
+        })
+        const verify = await verifyRes.json()
+        if (!verify.isAdmin) {
+          setStatus('denied')
+          return
+        }
+      } catch {
         setStatus('denied')
         return
       }
