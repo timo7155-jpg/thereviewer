@@ -1,12 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useLang, LangToggle } from '@/lib/i18n'
+import { supabase } from '@/lib/supabase'
 
 export function HomeNav() {
   const { lang } = useLang()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const [checked, setChecked] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+      setChecked(true)
+    })
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user || null)
+    })
+    return () => { sub.subscription.unsubscribe() }
+  }, [])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+    window.location.href = '/'
+  }
 
   return (
     <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 sticky top-0 z-50">
@@ -27,9 +47,23 @@ export function HomeNav() {
           <Link href="/contact" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
             Contact
           </Link>
-          <Link href="/dashboard/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-            {lang === 'fr' ? 'Connexion' : 'Login'}
-          </Link>
+          {checked && user ? (
+            <>
+              <Link href="/dashboard" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                {lang === 'fr' ? 'Tableau de bord' : 'Dashboard'}
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-red-500 hover:text-red-600 font-medium transition-colors"
+              >
+                {lang === 'fr' ? 'Se déconnecter' : 'Logout'}
+              </button>
+            </>
+          ) : (
+            <Link href="/dashboard/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+              {lang === 'fr' ? 'Connexion' : 'Login'}
+            </Link>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -48,9 +82,23 @@ export function HomeNav() {
           <Link href="/contact" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
             Contact
           </Link>
-          <Link href="/dashboard/login" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
-            {lang === 'fr' ? 'Connexion' : 'Login'}
-          </Link>
+          {checked && user ? (
+            <>
+              <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
+                {lang === 'fr' ? 'Tableau de bord' : 'Dashboard'}
+              </Link>
+              <button
+                onClick={() => { setMenuOpen(false); handleLogout() }}
+                className="text-red-500 font-medium py-2 text-left"
+              >
+                {lang === 'fr' ? 'Se déconnecter' : 'Logout'}
+              </button>
+            </>
+          ) : (
+            <Link href="/dashboard/login" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
+              {lang === 'fr' ? 'Connexion' : 'Login'}
+            </Link>
+          )}
           <Link href="/#pricing" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
             {lang === 'fr' ? 'Tarifs' : 'Pricing'}
           </Link>
