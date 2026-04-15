@@ -53,9 +53,9 @@ export function emailTemplate(title: string, body: string): string {
       <p style="margin:0;">&copy; 2026 TheReviewer.mu — Discover, rate, and book the best businesses in Mauritius</p>
       <p style="margin:4px 0 0;">Based in Mauritius</p>
       <p style="margin:8px 0 0;">
-        <a href="https://thereviewer.vercel.app" style="color:#2563eb;text-decoration:none;font-weight:600;">Visit our website</a>
+        <a href="https://thereviewer.mu" style="color:#2563eb;text-decoration:none;font-weight:600;">Visit our website</a>
         &nbsp;·&nbsp;
-        <a href="https://thereviewer.vercel.app/contact" style="color:#2563eb;text-decoration:none;">Contact us</a>
+        <a href="https://thereviewer.mu/contact" style="color:#2563eb;text-decoration:none;">Contact us</a>
       </p>
     </div>
   </div>

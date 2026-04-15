@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { supabaseAdmin } from '@/lib/supabase'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thereviewer.vercel.app'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thereviewer.mu'
 
   // Get all businesses for dynamic pages
   const { data: businesses } = await supabaseAdmin

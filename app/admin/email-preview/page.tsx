@@ -76,12 +76,12 @@ const sampleEmails = {
       </div>
 
       <div style="text-align:center;margin:24px 0 16px;">
-        ${emailButton('Claim your business — Free', 'https://thereviewer.vercel.app/dashboard/login')}
+        ${emailButton('Claim your business — Free', 'https://thereviewer.mu/dashboard/login')}
       </div>
 
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
         Your business page is live at:<br>
-        <a href="https://thereviewer.vercel.app/hotels/royal-palm-beachcomber" style="color:#2563eb;font-weight:600;text-decoration:none;">thereviewer.mu/hotels/royal-palm-beachcomber</a>
+        <a href="https://thereviewer.mu/hotels/royal-palm-beachcomber" style="color:#2563eb;font-weight:600;text-decoration:none;">thereviewer.mu/hotels/royal-palm-beachcomber</a>
       </p>
 
       <p style="color:#475569;font-size:14px;line-height:1.7;margin:0 0 14px;">
