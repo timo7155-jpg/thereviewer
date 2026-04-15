@@ -23,6 +23,8 @@ export default function AdminOutreachPage() {
   const [logs, setLogs] = useState<any[]>([])
   const [logsLoaded, setLogsLoaded] = useState(false)
   const [tableExists, setTableExists] = useState(true)
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [batchProgress, setBatchProgress] = useState<{ done: number; total: number; current: string } | null>(null)
 
   const loadLogs = async () => {
     const res = await fetch('/api/admin/outreach-logs')
@@ -147,6 +149,40 @@ export default function AdminOutreachPage() {
     setSending(null)
   }
 
+  const sendBatch = async () => {
+    const groups = getGroups()
+    const toSend = groups.filter(g => selected.has(g.email))
+    if (toSend.length === 0) return
+    if (!confirm(`Send personalized outreach to ${toSend.length} contact${toSend.length > 1 ? 's' : ''}? Each email takes 2-3 seconds (AI personalization + send).`)) return
+
+    setBulkRunning(true)
+    for (let i = 0; i < toSend.length; i++) {
+      const g = toSend[i]
+      setBatchProgress({ done: i, total: toSend.length, current: g.businesses[0].name })
+      await sendToGroup(g)
+      // Small delay between sends to avoid hitting rate limits / spam flags
+      if (i < toSend.length - 1) await new Promise(r => setTimeout(r, 1500))
+    }
+    setBatchProgress(null)
+    setBulkRunning(false)
+    setSelected(new Set())
+  }
+
+  const toggleSelect = (email: string) => {
+    setSelected(prev => {
+      const next = new Set(prev)
+      if (next.has(email)) next.delete(email)
+      else next.add(email)
+      return next
+    })
+  }
+
+  const selectAll = (groups: EmailGroup[]) => {
+    const allSelected = groups.every(g => selected.has(g.email))
+    if (allSelected) setSelected(new Set())
+    else setSelected(new Set(groups.map(g => g.email)))
+  }
+
   const groups = getGroups()
   const noEmail = businesses.filter(b => !b.email && b.phone)
   const sentCount = Object.values(results).filter(r => r.startsWith('✓')).length
@@ -217,12 +253,72 @@ export default function AdminOutreachPage() {
         {!loaded ? (
           <div className="text-center py-12 text-gray-400">Loading...</div>
         ) : view === 'grouped' ? (
-          /* Email contacts grouped */
+          <>
+          {/* Batch action bar */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-4 sticky top-4 z-10">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={groups.length > 0 && groups.every(g => selected.has(g.email))}
+                    onChange={() => selectAll(groups)}
+                    className="w-4 h-4 accent-blue-600"
+                  />
+                  <span className="text-sm font-medium text-gray-700">
+                    {selected.size > 0
+                      ? `${selected.size} selected`
+                      : `Select all (${groups.length})`}
+                  </span>
+                </label>
+                {selected.size > 0 && !bulkRunning && (
+                  <button onClick={() => setSelected(new Set())} className="text-xs text-gray-500 hover:text-red-600 font-medium">
+                    Clear
+                  </button>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                {batchProgress && (
+                  <div className="text-xs text-gray-500">
+                    <span className="font-semibold text-blue-600">{batchProgress.done}/{batchProgress.total}</span>
+                    <span className="ml-2 truncate max-w-[200px] inline-block align-bottom">· {batchProgress.current}</span>
+                  </div>
+                )}
+                <button
+                  onClick={sendBatch}
+                  disabled={selected.size === 0 || bulkRunning}
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                >
+                  {bulkRunning ? `Sending... ${batchProgress?.done || 0}/${batchProgress?.total || 0}` : `📤 Send ${selected.size > 0 ? `to ${selected.size}` : 'selected'}`}
+                </button>
+              </div>
+            </div>
+            {bulkRunning && batchProgress && (
+              <div className="mt-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500"
+                  style={{ width: `${(batchProgress.done / batchProgress.total) * 100}%` }}
+                />
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col gap-3">
             {groups.map(group => (
-              <div key={group.email} className={`bg-white rounded-2xl border shadow-sm p-5 ${group.isGroup ? 'border-purple-200' : 'border-gray-100'}`}>
+              <div key={group.email} className={`bg-white rounded-2xl border shadow-sm p-5 transition-colors ${
+                selected.has(group.email) ? 'border-blue-400 ring-2 ring-blue-100' :
+                group.isGroup ? 'border-purple-200' : 'border-gray-100'
+              }`}>
                 <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
+                  <div className="flex items-start gap-3 flex-1 min-w-0">
+                    <input
+                      type="checkbox"
+                      checked={selected.has(group.email)}
+                      onChange={() => toggleSelect(group.email)}
+                      disabled={bulkRunning}
+                      className="w-4 h-4 accent-blue-600 mt-1 shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
                     {group.isGroup && (
                       <span className="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full mb-2 inline-block">
                         GROUP — {group.businesses.length} properties
@@ -238,6 +334,7 @@ export default function AdminOutreachPage() {
                     </div>
                     <p className="text-sm text-blue-600 font-medium">{group.email}</p>
                     <p className="text-xs text-gray-400">{group.businesses[0].region}</p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-3 shrink-0 ml-3">
                     {results[group.email] && (
@@ -257,6 +354,7 @@ export default function AdminOutreachPage() {
               </div>
             ))}
           </div>
+          </>
         ) : view === 'no-email' ? (
           /* WhatsApp only contacts */
           <div>

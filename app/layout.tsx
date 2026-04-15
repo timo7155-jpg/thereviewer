@@ -4,6 +4,7 @@ import "./globals.css";
 import { LangProvider } from "@/lib/i18n";
 import ChatWidget from "./ChatWidget";
 import SessionGuard from "./SessionGuard";
+import PageTracker from "./PageTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,6 +55,7 @@ export default function RootLayout({
         <LangProvider>
           {children}
           <SessionGuard />
+          <PageTracker />
           <ChatWidget />
         </LangProvider>
       </body>
