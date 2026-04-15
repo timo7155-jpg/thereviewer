@@ -1,0 +1,207 @@
+name,category,region,area,notes,priority
+# ============ RODRIGUES — PRIORITY (53) ============
+# HOTELS & GUESTHOUSES
+"Cotton Bay Hotel",hotel,Rodrigues,Pointe Coton,"Iconic 4-star beachfront, 46 rooms",high
+"Mourouk Ebony Hotel",hotel,Rodrigues,Mourouk,"South coast, popular with kitesurfers",high
+"Tekoma Boutik Hotel",hotel,Rodrigues,Anse Ally,"Boutique, lagoon view, bungalows",high
+"Le Récif Hotel",hotel,Rodrigues,Anse aux Anglais,"Mid-range hotel, family-friendly",high
+"Escale Vacances",hotel,Rodrigues,Port Mathurin,"Town hotel, budget-friendly",high
+"Résidence Foulsafat",hotel,Rodrigues,Pointe Coton,"Self-catering, private pool",medium
+"Auberge Anse aux Anglais",hotel,Rodrigues,Anse aux Anglais,"Charming small inn",medium
+"Auberge Lagon Bleu",hotel,Rodrigues,Grand Baie,"Lagoon-side, home-style cooking",medium
+"Pointe Venus Hotel & Spa",hotel,Rodrigues,Pointe Venus,"Clifftop spa hotel",high
+"Les Cocotiers Hotel",hotel,Rodrigues,Anse aux Anglais,"Mid-range, pool",medium
+"Jekan Beach Chalets",hotel,Rodrigues,Petite Butte,"Self-catering chalets",medium
+"Bakwa Lodge",hotel,Rodrigues,Pointe Cotton,"Eco-lodge, kitesurfing focus",high
+"Résidence Tekoma",hotel,Rodrigues,Anse Ally,"Villas with private pool",medium
+# RESTAURANTS
+"Chez Robert et Solange",restaurant,Rodrigues,Saint François,"Octopus & creole cuisine, beach shack legend",high
+"Chef Joey",restaurant,Rodrigues,Port Mathurin,"Local creole restaurant, staple of Port Mathurin",high
+"Le Capitaine",restaurant,Rodrigues,Port Mathurin,"Seafood, harbour view",high
+"Restaurant L'Ocean",restaurant,Rodrigues,Anse aux Anglais,"Seafood specialty, generous portions",medium
+"Chez Bernard",restaurant,Rodrigues,Mourouk,"Creole cuisine by the lagoon",medium
+"Mamma Léa",restaurant,Rodrigues,Port Mathurin,"Pizza & Italian, popular expat spot",medium
+"Restaurant Le Rodrigues",restaurant,Rodrigues,Baie du Nord,"Seafood, scenic terrace",medium
+"Resto Lagon",restaurant,Rodrigues,Anse aux Anglais,"Beach-side, grilled fish",medium
+"Ti Paradis Restaurant",restaurant,Rodrigues,Port Mathurin,"Local creole, traditional dishes",medium
+# TOURS & ACTIVITIES
+"Osman Kitesurf",tour,Rodrigues,Mourouk,"Kitesurfing school & rentals",high
+"Rodrigues Kitesurfing",tour,Rodrigues,Pointe Coton,"IKO-certified school",high
+"Grande Montagne Nature Reserve",tour,Rodrigues,Grande Montagne,"Endemic species hike, guided tours",high
+"Île aux Cocos Excursion",tour,Rodrigues,Port Mathurin,"Day trip to protected islet, bird sanctuary",high
+"Caverne Patate Tour",tour,Rodrigues,La Ferme,"Limestone caves, guided spelunking",high
+"François Leguat Reserve",tour,Rodrigues,Anse Quitor,"Giant tortoise sanctuary, endemic flora",high
+"Rodrigues Discovery Tours",tour,Rodrigues,Port Mathurin,"Full-island private tours",medium
+"Jardin des 5 Sens",tour,Rodrigues,Baladirou,"Botanical garden, local herbs",medium
+"Trou d'Argent Hike",tour,Rodrigues,Graviers,"Popular coastal trek to hidden beach",medium
+"Pink Pigeon Tours",tour,Rodrigues,Port Mathurin,"Boat excursions, snorkeling",medium
+# RETAIL & SHOPS
+"Saturday Market Port Mathurin",retail,Rodrigues,Port Mathurin,"Saturday morning market, octopus & crafts",high
+"Rodrigues Crafts Cooperative",retail,Rodrigues,Port Mathurin,"Baskets, embroidery, local honey",medium
+"Vanilla Rodrigues",retail,Rodrigues,La Ferme,"Vanilla plantation & shop",medium
+"Honey Rodrigues",retail,Rodrigues,Grande Montagne,"Local honey producers",medium
+"Au Ptit Saint",retail,Rodrigues,Port Mathurin,"Convenience + local products",low
+# SERVICES
+"Rodrigues Car Rental",car_rental,Rodrigues,Port Mathurin,"Local rental, 4x4 options",high
+"Dominic Car Rental",car_rental,Rodrigues,Anse aux Anglais,"Family-run rental",medium
+"Rodrigues Tourism Office",services,Rodrigues,Port Mathurin,"Official tourism info",medium
+"Queen Elizabeth Hospital Rodrigues",services,Rodrigues,Creve Coeur,"Main hospital",high
+"Rodrigues Airport (SSR Plaine Corail)",services,Rodrigues,Plaine Corail,"Domestic airport",high
+# SPA / WELLNESS
+"Cotton Bay Spa",spa,Rodrigues,Pointe Coton,"Hotel spa open to non-guests",medium
+"Mourouk Wellness",spa,Rodrigues,Mourouk,"Beach massage, yoga",medium
+"Serenity Rodrigues",spa,Rodrigues,Port Mathurin,"Local wellness centre",low
+
+# ============ MAURITIUS — HOTELS & LODGES (missing 25) ============
+"LUX Belle Mare",hotel,East,Belle Mare,"5-star luxury east coast",high
+"Long Beach Mauritius",hotel,East,Belle Mare,"Large family resort",medium
+"Oberoi Mauritius",hotel,North,Turtle Bay,"Boutique 5-star",high
+"Shangri-La Le Touessrok",hotel,East,Trou d'Eau Douce,"5-star with private island",high
+"St. Regis Mauritius Resort",hotel,West,Le Morne,"5-star, spa focus",high
+"Anantara Iko Mauritius",hotel,South-East,Blue Bay,"Newer luxury, adult-focused",high
+"Outrigger Mauritius Beach Resort",hotel,South,Bel Ombre,"Coral lagoon",high
+"Veranda Palmar Beach",hotel,East,Belle Mare,"Mid-range, good value",medium
+"Solana Beach Mauritius",hotel,East,Belle Mare,"Adults only, 4-star",medium
+"Emeraude Beach Attitude",hotel,East,Palmar,"Family 4-star",medium
+"Mauricia Beachcomber",hotel,North,Grand Baie,"Large Grand Baie 4-star",medium
+"Victoria Beachcomber",hotel,North,Pointe aux Piments,"All-inclusive family",medium
+"La Pirogue Resort & Spa",hotel,West,Flic en Flac,"Thatched bungalows",medium
+"Sugar Beach Mauritius",hotel,West,Flic en Flac,"Colonial-style 5-star",high
+"Hilton Mauritius Resort & Spa",hotel,West,Wolmar,"5-star beachfront",high
+"InterContinental Mauritius Resort",hotel,North,Balaclava,"Heritage, 5-star",high
+"Ravenala Attitude",hotel,North,Balaclava,"Adults-only, suites",medium
+"Tamarina Golf & Spa Boutique Hotel",hotel,West,Tamarin,"Boutique, golf",medium
+"Radisson Blu Poste Lafayette",hotel,East,Poste Lafayette,"4-star east coast",medium
+"Preskil Island Resort",hotel,South-East,Pointe Jérôme,"Peninsula resort",medium
+"Le Meridien Ile Maurice",hotel,North,Pointe aux Piments,"Large 4-star",medium
+"Paradis Beachcomber Golf Resort",hotel,West,Le Morne,"Golf + luxury",high
+"Riu Creole",hotel,West,Le Morne,"Large all-inclusive",medium
+"Maritim Resort & Spa",hotel,North,Balaclava,"Heritage feel, 5-star",medium
+"Seapoint Boutique Hotel",hotel,North,Pointe aux Piments,"Boutique adult-only",low
+
+# ============ MAURITIUS — RESTAURANTS (missing 35) ============
+"Happy Rajah",restaurant,North,Grand Baie,"Authentic Indian, long-running",high
+"La Clé des Champs",restaurant,Central,Floreal,"Fine French, chef Jacqueline Dalais",high
+"Château Mon Désir",restaurant,North,Balaclava,"Fine dining, Maritim hotel",high
+"Le Château de Bel Ombre",restaurant,South,Bel Ombre,"Historic colonial mansion dining",high
+"Le Saint Géran Restaurant",restaurant,East,Poste de Flacq,"Hotel fine dining",medium
+"L'Alchimiste",restaurant,North,Grand Baie,"Modern bistro",medium
+"Le Capitaine Restaurant",restaurant,North,Grand Baie,"Seafood on the marina",high
+"Sakura",restaurant,North,Grand Baie,"Japanese, teppanyaki",medium
+"Le Fangourin",restaurant,North,Pamplemousses,"Aventure du Sucre restaurant, heritage",high
+"Domaine de L'Etoile Restaurant",restaurant,East,Bel Air,"Nature reserve dining",medium
+"Chateau de Labourdonnais",restaurant,North,Mapou,"Heritage estate + restaurant",high
+"La Clef des Champs Restaurant",restaurant,Central,Floreal,"Hidden gem French",medium
+"Escale Creole",restaurant,North,Moka,"Mama's creole cooking",high
+"Wapalapam",restaurant,Central,Grand Baie,"Modern Creole-Asian fusion",medium
+"Ti Kouloir",restaurant,Central,Port Louis,"Creole lunch spot",medium
+"Le Capitaine",restaurant,Central,Port Louis,"Waterfront dining",medium
+"Lambic",restaurant,Central,Port Louis,"Belgian beer & food",medium
+"Caudan Waterfront Food Court",restaurant,Central,Port Louis,"Multiple eateries, harbour",medium
+"Domaine Anna",restaurant,West,Flic en Flac,"Garden setting, Asian cuisine",high
+"La Batelière",restaurant,West,Pointe aux Sables,"Seafood, waterfront",medium
+"Sunset Café",restaurant,West,Tamarin,"Beachfront, Tamarin Bay",medium
+"Le Cafe des Arts",restaurant,East,Bras d'Eau,"Art gallery + bistro",medium
+"Chez Rosy",restaurant,South,Chemin Grenier,"Creole home cooking",medium
+"Le Vieux Moulin",restaurant,South,Souillac,"Seafront, fine dining",medium
+"Chez Mario",restaurant,West,Black River,"Italian, longstanding",medium
+"Le Chamarel",restaurant,West,Chamarel,"Panoramic view, creole",high
+"Rhumerie de Chamarel",restaurant,West,Chamarel,"Rum distillery + restaurant",high
+"Varangue sur Morne",restaurant,West,Chamarel,"Mountain view, creole",medium
+"La Bonne Chute",restaurant,East,Belle Mare,"Family-run local spot",medium
+"Seasons Restaurant",restaurant,North,Grand Baie,"Greek + Mediterranean",low
+"Stellina Restaurant",restaurant,North,Grand Baie,"Italian",low
+"Ocean Basket Grand Baie",restaurant,North,Grand Baie,"Seafood chain",low
+"Palmier",restaurant,West,Flic en Flac,"Seafood",low
+"Coolen",restaurant,West,Flic en Flac,"Beach bar & grill",low
+"La Marmite Mauricienne",restaurant,East,Trou d'Eau Douce,"Local creole",low
+
+# ============ MAURITIUS — RETAIL / SHOPPING (missing 25) ============
+"Bagatelle Mall of Mauritius",retail,Central,Moka,"Largest mall in the country",high
+"Phoenix Mall",retail,Central,Phoenix,"Major shopping destination",high
+"Cascavelle Shopping Village",retail,West,Cascavelle,"Open-air mall",high
+"Caudan Waterfront",retail,Central,Port Louis,"Harbour shopping complex",high
+"Les Allees d'Helvetia",retail,Central,Helvetia,"Boutique mall",medium
+"Riche Terre Mall",retail,North,Riche Terre,"Western mall, family",medium
+"Trianon Shopping Park",retail,Central,Trianon,"Retail park",medium
+"So'flo Mall",retail,Central,Floreal,"Neighborhood mall",medium
+"Nova Jumbo",retail,North,Flacq,"Supermarket chain",medium
+"Intermart Quatre Bornes",retail,Central,Quatre Bornes,"Supermarket",low
+"Winner's Supermarket",retail,Central,Rose Hill,"Local chain",medium
+"Shoprite Mauritius",retail,Central,Mon Plaisir,"Supermarket",medium
+"Food Lover's Market",retail,Central,Bagatelle,"Quality supermarket",medium
+"King Savers",retail,Central,Port Louis,"Wholesale market",medium
+"Bigenfer Hypermarket",retail,Central,Curepipe,"Large hypermarket",medium
+"Ebène One Mall",retail,Central,Ebène,"CyberCity mall",medium
+"Central Market Port Louis",retail,Central,Port Louis,"Iconic Bazaar, tourist favourite",high
+"Flic en Flac Market",retail,West,Flic en Flac,"Wednesday/Sunday local market",medium
+"Grand Baie Bazaar",retail,North,Grand Baie,"Daily souvenir market",medium
+"Goodlands Market",retail,North,Goodlands,"Local produce market",medium
+"Tamarin Market",retail,West,Tamarin,"Local weekly market",low
+"Mahebourg Market",retail,South-East,Mahebourg,"Historic local market",medium
+"Curepipe Market",retail,Central,Curepipe,"Highland market",medium
+"Quatre Bornes Market",retail,Central,Quatre Bornes,"Fabric & local market",high
+"Rose Hill Market",retail,Central,Rose Hill,"Local market",low
+
+# ============ MAURITIUS — SPA / WELLNESS (missing 15) ============
+"Seven Colours Spa Bel Ombre",spa,South,Bel Ombre,"Award-winning spa",high
+"Givenchy Spa Paradis",spa,West,Le Morne,"Luxury hotel spa",medium
+"Shanti Ananda Spa",spa,South,Bel Ombre,"Ayurvedic focus",high
+"Cinq Mondes Spa LUX",spa,East,Belle Mare,"Signature hotel spa",medium
+"Carita Spa Constance",spa,East,Belle Mare,"French luxury",medium
+"Elemis Spa Shangri-La",spa,East,Trou d'Eau Douce,"High-end",medium
+"Anahita Spa",spa,East,Beau Champ,"Four Seasons, world-class",high
+"Healing Earth Spa",spa,West,Flic en Flac,"Local wellness centre",medium
+"The Spa at Heritage",spa,South,Bel Ombre,"Heritage le Telfair",medium
+"Zafran Spa",spa,North,Grand Baie,"Day spa",low
+"Lotus Spa Grand Baie",spa,North,Grand Baie,"Thai massage",low
+"Wellness Centre Trianon",spa,Central,Trianon,"Gym + spa",low
+"Aquabella Spa",spa,West,Flic en Flac,"Hydrotherapy",low
+"Balinese Spa Grand Baie",spa,North,Grand Baie,"Traditional Balinese",low
+"Swasthya Ayurveda",spa,Central,Quatre Bornes,"Authentic Ayurveda",medium
+
+# ============ MAURITIUS — TOURS / ACTIVITIES (missing 15) ============
+"Casela Nature Parks",tour,West,Cascavelle,"Lion walks, zip-lines, major attraction",high
+"Black River Gorges National Park",tour,West,Black River,"Hiking, endemic forest",high
+"Ile aux Benitiers",tour,West,Le Morne,"Catamaran day trip",high
+"Blue Bay Marine Park",tour,South-East,Blue Bay,"Snorkeling, glass-bottom boat",high
+"Seven Coloured Earths Chamarel",tour,West,Chamarel,"Natural attraction",high
+"Grand Bassin (Ganga Talao)",tour,Central,Grand Bassin,"Sacred Hindu lake",high
+"Trou aux Cerfs",tour,Central,Curepipe,"Extinct volcano crater",medium
+"La Vallée des Couleurs",tour,South,Chamouny,"Nature park, zipline",medium
+"Rochester Falls",tour,South,Souillac,"Waterfall hike",medium
+"Ile aux Aigrettes",tour,South-East,Mahebourg,"Eco-tour, endemic species",high
+"Pamplemousses Botanical Garden",tour,North,Pamplemousses,"Historic botanic garden",high
+"Port Louis Street Food Tour",tour,Central,Port Louis,"Guided food walk",medium
+"Dolphin Watching Tamarin",tour,West,Tamarin,"Swim with dolphins",high
+"Underwater Sea Walk",tour,North,Grand Baie,"Helmet diving",medium
+"Skydive Mauritius",tour,North,Mon Loisir,"Tandem jumps",medium
+
+# ============ MAURITIUS — CAR RENTAL (missing 5) ============
+"Avis Mauritius",car_rental,Central,Plaisance Airport,"Major global chain",high
+"Hertz Mauritius",car_rental,Central,Plaisance Airport,"Major chain",high
+"Europcar Mauritius",car_rental,Central,Plaisance Airport,"Global chain",high
+"Sixt Rent a Car",car_rental,Central,Plaisance Airport,"Global chain",medium
+"Budget Car Rental",car_rental,Central,Plaisance Airport,"Global chain",medium
+
+# ============ MAURITIUS — SERVICES (missing 20) ============
+"Apollo Bramwell Hospital",services,Central,Moka,"Major private hospital",high
+"Wellkin Hospital",services,Central,Moka,"Private hospital",high
+"Dr Jeetoo Hospital",services,Central,Port Louis,"Main public hospital",high
+"SSR National Hospital",services,Central,Pamplemousses,"Public hospital",high
+"Clinique Darné",services,Central,Floreal,"Private clinic",medium
+"Cybercity Ebène",services,Central,Ebène,"Business district services",medium
+"MCB Mauritius",services,Central,Port Louis,"Largest local bank",high
+"SBM Bank",services,Central,Port Louis,"Major bank",high
+"ABSA Mauritius",services,Central,Ebène,"Bank",medium
+"Standard Bank Mauritius",services,Central,Ebène,"Bank",medium
+"Nile Tours Mauritius",services,Central,Port Louis,"DMC / travel services",medium
+"White Sand Tours",services,Central,Port Louis,"DMC",medium
+"Connections Mauritius",services,West,Flic en Flac,"DMC",medium
+"Mautourco",services,Central,Port Louis,"Major DMC",high
+"Rogers Aviation",services,Central,Port Louis,"Corporate aviation / services",medium
+"Deloitte Mauritius",services,Central,Ebène,"Professional services",medium
+"Ernst & Young Mauritius",services,Central,Ebène,"Accounting",medium
+"KPMG Mauritius",services,Central,Ebène,"Accounting",medium
+"Mauritius Telecom",services,Central,Port Louis,"Telecom provider",high
+"my.t / Emtel",services,Central,Ebène,"Mobile provider",high
