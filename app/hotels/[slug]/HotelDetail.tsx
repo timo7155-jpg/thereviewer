@@ -206,6 +206,25 @@ export default function HotelDetail({ hotel, reviews, avgRating, reviewCountDisp
                 </div>
 
                 {review.body && <p className="text-gray-700 text-sm leading-relaxed">{review.body}</p>}
+
+                {review.owner_replies?.[0]?.body && (
+                  <div className="mt-4 bg-blue-50 border border-blue-100 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                        <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                      </div>
+                      <span className="text-xs font-bold text-blue-800 uppercase tracking-wider">
+                        {lang === 'fr' ? `Réponse de ${hotel.name}` : `Response from ${hotel.name}`}
+                      </span>
+                      {review.owner_replies[0].created_at && (
+                        <span className="text-xs text-blue-500 ml-auto">
+                          {new Date(review.owner_replies[0].created_at).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-blue-900 leading-relaxed">{review.owner_replies[0].body}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>

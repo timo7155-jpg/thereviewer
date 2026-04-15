@@ -39,7 +39,7 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
 
   const { data: reviews } = await supabaseAdmin
     .from('reviews')
-    .select('*, reviewers(name)')
+    .select('*, reviewers(name), owner_replies(body, created_at)')
     .eq('business_id', hotel.id)
     .eq('is_verified', true)
     .order('created_at', { ascending: false })
