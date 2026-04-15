@@ -282,7 +282,7 @@ export default function DashboardPage() {
                   <p className="text-blue-100 text-sm mb-1">{lang === 'fr' ? 'Débloquez les réponses aux avis, l\'analyse IA et plus encore.' : 'Unlock review replies, AI insights, analytics and more.'}</p>
                   <p className="text-blue-200 text-xs flex items-center gap-1">
                     <span className="line-through">{lang === 'fr' ? '3 000 MUR' : 'MUR 3,000'}</span>
-                    <span className="font-bold text-white">{lang === 'fr' ? '2 490 MUR/mois' : 'MUR 2,490/mo'}</span>
+                    <span className="font-bold text-white">{lang === 'fr' ? '1 990 MUR/mois' : 'MUR 1,990/mo'}</span>
                     <span className="text-yellow-300 font-bold ml-1">— {lang === 'fr' ? 'Presque complet !' : 'Almost fully booked!'}</span>
                   </p>
                 </div>

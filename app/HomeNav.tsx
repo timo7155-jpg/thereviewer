@@ -60,9 +60,14 @@ export function HomeNav() {
               </button>
             </>
           ) : (
-            <Link href="/dashboard/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-              {lang === 'fr' ? 'Connexion' : 'Login'}
-            </Link>
+            <>
+              <Link href="/dashboard/signup" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                {lang === 'fr' ? 'Ajouter mon entreprise' : 'Add my business'}
+              </Link>
+              <Link href="/dashboard/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                {lang === 'fr' ? 'Connexion' : 'Login'}
+              </Link>
+            </>
           )}
         </div>
 
@@ -95,9 +100,14 @@ export function HomeNav() {
               </button>
             </>
           ) : (
-            <Link href="/dashboard/login" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
-              {lang === 'fr' ? 'Connexion' : 'Login'}
-            </Link>
+            <>
+              <Link href="/dashboard/signup" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
+                {lang === 'fr' ? 'Ajouter mon entreprise' : 'Add my business'}
+              </Link>
+              <Link href="/dashboard/login" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
+                {lang === 'fr' ? 'Connexion' : 'Login'}
+              </Link>
+            </>
           )}
           <Link href="/#pricing" onClick={() => setMenuOpen(false)} className="text-gray-700 font-medium py-2">
             {lang === 'fr' ? 'Tarifs' : 'Pricing'}

@@ -313,7 +313,7 @@ export async function POST(req: NextRequest) {
           </tr>
           <tr>
             <td style="vertical-align:top;padding:8px 10px 8px 0;width:28px;"><span style="color:#10b981;font-size:16px;">✓</span></td>
-            <td style="color:#334155;font-size:13px;line-height:1.6;padding:8px 0;"><strong>No lock-in</strong> — Premium is month-to-month, cancel anytime, launch price MUR 2,490/month.</td>
+            <td style="color:#334155;font-size:13px;line-height:1.6;padding:8px 0;"><strong>No lock-in</strong> — Premium is month-to-month, cancel anytime, launch price MUR 1,990/month.</td>
           </tr>
         </table>
 

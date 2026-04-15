@@ -173,7 +173,7 @@ export default function ProposalPage() {
               <h3 className="text-lg font-bold text-gray-900">Premium</h3>
               <div className="mt-2">
                 <span className="text-lg text-gray-400 line-through">MUR 3,000</span>
-                <span className="text-3xl font-extrabold text-blue-600 ml-2">MUR 2,490</span>
+                <span className="text-3xl font-extrabold text-blue-600 ml-2">MUR 1,990</span>
                 <span className="text-sm text-gray-500">/month</span>
               </div>
               <p className="text-xs text-red-500 font-bold mt-1 mb-5">Launch offer — limited to first 50 subscribers</p>

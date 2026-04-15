@@ -69,7 +69,7 @@ const sampleEmails = {
         <p style="margin:0 0 4px;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Launch offer — limited to first 50 owners</p>
         <p style="margin:0 0 4px;">
           <span style="font-size:16px;color:#94a3b8;text-decoration:line-through;">MUR 3,000</span>
-          <span style="font-size:32px;font-weight:800;color:#2563eb;margin-left:8px;">MUR 2,490</span>
+          <span style="font-size:32px;font-weight:800;color:#2563eb;margin-left:8px;">MUR 1,990</span>
           <span style="font-size:14px;color:#64748b;">/month</span>
         </p>
         <p style="margin:4px 0 0;font-size:12px;color:#ef4444;font-weight:700;">⚡ Almost fully booked — secure your spot now</p>

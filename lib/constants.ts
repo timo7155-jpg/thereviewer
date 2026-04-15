@@ -56,7 +56,7 @@ export const PLANS = {
   premium: {
     name: { en: 'Premium', fr: 'Premium' },
     originalPrice: { en: 'MUR 3,000', fr: '3 000 MUR' },
-    price: { en: 'MUR 2,490', fr: '2 490 MUR' },
+    price: { en: 'MUR 1,990', fr: '1 990 MUR' },
     period: { en: '/month', fr: '/mois' },
     promoNote: {
       en: 'First year price — limited to the first 50 subscribers',
