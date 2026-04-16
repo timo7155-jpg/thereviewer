@@ -5,6 +5,7 @@ import { HomeNav } from './HomeNav'
 import HotelSearch from './HotelSearch'
 import PricingSection from './PricingSection'
 import SiteFooter from './SiteFooter'
+import RodriguesSpotlight from './RodriguesSpotlight'
 
 export default async function HomePage() {
   const { data: businesses } = await supabaseAdmin
@@ -68,10 +69,18 @@ export default async function HomePage() {
     return a.name.localeCompare(b.name)
   })
 
+  // Top Rodrigues picks for the spotlight strip — rated first, then licensed with photos
+  const rodriguesBiz = businessesWithCounts.filter(b => b.region?.toLowerCase() === 'rodrigues')
+  const rodriguesPicks = [
+    ...rodriguesBiz.filter(b => b.analysis_score != null && b.image_url).sort((a, b) => (b.analysis_score ?? 0) - (a.analysis_score ?? 0)),
+    ...rodriguesBiz.filter(b => b.analysis_score == null && b.is_licensed && b.image_url),
+  ].slice(0, 10)
+
   return (
     <main className="min-h-screen bg-gray-50">
       <HomeNav />
       <HotelSearch initialHotels={businessesWithCounts} />
+      {rodriguesPicks.length >= 4 && <RodriguesSpotlight businesses={rodriguesPicks} />}
       <PricingSection />
       <SiteFooter />
     </main>

@@ -84,21 +84,35 @@ function iconForText(text: string): { icon: string; color: string } {
   return { icon: '•', color: '#64748b' }
 }
 
-async function generateIntro(businessName: string, analysis: any, segment: Segment): Promise<string> {
+async function generateIntro(
+  businessName: string,
+  analysis: any,
+  segment: Segment,
+  opts?: { isLicensed?: boolean; licenseType?: string; ownerName?: string; region?: string }
+): Promise<string> {
   if (!process.env.ANTHROPIC_API_KEY) return ''
   try {
     const ctx = analysis
       ? `Overall score: ${analysis.overall_score}/5 from ${analysis.source_review_count} public reviews.
 Strengths reviewers mention: ${(analysis.strengths || []).slice(0, 3).join('; ') || 'n/a'}
 Areas to improve: ${(analysis.improvements || []).slice(0, 2).join('; ') || 'n/a'}`
-      : 'No analysis available.'
+      : 'No Google review analysis available (small establishment or new listing).'
 
-    const msg = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 220,
-      messages: [{
-        role: 'user',
-        content: `Write a SHORT 2-sentence opening for an INFORMATIVE business report email to "${businessName}" in Mauritius. This is NOT a sales email — it's a neutral summary from a local review analytics platform.
+    // Rodrigues-licensed context gets a different, warmer frame
+    const isRodriguesLicensed = opts?.isLicensed && opts?.region?.toLowerCase() === 'rodrigues'
+
+    const prompt = isRodriguesLicensed
+      ? `Write a SHORT 2-sentence opening for a personal outreach email to "${businessName}", a licensed ${opts?.licenseType || 'accommodation'} on Rodrigues${opts?.ownerName ? ` run by ${opts.ownerName}` : ''}.
+
+Context:
+${ctx}
+
+Tone: warm, peer-to-peer, respectful of small-business hospitality. Reference that their listing is part of the official Rodrigues Tourism Commission directory. Speak like a fellow Mauritian professional reaching out, not a marketer. One sentence should acknowledge the Rodrigues context specifically (an island with its own rhythm, family-run tradition, or growing tourism appeal).
+
+Do NOT greet ("Hello"/"I hope this finds you well"). Do NOT use hype, urgency, or sales language. Do NOT pretend to have data you don't have.
+
+Return ONLY the two sentences, no preamble, no salutation, no line breaks.`
+      : `Write a SHORT 2-sentence opening for an INFORMATIVE business report email to "${businessName}" in Mauritius. This is NOT a sales email — it's a neutral summary from a local review analytics platform.
 
 Context:
 ${ctx}
@@ -107,7 +121,11 @@ Segment: ${segment}
 Tone: professional analyst, not salesperson. State one factual observation from their data. Avoid hype, urgency, or "click here" language. Do not greet ("Hello", "I hope this finds you well") — go straight to the observation.
 
 Return ONLY the two sentences — no preamble, no salutation, no line breaks.`
-      }]
+
+    const msg = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 220,
+      messages: [{ role: 'user', content: prompt }]
     })
     const text = msg.content[0].type === 'text' ? msg.content[0].text : ''
     return text.trim().replace(/\n+/g, ' ')
@@ -140,15 +158,16 @@ export async function POST(req: NextRequest) {
     if (!businessName) return NextResponse.json({ error: 'Business name required' }, { status: 400 })
     if (!recipientEmail) return NextResponse.json({ error: 'Recipient email required' }, { status: 400 })
 
-    // Load analysis for personalization
+    // Load analysis + license metadata for personalization
     let analysis: any = null
+    let businessMeta: any = null
     if (businessId) {
-      const { data } = await supabaseAdmin
-        .from('business_analysis')
-        .select('*')
-        .eq('business_id', businessId)
-        .maybeSingle()
-      analysis = data
+      const [{ data: a }, { data: b }] = await Promise.all([
+        supabaseAdmin.from('business_analysis').select('*').eq('business_id', businessId).maybeSingle(),
+        supabaseAdmin.from('businesses').select('region, is_licensed, license_type, owner_name').eq('id', businessId).maybeSingle(),
+      ])
+      analysis = a
+      businessMeta = b
     }
 
     const overallScore: number | null = analysis?.overall_score ?? null
@@ -156,7 +175,12 @@ export async function POST(req: NextRequest) {
     const strengths: string[] = (analysis?.strengths || []).slice(0, 3)
     const improvements: string[] = (analysis?.improvements || []).slice(0, 3)
     const segment = segmentFromScore(overallScore)
-    const personalizedIntro = await generateIntro(businessName, analysis, segment)
+    const personalizedIntro = await generateIntro(businessName, analysis, segment, {
+      isLicensed: businessMeta?.is_licensed,
+      licenseType: businessMeta?.license_type,
+      ownerName: businessMeta?.owner_name,
+      region: businessMeta?.region,
+    })
 
     // Tracking token
     const token = randomBytes(16).toString('hex')
@@ -165,7 +189,10 @@ export async function POST(req: NextRequest) {
     const dashboardUrl = `${SITE}/api/outreach/track?t=${token}&type=click&r=${encodeURIComponent(`${SITE}/dashboard/login`)}`
     const pageUrl = `${SITE}/api/outreach/track?t=${token}&type=click&r=${encodeURIComponent(businessUrl)}`
 
-    const subjectLine = subject || segmentSubject(segment, businessName)
+    const isRodriguesLicensed = businessMeta?.is_licensed && businessMeta?.region?.toLowerCase() === 'rodrigues'
+    const subjectLine = subject || (isRodriguesLicensed
+      ? `${businessName} — joining the local directory for Rodrigues travellers`
+      : segmentSubject(segment, businessName))
 
     const segmentBadge =
       segment === 'high' ? { label: 'Strong Reputation', bg: '#dcfce7', fg: '#166534' } :
