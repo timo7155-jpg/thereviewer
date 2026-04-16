@@ -107,8 +107,15 @@ export default function AdminOutreachPage() {
       }
     })
 
-    // Sort: groups first, then alphabetical
+    // Sort: highest potential leads first (best score × most reviews)
     return groups.sort((a, b) => {
+      const aScore = a.businesses[0].analysis_score ?? 0
+      const bScore = b.businesses[0].analysis_score ?? 0
+      const aReviews = a.businesses[0].analysis_review_count ?? 0
+      const bReviews = b.businesses[0].analysis_review_count ?? 0
+      // Primary: score descending; Secondary: review count descending; Tertiary: groups first
+      if (bScore !== aScore) return bScore - aScore
+      if (bReviews !== aReviews) return bReviews - aReviews
       if (a.isGroup && !b.isGroup) return -1
       if (!a.isGroup && b.isGroup) return 1
       return a.businesses[0].name.localeCompare(b.businesses[0].name)
@@ -333,7 +340,21 @@ export default function AdminOutreachPage() {
                       ))}
                     </div>
                     <p className="text-sm text-blue-600 font-medium">{group.email}</p>
-                    <p className="text-xs text-gray-400">{group.businesses[0].region}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <p className="text-xs text-gray-400">{group.businesses[0].region}</p>
+                      {group.businesses[0].analysis_score && (
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                          group.businesses[0].analysis_score >= 4.5 ? 'bg-green-50 text-green-700' :
+                          group.businesses[0].analysis_score >= 3.5 ? 'bg-amber-50 text-amber-700' :
+                          'bg-red-50 text-red-700'
+                        }`}>
+                          ★ {group.businesses[0].analysis_score.toFixed(1)}
+                        </span>
+                      )}
+                      {group.businesses[0].analysis_review_count > 0 && (
+                        <span className="text-xs text-gray-400">{group.businesses[0].analysis_review_count.toLocaleString()} reviews</span>
+                      )}
+                    </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 shrink-0 ml-3">

@@ -7,7 +7,21 @@ export async function GET() {
     .select('*, business_owners(id, full_name, email, status)')
     .order('name')
 
-  return NextResponse.json({ businesses: businesses || [] })
+  // Attach analysis scores for sorting by potential
+  const { data: analyses } = await supabaseAdmin
+    .from('business_analysis')
+    .select('business_id, overall_score, source_review_count')
+
+  const scoreMap: Record<string, { score: number; reviews: number }> = {}
+  analyses?.forEach(a => { scoreMap[a.business_id] = { score: a.overall_score, reviews: a.source_review_count } })
+
+  const enriched = (businesses || []).map(b => ({
+    ...b,
+    analysis_score: scoreMap[b.id]?.score ?? null,
+    analysis_review_count: scoreMap[b.id]?.reviews ?? 0,
+  }))
+
+  return NextResponse.json({ businesses: enriched })
 }
 
 export async function POST(req: NextRequest) {
