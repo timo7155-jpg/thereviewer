@@ -18,6 +18,8 @@ type Business = {
   analysis_score: number | null
   analysis_review_count: number
   image_url: string | null
+  is_licensed?: boolean
+  license_type?: string | null
 }
 
 const categoryPlaceholders: Record<string, { bg: string; icon: string; path: string }> = {
@@ -355,6 +357,14 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
                       </span>
                     </div>
                   )}
+                  {biz.is_licensed && (
+                    <div className="absolute bottom-3 right-3">
+                      <span className="text-[10px] font-bold text-white bg-emerald-600/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1" title={lang === 'fr' ? 'Licence officielle' : 'Officially licensed'}>
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                        {lang === 'fr' ? 'Licence' : 'Licensed'}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -372,8 +382,12 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
                           ? `${biz.analysis_review_count.toLocaleString()} avis analysés`
                           : `${biz.analysis_review_count.toLocaleString()} reviews analyzed`}
                       </span>
+                    ) : biz.is_licensed ? (
+                      <span className="text-xs text-emerald-600 font-medium">
+                        {lang === 'fr' ? '✓ Licence vérifiée' : '✓ Verified listing'}
+                      </span>
                     ) : biz.review_count === 0 ? (
-                      <span className="text-xs text-gray-400">{lang === 'fr' ? 'Pas encore d\'avis' : 'No reviews yet'}</span>
+                      <span className="text-xs text-gray-400">{lang === 'fr' ? 'Nouveau — à découvrir' : 'New — be the first'}</span>
                     ) : null}
                     <span className="text-xs font-medium text-blue-600 group-hover:translate-x-1 transition-transform ml-auto">
                       {lang === 'fr' ? 'Voir les détails →' : 'View details →'}

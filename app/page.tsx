@@ -56,10 +56,15 @@ export default async function HomePage() {
       image_url: imageMap[h.id] || null
     }
   }).sort((a, b) => {
-    // Highest rated first; businesses without a score sink to the bottom, then alphabetical
-    const aScore = a.analysis_score ?? -1
-    const bScore = b.analysis_score ?? -1
-    if (bScore !== aScore) return bScore - aScore
+    // Rated businesses first by score, then licensed businesses alphabetical, then rest
+    const aRated = a.analysis_score != null
+    const bRated = b.analysis_score != null
+    if (aRated && bRated) return (b.analysis_score ?? 0) - (a.analysis_score ?? 0)
+    if (aRated) return -1
+    if (bRated) return 1
+    // Neither rated: licensed businesses above unlicensed
+    if (a.is_licensed && !b.is_licensed) return -1
+    if (!a.is_licensed && b.is_licensed) return 1
     return a.name.localeCompare(b.name)
   })
 

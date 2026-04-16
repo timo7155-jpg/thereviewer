@@ -100,8 +100,14 @@ export default function HotelDetail({ hotel, reviews, avgRating, reviewCountDisp
           <div className="p-6 md:p-8">
             <div className="flex flex-col md:flex-row justify-between gap-6">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
                   <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">{hotel.region}</span>
+                  {hotel.is_licensed && (
+                    <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full flex items-center gap-1" title={lang === 'fr' ? 'Licence officielle — Commission du Tourisme' : 'Officially licensed — Tourism Commission'}>
+                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                      {hotel.license_type ? `${hotel.license_type}` : (lang === 'fr' ? 'Licence' : 'Licensed')}
+                    </span>
+                  )}
                 </div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2">{hotel.name}</h1>
                 <p className="text-gray-500 mb-3">{hotel.address}</p>
@@ -229,9 +235,18 @@ export default function HotelDetail({ hotel, reviews, avgRating, reviewCountDisp
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-            <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-            <p className="text-gray-500 font-medium">{t('hotel.beFirst')} {hotel.name}</p>
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-10 text-center">
+            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4">
+              <svg className="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
+              {lang === 'fr' ? 'Soyez le premier à partager votre expérience' : 'Be the first to share your experience'}
+            </h3>
+            <p className="text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+              {lang === 'fr'
+                ? `Aidez d'autres voyageurs à découvrir ${hotel.name}. Votre avis compte — honnête, vérifié, et utile.`
+                : `Help fellow travelers discover ${hotel.name}. Your review matters — honest, verified, and useful.`}
+            </p>
           </div>
         )}
       </div>
