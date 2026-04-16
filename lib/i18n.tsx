@@ -11,14 +11,14 @@ const translations = {
   'nav.adminPanel': { en: 'Admin Panel', fr: 'Panneau admin' },
 
   // Homepage
-  'home.hero.title': { en: 'Find trusted reviews for businesses in Mauritius', fr: 'Trouvez des avis fiables sur les entreprises de Maurice' },
+  'home.hero.title': { en: 'Find trusted reviews for businesses in Mauritius and Rodrigues', fr: 'Avis fiables sur les entreprises de Maurice et Rodrigues' },
   'home.hero.subtitle': { en: 'Real reviews from real customers \u2014 all in one place', fr: 'De vrais avis de vrais clients \u2014 tout en un seul endroit' },
   'home.search.placeholder': { en: 'Search by name, region...', fr: 'Rechercher par nom, r\u00e9gion...' },
   'home.search.button': { en: 'Search', fr: 'Rechercher' },
   'home.search.searching': { en: 'Searching...', fr: 'Recherche...' },
   'home.search.clear': { en: 'Clear', fr: 'Effacer' },
   'home.search.resultsFor': { en: 'Results for', fr: 'R\u00e9sultats pour' },
-  'home.allHotels': { en: 'All businesses in Mauritius', fr: 'Toutes les entreprises \u00e0 Maurice' },
+  'home.allHotels': { en: 'All businesses', fr: 'Toutes les entreprises' },
   'home.noResults': { en: 'No businesses found matching your search', fr: 'Aucune entreprise trouv\u00e9e correspondant \u00e0 votre recherche' },
   'home.noReviews': { en: 'No reviews yet', fr: 'Pas encore d\u2019avis' },
   'home.review': { en: 'review', fr: 'avis' },

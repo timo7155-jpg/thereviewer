@@ -70,6 +70,7 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
   const { lang, t } = useLang()
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('all')
+  const [island, setIsland] = useState<'all' | 'mauritius' | 'rodrigues'>('all')
   const [businesses, setBusinesses] = useState(initialHotels)
   const [searching, setSearching] = useState(false)
   const [page, setPage] = useState(1)
@@ -104,8 +105,41 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
     return () => document.removeEventListener('mousedown', onClickOutside)
   }, [])
 
-  const totalPages = Math.ceil(businesses.length / PER_PAGE)
-  const paginated = businesses.slice((page - 1) * PER_PAGE, page * PER_PAGE)
+  // Filter by selected island (Rodrigues vs Mauritius)
+  const islandFiltered = island === 'all'
+    ? businesses
+    : businesses.filter(b => {
+        const isRodrigues = b.region?.toLowerCase() === 'rodrigues'
+        return island === 'rodrigues' ? isRodrigues : !isRodrigues
+      })
+
+  // Interleave Mauritius & Rodrigues for a balanced homepage when "All"
+  const displayList = (() => {
+    if (island !== 'all') return islandFiltered
+
+    // Bucket by score tier + location
+    const sortedMtius = islandFiltered
+      .filter(b => b.region?.toLowerCase() !== 'rodrigues')
+      .sort((a, b) => (b.analysis_score ?? -1) - (a.analysis_score ?? -1) || a.name.localeCompare(b.name))
+    const sortedRodri = islandFiltered
+      .filter(b => b.region?.toLowerCase() === 'rodrigues')
+      .sort((a, b) => (b.analysis_score ?? -1) - (a.analysis_score ?? -1) || a.name.localeCompare(b.name))
+
+    // 2:1 interleave — for every 2 Mauritius cards show 1 Rodrigues card
+    const mixed: Business[] = []
+    let mi = 0, ri = 0
+    while (mi < sortedMtius.length || ri < sortedRodri.length) {
+      if (mi < sortedMtius.length) mixed.push(sortedMtius[mi++])
+      if (mi < sortedMtius.length) mixed.push(sortedMtius[mi++])
+      if (ri < sortedRodri.length) mixed.push(sortedRodri[ri++])
+    }
+    return mixed
+  })()
+
+  const totalPages = Math.ceil(displayList.length / PER_PAGE)
+  const paginated = displayList.slice((page - 1) * PER_PAGE, page * PER_PAGE)
+  const mauritiusCount = businesses.filter(b => b.region?.toLowerCase() !== 'rodrigues').length
+  const rodriguesCount = businesses.filter(b => b.region?.toLowerCase() === 'rodrigues').length
 
   const doSearch = async (q: string, cat: string) => {
     if (!q.trim() && cat === 'all') {
@@ -145,7 +179,7 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
     }
   }
   const handleCategory = (cat: string) => { setCategory(cat); doSearch(query, cat) }
-  const handleClear = () => { setQuery(''); setCategory('all'); setBusinesses(initialHotels); setPage(1) }
+  const handleClear = () => { setQuery(''); setCategory('all'); setIsland('all'); setBusinesses(initialHotels); setPage(1) }
 
   const getCategoryLabel = (value: string) => {
     const cat = BUSINESS_CATEGORIES.find(c => c.value === value)
@@ -165,8 +199,8 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
         <div className="relative max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight leading-tight">
             {lang === 'fr'
-              ? 'La plateforme qui connecte entreprises et clients à Maurice'
-              : 'The platform connecting businesses and customers in Mauritius'}
+              ? 'La plateforme des entreprises à Maurice & Rodrigues'
+              : 'Businesses & travel, across Mauritius and Rodrigues'}
           </h1>
           <p className="text-blue-100 text-lg md:text-xl mb-4 max-w-2xl mx-auto">
             {lang === 'fr'
@@ -269,8 +303,43 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
         </div>
       </section>
 
-      {/* Category tabs */}
-      <section className="max-w-6xl mx-auto px-4 md:px-6 pt-8 pb-2">
+      {/* Island + Category filter tabs */}
+      <section className="max-w-6xl mx-auto px-4 md:px-6 pt-8 pb-2 space-y-3">
+        {/* Island selector — prominent, acts like a geographic segment */}
+        <div className="flex gap-2 justify-center md:justify-start">
+          <button
+            onClick={() => { setIsland('all'); setPage(1) }}
+            className={`px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${
+              island === 'all'
+                ? 'bg-gray-900 text-white shadow-sm'
+                : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-400'
+            }`}
+          >
+            🌍 {lang === 'fr' ? 'Tout' : 'All'} <span className="opacity-60 font-normal">({mauritiusCount + rodriguesCount})</span>
+          </button>
+          <button
+            onClick={() => { setIsland('mauritius'); setPage(1) }}
+            className={`px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${
+              island === 'mauritius'
+                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm'
+                : 'bg-white text-gray-700 border border-gray-200 hover:border-blue-300'
+            }`}
+          >
+            🏝️ Mauritius <span className={`${island === 'mauritius' ? 'opacity-70' : 'opacity-60'} font-normal`}>({mauritiusCount})</span>
+          </button>
+          <button
+            onClick={() => { setIsland('rodrigues'); setPage(1) }}
+            className={`px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${
+              island === 'rodrigues'
+                ? 'bg-gradient-to-r from-emerald-600 to-cyan-600 text-white shadow-sm'
+                : 'bg-white text-gray-700 border border-gray-200 hover:border-emerald-300'
+            }`}
+          >
+            🐢 Rodrigues <span className={`${island === 'rodrigues' ? 'opacity-70' : 'opacity-60'} font-normal`}>({rodriguesCount})</span>
+          </button>
+        </div>
+
+        {/* Category tabs */}
         <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap scrollbar-hide">
           {BUSINESS_CATEGORIES.map(cat => (
             <button
@@ -297,15 +366,24 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
                 ? `${lang === 'fr' ? 'Résultats pour' : 'Results for'} "${query}"`
                 : category !== 'all'
                 ? getCategoryLabel(category)
+                : island === 'mauritius'
+                ? (lang === 'fr' ? 'Entreprises à Maurice' : 'Businesses in Mauritius')
+                : island === 'rodrigues'
+                ? (lang === 'fr' ? 'Entreprises à Rodrigues' : 'Businesses in Rodrigues')
                 : lang === 'fr' ? 'Toutes les entreprises' : 'All businesses'}
             </h2>
             <p className="text-gray-500 text-sm mt-1">
-              {businesses.length} {lang === 'fr' ? 'résultat(s)' : 'result(s)'}
+              {displayList.length} {lang === 'fr' ? 'résultat(s)' : 'result(s)'}
+              {island === 'all' && (
+                <span className="text-gray-400 ml-2">
+                  • {mauritiusCount} 🏝️ Mauritius · {rodriguesCount} 🐢 Rodrigues
+                </span>
+              )}
             </p>
           </div>
         </div>
 
-        {businesses.length === 0 ? (
+        {displayList.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center text-gray-400 shadow-sm">
             <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

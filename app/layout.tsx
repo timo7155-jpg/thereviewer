@@ -18,14 +18,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "TheReviewer.mu — Connecting Businesses and Customers in Mauritius",
+    default: "TheReviewer.mu — Businesses & Travel in Mauritius and Rodrigues",
     template: "%s | TheReviewer.mu",
   },
-  description: "Discover, rate, and book the best businesses in Mauritius. Hotels, restaurants, spas, tours, car rentals and more — verified reviews, AI-powered insights, and instant booking.",
+  description: "Discover, rate, and book the best businesses across Mauritius and Rodrigues — hotels, restaurants, guest houses, spas, tours, car rentals and more. Verified reviews, AI-powered insights, licensed listings, instant booking.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://thereviewer.mu'),
   openGraph: {
-    title: "TheReviewer.mu — Connecting Businesses and Customers in Mauritius",
-    description: "Find the right place, share your experience, book in one click. 200+ businesses across Mauritius with verified reviews and AI analysis.",
+    title: "TheReviewer.mu — Businesses & Travel in Mauritius and Rodrigues",
+    description: "Find the right place, share your experience, book in one click. 450+ businesses across Mauritius and Rodrigues with verified reviews, AI analysis and official licenses.",
     siteName: "TheReviewer.mu",
     locale: "en_US",
     type: "website",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "TheReviewer.mu",
-    description: "Discover, rate & book the best businesses in Mauritius",
+    description: "Discover, rate & book the best businesses across Mauritius and Rodrigues",
   },
   robots: {
     index: true,
