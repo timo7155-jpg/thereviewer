@@ -15,7 +15,17 @@ export async function POST(req: NextRequest) {
 
     if (!business) return NextResponse.json({ error: 'Business not found' }, { status: 404 })
     if (business.email) return NextResponse.json({ skipped: true, email: business.email, message: 'Already has email' })
-    if (!business.website) return NextResponse.json({ error: 'No website to scrape', found: false })
+    if (!business.website) {
+      // Mark as attempted with reason so batch skips it
+      await supabaseAdmin
+        .from('businesses')
+        .update({
+          email_scrape_attempted_at: new Date().toISOString(),
+          email_scrape_result: 'no_website',
+        })
+        .eq('id', businessId)
+      return NextResponse.json({ error: 'No website to scrape', found: false })
+    }
 
     // Clean the URL
     let url = business.website
@@ -90,7 +100,17 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const nowIso = new Date().toISOString()
+
     if (emails.size === 0) {
+      // Record the miss so "Scrape new only" can skip this next time
+      await supabaseAdmin
+        .from('businesses')
+        .update({
+          email_scrape_attempted_at: nowIso,
+          email_scrape_result: 'no_email_found',
+        })
+        .eq('id', businessId)
       return NextResponse.json({ found: false, message: 'No email found on website' })
     }
 
@@ -104,10 +124,14 @@ export async function POST(req: NextRequest) {
       if (match) { bestEmail = match; break }
     }
 
-    // Save to DB
+    // Save to DB with success flag
     await supabaseAdmin
       .from('businesses')
-      .update({ email: bestEmail })
+      .update({
+        email: bestEmail,
+        email_scrape_attempted_at: nowIso,
+        email_scrape_result: 'found',
+      })
       .eq('id', businessId)
 
     return NextResponse.json({

@@ -79,14 +79,29 @@ export default function AdminContactsPage() {
     }
   }
 
-  const scrapeAllEmails = async () => {
+  const scrapeEmailsBatch = async (mode: 'new' | 'retry') => {
     setScrapingEmails(true)
-    for (const biz of businesses) {
-      if (biz.email) continue // skip if already has email
-      if (!biz.website) continue // skip if no website
+    const candidates = businesses.filter(b => {
+      if (b.email) return false // already has email
+      if (!b.website) return false // no website to scrape
+      if (mode === 'new') return !b.email_scrape_attempted_at // only untried
+      if (mode === 'retry') return !!b.email_scrape_attempted_at // only previously failed
+      return true
+    })
+    if (candidates.length === 0) {
+      setScrapingEmails(false)
+      alert(mode === 'new' ? 'No new businesses to scrape.' : 'No previously-failed businesses to retry.')
+      return
+    }
+    if (!confirm(`Scrape ${candidates.length} business website${candidates.length > 1 ? 's' : ''}? This takes ~${Math.ceil(candidates.length * 2 / 60)} minute(s).`)) {
+      setScrapingEmails(false)
+      return
+    }
+    for (const biz of candidates) {
       await scrapeOneEmail(biz.id)
       await new Promise(resolve => setTimeout(resolve, 2000))
     }
+    await loadData()
     setScrapingEmails(false)
   }
 
@@ -132,18 +147,35 @@ export default function AdminContactsPage() {
             <h1 className="text-2xl font-extrabold text-gray-900">Business Contacts</h1>
             <p className="text-gray-500 text-sm mt-1">Fetch phone numbers from Google, manually add emails</p>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={scrapeAllEmails}
-              disabled={scrapingEmails || bulkRunning}
-              className="bg-purple-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-purple-700 disabled:opacity-50 transition-colors"
-            >
-              {scrapingEmails ? 'Scraping emails...' : 'Scrape emails from websites'}
-            </button>
+          <div className="flex gap-2 flex-wrap">
+            {(() => {
+              const newOnly = businesses.filter(b => !b.email && b.website && !b.email_scrape_attempted_at).length
+              const toRetry = businesses.filter(b => !b.email && b.website && b.email_scrape_attempted_at).length
+              return (
+                <>
+                  <button
+                    onClick={() => scrapeEmailsBatch('new')}
+                    disabled={scrapingEmails || bulkRunning || newOnly === 0}
+                    className="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    title="Only businesses we've never tried before"
+                  >
+                    {scrapingEmails ? 'Scraping...' : `🆕 Scrape new only (${newOnly})`}
+                  </button>
+                  <button
+                    onClick={() => scrapeEmailsBatch('retry')}
+                    disabled={scrapingEmails || bulkRunning || toRetry === 0}
+                    className="bg-amber-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    title="Businesses we tried before but couldn't find an email"
+                  >
+                    🔁 Retry failed ({toRetry})
+                  </button>
+                </>
+              )
+            })()}
             <button
               onClick={fetchAll}
               disabled={bulkRunning || scrapingEmails}
-              className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
               {bulkRunning ? 'Fetching...' : 'Fetch phones'}
             </button>
