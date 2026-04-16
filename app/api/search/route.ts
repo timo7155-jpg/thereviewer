@@ -8,6 +8,7 @@ export async function GET(req: NextRequest) {
   let query = supabaseAdmin
     .from('businesses')
     .select('*')
+    .eq('is_published', true)
     .order('name')
 
   if (q) {

@@ -10,6 +10,7 @@ export default async function HomePage() {
   const { data: businesses } = await supabaseAdmin
     .from('businesses')
     .select('*')
+    .eq('is_published', true)
     .order('name')
 
   // Get review counts per business
