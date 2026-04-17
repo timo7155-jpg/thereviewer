@@ -209,8 +209,8 @@ export default function HotelSearch({ initialHotels }: { initialHotels: Business
           </p>
           <p className="text-blue-200 text-sm mb-10 max-w-xl mx-auto">
             {lang === 'fr'
-              ? 'Propriétaire d\'entreprise ? Réclamez votre fiche gratuitement et gérez votre réputation.'
-              : 'Business owner? Claim your listing for free and take control of your reputation.'}
+              ? 'Propriétaire d\'entreprise ? Revendiquez votre fiche gratuitement pour ajouter vos propres photos, corriger les informations et répondre aux avis.'
+              : 'Business owner? Claim your listing free to add your own photos, correct details, and respond to reviews.'}
           </p>
           <div ref={searchRef} className="max-w-xl mx-auto relative">
           <div className="flex flex-col sm:flex-row gap-2 bg-white/20 backdrop-blur-md p-2 rounded-xl border border-white/30">

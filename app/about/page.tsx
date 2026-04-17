@@ -52,8 +52,8 @@ export default function AboutPage() {
               <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Verified Reviews</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">Every review is email-verified to ensure authenticity. No fake reviews, no paid endorsements — just real experiences from real customers.</p>
+              <h3 className="font-bold text-gray-900 mb-2">Email-verified Reviews</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">Every review submitted directly on TheReviewer.mu is email-verified before publication — no paid endorsements, no fake user accounts. Separately, we may display AI summaries of publicly available Google Maps reviews, clearly labelled as such.</p>
             </div>
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
               <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4">

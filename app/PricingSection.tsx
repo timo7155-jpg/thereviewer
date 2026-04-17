@@ -21,8 +21,8 @@ export default function PricingSection() {
           </h2>
           <p className="text-gray-500 text-lg max-w-2xl mx-auto mb-2">
             {lang === 'fr'
-              ? 'Prenez le contrôle de votre réputation en ligne et améliorez votre service client.'
-              : 'Take control of your online reputation and improve your customer service.'}
+              ? 'Un outil pour revendiquer votre fiche, ajouter vos photos, répondre aux avis, et améliorer votre service client.'
+              : 'A tool to claim your listing, add your own photos, respond to reviews, and improve your customer service.'}
           </p>
           <p className="text-gray-400 text-sm max-w-xl mx-auto">
             {lang === 'fr'

@@ -195,10 +195,10 @@ export async function POST(req: NextRequest) {
       : segmentSubject(segment, businessName))
 
     const segmentBadge =
-      segment === 'high' ? { label: 'Strong Reputation', bg: '#dcfce7', fg: '#166534' } :
-      segment === 'mid'  ? { label: 'Room to Grow',     bg: '#fef3c7', fg: '#92400e' } :
-      segment === 'low'  ? { label: 'Recovery Opportunity', bg: '#fee2e2', fg: '#991b1b' } :
-                           { label: 'Your Business',    bg: '#e2e8f0', fg: '#334155' }
+      segment === 'high' ? { label: 'Strong Google Reputation', bg: '#dcfce7', fg: '#166534' } :
+      segment === 'mid'  ? { label: 'Above Average on Google',  bg: '#fef3c7', fg: '#92400e' } :
+      segment === 'low'  ? { label: 'Google Reviews Summary',   bg: '#e2e8f0', fg: '#334155' } :
+                           { label: 'Your Business Summary',    bg: '#e2e8f0', fg: '#334155' }
 
     // Score breakdown bars (ordered by score desc for visual impact)
     const bars = [
@@ -302,8 +302,8 @@ export async function POST(req: NextRequest) {
             <td style="vertical-align:top;padding:0 8px 0 0;width:33%;">
               <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:16px;text-align:center;height:100%;">
                 <div style="font-size:26px;margin-bottom:6px;">🛡️</div>
-                <div style="color:#0f172a;font-weight:700;font-size:13px;margin-bottom:4px;">Verified Reviews</div>
-                <div style="color:#64748b;font-size:11.5px;line-height:1.5;">Every review is email-verified — no fakes, no paid endorsements.</div>
+                <div style="color:#0f172a;font-weight:700;font-size:13px;margin-bottom:4px;">Email-verified Reviews</div>
+                <div style="color:#64748b;font-size:11.5px;line-height:1.5;">Every user review on TheReviewer.mu is email-verified before publication.</div>
               </div>
             </td>
             <td style="vertical-align:top;padding:0 4px;width:33%;">

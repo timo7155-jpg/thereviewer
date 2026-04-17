@@ -240,12 +240,17 @@ export default function HotelDetail({ hotel, reviews, avgRating, reviewCountDisp
               <svg className="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">
-              {lang === 'fr' ? 'Soyez le premier à partager votre expérience' : 'Be the first to share your experience'}
+              {lang === 'fr' ? 'Aucun avis TheReviewer.mu pour le moment' : 'No TheReviewer.mu reviews yet'}
             </h3>
-            <p className="text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+            <p className="text-sm text-gray-600 max-w-md mx-auto leading-relaxed mb-3">
               {lang === 'fr'
-                ? `Aidez d'autres voyageurs à découvrir ${hotel.name}. Votre avis compte — honnête, vérifié, et utile.`
-                : `Help fellow travelers discover ${hotel.name}. Your review matters — honest, verified, and useful.`}
+                ? `Des avis existent peut-être sur d'autres plateformes — nos scores IA ci-dessus, si affichés, proviennent de l'API officielle Google Places.`
+                : `Reviews may exist on other platforms — the AI scores above, if shown, are derived from the official Google Places API.`}
+            </p>
+            <p className="text-sm text-blue-700 font-medium leading-relaxed max-w-md mx-auto">
+              {lang === 'fr'
+                ? `Vous avez visité ${hotel.name} ? Partagez votre expérience — avis vérifié par email, sans fioritures.`
+                : `Visited ${hotel.name}? Share your experience — email-verified, straightforward.`}
             </p>
           </div>
         )}

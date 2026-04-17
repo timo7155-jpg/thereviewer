@@ -89,37 +89,48 @@ export default function ReviewAnalysis({ businessId }: { businessId: string }) {
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-rich overflow-hidden mb-6">
-      {/* Header with gradient */}
+      {/* Header with gradient + transparent sourcing */}
       <div className="bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 px-6 py-5">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">
-                {lang === 'fr' ? 'Analyse des avis' : 'Review Analysis'}
-              </h3>
-              <p className="text-white/60 text-xs">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-white font-bold text-lg">
+                  {lang === 'fr' ? 'Synthèse IA des avis Google' : 'AI Summary of Google Reviews'}
+                </h3>
+                <span className="text-[10px] font-bold bg-white/20 text-white px-2 py-0.5 rounded-full uppercase tracking-wider">AI</span>
+              </div>
+              <p className="text-white/80 text-xs mt-0.5">
                 {lang === 'fr'
-                  ? `Basée sur ${analysis.source_review_count.toLocaleString()} avis publics`
-                  : `Based on ${analysis.source_review_count.toLocaleString()} public reviews`}
+                  ? `Résumé automatique de ${analysis.source_review_count.toLocaleString()} avis publics Google`
+                  : `Automated summary of ${analysis.source_review_count.toLocaleString()} public Google reviews`}
               </p>
             </div>
           </div>
-          {/* Big score */}
+          {/* Big score — AI-derived */}
           <div className="text-center bg-white/10 backdrop-blur-sm rounded-2xl px-5 py-3">
             <div className="text-3xl font-extrabold text-white">{analysis.overall_score.toFixed(1)}</div>
-            <div className="flex justify-center mt-0.5">
-              {[1, 2, 3, 4, 5].map(s => (
-                <span key={s} className={`text-sm ${s <= Math.round(analysis.overall_score) ? 'text-yellow-300' : 'text-white/20'}`}>★</span>
-              ))}
+            <div className="text-white/70 text-[10px] uppercase tracking-wider mt-0.5">
+              {lang === 'fr' ? 'Score IA' : 'AI score'}
             </div>
           </div>
         </div>
       </div>
 
       <div className="p-6">
+        {/* Transparent disclaimer banner */}
+        <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 mb-6 flex items-start gap-3">
+          <svg className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <p className="text-xs text-blue-900 leading-relaxed">
+            {lang === 'fr'
+              ? <>Les scores, résumés et thèmes ci-dessous sont générés par intelligence artificielle à partir des <strong>avis publics publiés sur Google Maps</strong> pour cet établissement. Ce ne sont <strong>pas des citations directes</strong>. Pour lire les avis originaux, consultez la fiche Google Maps officielle.</>
+              : <>Scores, summary and themes below are <strong>AI-generated</strong> from the business&apos;s <strong>publicly available Google Maps reviews</strong>. They are <strong>not direct quotes</strong>. To read the original reviews, see the official Google Maps listing.</>}
+          </p>
+        </div>
+
         {/* Summary */}
         <p className="text-sm text-gray-700 leading-relaxed mb-6">{analysis.summary}</p>
 
@@ -142,18 +153,21 @@ export default function ReviewAnalysis({ businessId }: { businessId: string }) {
           </div>
         </div>
 
-        {/* Strengths & Improvements */}
+        {/* Themes from public reviews — labeled clearly as AI-synthesized */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {analysis.strengths?.length > 0 && (
             <div className="bg-emerald-50 rounded-xl p-5 border border-emerald-100">
-              <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1 flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                {lang === 'fr' ? 'Points forts' : 'Strengths'}
+                {lang === 'fr' ? 'Thèmes positifs récurrents' : 'Recurring positive themes'}
               </h4>
+              <p className="text-[10px] text-emerald-700/70 mb-3">
+                {lang === 'fr' ? 'Identifiés par IA dans les avis Google' : 'Identified by AI in Google reviews'}
+              </p>
               <ul className="space-y-2">
                 {analysis.strengths.map((s, i) => (
-                  <li key={i} className="text-sm text-emerald-700 flex items-start gap-2">
-                    <span className="w-5 h-5 bg-emerald-200 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold text-emerald-700">{i + 1}</span>
+                  <li key={i} className="text-sm text-emerald-800 flex items-start gap-2">
+                    <span className="w-5 h-5 bg-emerald-200 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold text-emerald-800">{i + 1}</span>
                     {s}
                   </li>
                 ))}
@@ -163,14 +177,17 @@ export default function ReviewAnalysis({ businessId }: { businessId: string }) {
 
           {analysis.improvements?.length > 0 && (
             <div className="bg-amber-50 rounded-xl p-5 border border-amber-100">
-              <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1 flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-                {lang === 'fr' ? 'Axes d\'amélioration' : 'Areas to improve'}
+                {lang === 'fr' ? 'Thèmes critiques récurrents' : 'Recurring critical themes'}
               </h4>
+              <p className="text-[10px] text-amber-700/70 mb-3">
+                {lang === 'fr' ? 'Identifiés par IA dans les avis Google' : 'Identified by AI in Google reviews'}
+              </p>
               <ul className="space-y-2">
                 {analysis.improvements.map((s, i) => (
-                  <li key={i} className="text-sm text-amber-700 flex items-start gap-2">
-                    <span className="w-5 h-5 bg-amber-200 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold text-amber-700">{i + 1}</span>
+                  <li key={i} className="text-sm text-amber-800 flex items-start gap-2">
+                    <span className="w-5 h-5 bg-amber-200 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold text-amber-800">{i + 1}</span>
                     {s}
                   </li>
                 ))}
@@ -179,39 +196,12 @@ export default function ReviewAnalysis({ businessId }: { businessId: string }) {
           )}
         </div>
 
-        {/* Best & Worst review summaries */}
-        {(analysis.best_review || analysis.worst_review) && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            {analysis.best_review && (
-              <div className="bg-white rounded-xl border border-gray-100 p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" /></svg>
-                  </div>
-                  <h4 className="font-bold text-gray-900 text-sm">
-                    {lang === 'fr' ? 'Ce que les clients adorent' : 'What customers love'}
-                  </h4>
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed italic">"{analysis.best_review}"</p>
-              </div>
-            )}
-            {analysis.worst_review && (
-              <div className="bg-white rounded-xl border border-gray-100 p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018c.163 0 .326.02.485.06L17 4m-7 10v2a2 2 0 002 2h.095c.5 0 .905-.405.905-.905 0-.714.211-1.412.608-2.006L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" /></svg>
-                  </div>
-                  <h4 className="font-bold text-gray-900 text-sm">
-                    {lang === 'fr' ? 'Ce qui pourrait être amélioré' : 'What could be better'}
-                  </h4>
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed italic">"{analysis.worst_review}"</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Source note */}
+        {/* Owner-visible notice */}
+        <p className="text-[11px] text-gray-400 mt-5 text-center leading-relaxed">
+          {lang === 'fr'
+            ? 'Propriétaire de cette fiche ? Revendiquez-la gratuitement pour corriger les informations, ajouter vos propres photos et répondre aux avis.'
+            : 'Own this listing? Claim it free to correct information, add your own photos and respond to reviews.'}
+        </p>
       </div>
     </div>
   )
